@@ -70,13 +70,22 @@ reconhece o widget. Use `<code>` como o código do widget (minúsculo).
 
 Somente o mínimo para orientar a geração; o detalhe está no contexto:
 
+- `application.code` **deve ser igual** a `locale.file.base.name` — divergência quebra a i18n (regra crítica) → ver `architecture.md`.
 - Elemento raiz **deve** conter a classe `fluig-style-guide` → ver `conventions.md`.
 - `instanceId` **só** em atributos `id`, com separador `_` (ex.: `id="MyWidget_${instanceId}"`); proibido em `data-*` e `class` → ver `conventions.md`.
 - `.instance()` chamado **sem** `instanceId` (injetado pelo framework; no JS use `this.instanceId`) → ver `conventions.md`.
 - Bindings declarativos: chave sem o prefixo `data-`; `local` para elementos dentro da raiz, `global` para elementos fora (modais) → ver `conventions.md`.
-- Texto visível via i18n: `${i18n.getTranslation('chave')}`; nunca strings fixas nem acesso a `i18n` como objeto JS → ver `conventions.md`.
+- Texto visível via i18n; nunca strings fixas nem acesso a `i18n` como objeto JS → ver `conventions.md`.
 - JavaScript em **ES6+** (`const`/`let`, arrow functions, template literals); evitar `var` → ver `conventions.md`.
 - CSS **escopado** à raiz, reutilizando o Style Guide; cores de tema via `var(--fs-color-*)`, sem hexadecimais fixos → ver `style-guide.md`.
+
+### Política de fallback
+
+- Faltando **nome** ou **propósito** essencial para gerar (nome do widget): solicitar antes de gerar.
+- **Coordenadas Maven** (parent `groupId`/`artifactId` do `pom.xml`): quando dentro de um projeto existente, inspecionar o `pom.xml` do módulo onde o widget será criado; **nunca inventar** coordenadas.
+- **`icon.png`**: gerar um placeholder e registrar como pendência manual.
+- **Traduções `en_US`/`es` ausentes**: usar o texto PT como base e marcar `# TODO i18n` por chave, sem deixar de criar os 4 arquivos.
+- Dados do desenvolvedor (`developer.*`): usar placeholders genéricos; não assumir identificadores de terceiros.
 
 ## Procedimento
 
@@ -109,11 +118,23 @@ Use `examples/widget/` como referência mínima (view `.ftl` + arquivo `*.widget
 ## Checklist de Validação
 
 - [ ] Estrutura oficial criada, com o descritor **`application.info`** (`application.type=widget`, `view.file=view.ftl`, recursos CSS/JS).
-- [ ] Arquivos **`.properties` de i18n** (base + `pt_BR`/`en_US`/`es`) com as chaves usadas na view/JS.
+- [ ] `application.code` **igual** a `locale.file.base.name`.
+- [ ] Arquivos **`.properties` de i18n** (base + `pt_BR`/`en_US`/`es`) com as mesmas chaves usadas na view/JS.
 - [ ] Elemento raiz da view contém a classe `fluig-style-guide`.
 - [ ] `instanceId` aparece **apenas** em atributos `id`, com separador `_`.
 - [ ] `.instance()` é chamado sem `instanceId`.
 - [ ] Bindings usam a chave sem o prefixo `data-` (escopo local/global correto).
-- [ ] Todo texto visível usa `${i18n.getTranslation('...')}` — sem strings fixas.
+- [ ] Todo texto visível usa i18n — sem strings fixas.
 - [ ] JavaScript em ES6+ (sem `var`; `const`/`let`, arrow functions, template literals).
 - [ ] CSS escopado à raiz, sem hexadecimais fixos (cores via `var(--fs-color-*)`).
+
+## Resumo da Geração
+
+Ao concluir, apresente um resumo curto do que foi gerado, para o desenvolvedor
+saber o estado e os próximos passos:
+
+- **Widget / `application.code`:** nome e código.
+- **Diretório:** onde o widget foi criado.
+- **Arquivos gerados:** lista.
+- **Pendências manuais:** ex.: `icon.png` real, coordenadas do `pom.xml` pai, traduções `en_US`/`es` marcadas com TODO.
+- **Próximo passo:** implementar a lógica em `<code>.js` (ver as convenções em `conventions.md`).

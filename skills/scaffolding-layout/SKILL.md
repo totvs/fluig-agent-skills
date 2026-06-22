@@ -18,6 +18,21 @@ Produzir, com responsabilidade única, o **esqueleto de um Layout WCM** do Fluig
 - Quando o desenvolvedor fornece um nome/propósito e quer um ponto de partida correto (view com regiões) seguindo as convenções oficiais.
 - Quando é preciso garantir, desde o início, uso do grid do Style Guide, i18n nos textos visíveis e ausência de cores fixas.
 
+## Diferenças Críticas em Relação a um Widget
+
+Layout e widget compartilham a estrutura WAR, mas o descritor e a view diferem.
+Atenção a estes pontos para não confundir os dois:
+
+| Item | Widget | Layout |
+|------|--------|--------|
+| `application.type` | `widget` | `layout` |
+| Template principal | `view.file=view.ftl` | `layout.file=layout.ftl` |
+| Slot padrão | — | `layout.defaultSlot=<Slot>` (obrigatório) |
+| Slots pré-configurados | — | `slot.<Nome>=<código-widget>` (opcional) |
+| Flag no construtor | `application.uiwidget` | `application.uilayout` |
+| Responsivo | — | `application.responsiveLayout=true` |
+| Renderização da área | conteúdo próprio | `<@wcm.renderSlot id="..." />` por slot |
+
 ## Entradas Esperadas
 
 | Entrada | Descrição | Obrigatória |
@@ -69,6 +84,7 @@ a `layout.ftl` declara os **slots/regiões**. Use `<code>` como o código do lay
 
 Somente o mínimo para orientar a geração; o detalhe está no contexto:
 
+- `application.code` **deve ser igual** a `locale.file.base.name` — divergência quebra a i18n (regra crítica) → ver `architecture.md`.
 - O layout define a **estrutura visual** e as **regiões/áreas** onde os widgets são posicionados; ele não contém a lógica dos widgets → ver `architecture.md`.
 - A view do layout é escrita em **FreeMarker (`.ftl`)** e renderizada no servidor; comece importando os utilitários públicos de layout: `<#import "/wcm.ftl" as wcm/>` → ver `architecture.md`.
 - Envolva o conteúdo em um **wrapper raiz com `fluig-style-guide`** (estrutura padrão `wcm-wrapper-content` → `wcm-all-content` → `wcm-content`) → ver `architecture.md` e `style-guide.md`.
@@ -106,9 +122,29 @@ Use `examples/layout/` como referência mínima da view `.ftl` de um layout que 
 ## Checklist de Validação
 
 - [ ] Estrutura oficial criada, com o descritor **`application.info`** (`application.type=layout`, `layout.file=layout.ftl`, `layout.defaultSlot`).
+- [ ] `application.code` **igual** a `locale.file.base.name`.
+- [ ] `layout.defaultSlot` está presente entre os slots declarados na `layout.ftl`.
+- [ ] Cada slot declarado tem um `<@wcm.renderSlot id="..." />` correspondente.
+- [ ] Cada `slot.<Nome>=<widget>` (se houver) referencia um código de widget válido.
 - [ ] Arquivos **`.properties` de i18n** (base + `pt_BR`/`en_US`/`es`).
 - [ ] A `layout.ftl` importa os utilitários de layout (`<#import "/wcm.ftl" as wcm/>`) e tem wrapper raiz com `fluig-style-guide`.
-- [ ] A view declara **slots nomeados** renderizados por `@wcm.renderSlot id="..."`, com o slot padrão coincidindo com `layout.defaultSlot`.
 - [ ] A estrutura usa o **grid do Style Guide** (`.container`/`.row`/`.col-*`), sem posicionamento/medidas fixas.
 - [ ] Todo texto visível usa `${i18n.getTranslation('...')}` — sem strings fixas.
 - [ ] Sem hexadecimais fixos para cores de tema (use `var(--fs-color-*)`).
+
+## Resumo da Geração
+
+Ao concluir, apresente um resumo curto:
+
+- **Layout / `application.code`:** nome e código.
+- **Diretório:** onde o layout foi criado.
+- **Slots:** lista de slots (com destaque para o slot padrão) e slots pré-configurados, se houver.
+- **Arquivos gerados:** lista.
+- **Pendências manuais:** ex.: `icon.png` real, coordenadas do `pom.xml` pai, traduções `en_US`/`es` marcadas com TODO.
+
+## Política de Fallback
+
+- Faltando **nome**, **slots** ou **slot padrão**: solicitar antes de gerar.
+- **Coordenadas Maven** do parent: inspecionar o `pom.xml` do módulo onde o layout será criado; **nunca inventar**.
+- **`icon.png`**: gerar placeholder e registrar como pendência manual.
+- **Traduções `en_US`/`es` ausentes**: usar PT como base e marcar `# TODO i18n` por chave.

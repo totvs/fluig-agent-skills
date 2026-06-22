@@ -110,5 +110,6 @@ $.ajax({ url: '/api/internal/list' });           // endpoint interno via $.ajax
 - [ ] Cada achado tem **severidade** atribuída conforme a escala (crítico/alto/médio/baixo).
 - [ ] Cada achado **referencia a regra** do arquivo de contexto (`conventions.md`/`style-guide.md`, com a seção).
 - [ ] O relatório segue [assets/output-template.md](assets/output-template.md), do mais grave ao menos grave.
+- [ ] O relatório inclui **Pontos Positivos** e um **Plano de Ação** ordenado por urgência.
 - [ ] As recomendações são acionáveis e apontam a skill especializada quando aplicável.
 - [ ] A revisão não alterou o código — apenas diagnosticou e recomendou.

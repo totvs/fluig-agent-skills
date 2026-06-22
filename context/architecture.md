@@ -136,15 +136,22 @@ Campos essenciais do `application.info` de um widget:
 | Chave | Valor / Papel |
 |-------|---------------|
 | `application.type` | `widget` |
-| `application.code` | Código único do widget |
+| `application.code` | Código único do widget (minúsculo, sem espaços) |
 | `application.title` / `application.description` | Título e descrição (admitem i18n) |
+| `application.category` | Categoria do widget (ex.: `SYSTEM`, `APPLICATION`, `Social`) |
 | `application.renderer` | `freemarker` |
 | `application.icon` | `icon.png` |
 | `view.file` | `view.ftl` (view principal) |
+| `application.uiwidget` | `true` quando o widget aparece no construtor de páginas (default `false`) |
 | `application.resource.css.N` | Caminho do CSS (`/resources/css/<code>.css`) |
 | `application.resource.js.N` | Caminho do JS (`/resources/js/<code>.js`) |
+| `application.resource.component.N` | Componente de negócio do Style Guide usado (ex.: `datatable`, `treeview`) |
 | `locale.file.base.name` | Nome base dos arquivos `.properties` de i18n |
 | `developer.code` / `developer.name` | Identificação do desenvolvedor |
+
+> **Regra crítica:** `application.code` **deve ser igual** a
+> `locale.file.base.name`. Divergência entre os dois quebra a resolução de i18n
+> do artefato.
 
 > A `view.ftl` fica em `src/main/resources/`, enquanto o `<code>.js` e o
 > `<code>.css` ficam em `src/main/webapp/resources/`. O ponto de partida público
@@ -222,14 +229,27 @@ Campos essenciais do `application.info` de um layout:
 | Chave | Valor / Papel |
 |-------|---------------|
 | `application.type` | `layout` |
-| `application.code` | Código único do layout |
+| `application.code` | Código único do layout (minúsculo, sem espaços) |
 | `application.title` / `application.description` | Título e descrição (admitem i18n) |
+| `application.category` | Categoria do layout (ex.: `SYSTEM`, `APPLICATION`) |
 | `application.renderer` | `freemarker` |
 | `layout.file` | `layout.ftl` (view do layout) |
-| `layout.defaultSlot` | Slot padrão que recebe conteúdo |
+| `layout.defaultSlot` | Slot padrão que recebe conteúdo (deve existir entre os slots da `layout.ftl`) |
+| `slot.<NomeDoSlot>` | (Opcional) widget pré-configurado para um slot (ex.: `slot.SlotMenu=menu`) |
+| `application.uilayout` | `true` quando o layout aparece no construtor de páginas (default `false`) |
+| `application.responsiveLayout` | `true` para layout responsivo |
 | `application.resource.css.N` | Caminho do CSS (opcional) |
 | `locale.file.base.name` | Nome base dos arquivos `.properties` de i18n |
 | `developer.code` / `developer.name` | Identificação do desenvolvedor |
+
+> **Regra crítica:** `application.code` **deve ser igual** a
+> `locale.file.base.name` (mesma regra do widget). O `layout.defaultSlot` precisa
+> coincidir com um dos slots declarados na `layout.ftl`.
+
+> **Diferenças em relação ao widget:** o layout usa `layout.file` (não
+> `view.file`), exige `layout.defaultSlot`, usa a flag `application.uilayout` (em
+> vez de `application.uiwidget`) e admite `application.responsiveLayout` e
+> `slot.<Nome>` para pré-configurar widgets em slots.
 
 As **regiões/slots** são declaradas na `layout.ftl`. A view de layout segue uma
 estrutura interna característica que o desenvolvedor reproduz:

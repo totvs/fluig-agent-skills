@@ -54,6 +54,22 @@
 - <recomendação transversal ou próximo passo, ex.: aplicar a skill `internationalization` no arquivo todo>
 - <referência à skill especializada para aprofundamento, quando aplicável>
 
+## Pontos Positivos
+
+> Reconheça o que está correto — útil para o autor do código e para onboarding.
+
+- <aspecto positivo 1 (ex.: bindings declarativos bem organizados)>
+- <aspecto positivo 2 (ex.: i18n aplicada de forma consistente)>
+
+## Plano de Ação
+
+> Ordene por urgência; itens de severidade crítica/alta vêm primeiro.
+
+1. [ ] **Antes do merge:** corrigir os achados críticos e altos.
+2. [ ] **Em seguida:** tratar os achados médios (manutenção/performance).
+3. [ ] **Quando possível:** aplicar os ajustes de baixa severidade.
+4. [ ] **Re-revisão:** revalidar o artefato após as correções críticas.
+
 ## Categorias de Referência
 
 ES6+ · Nomenclatura · Widget · Custom Element · i18n · Segurança · REST interna · CSS/Style Guide · Acessibilidade · Performance

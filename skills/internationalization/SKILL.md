@@ -15,6 +15,7 @@ Aplicar, com responsabilidade única, **internacionalização ao código de cust
 ## Quando Usar
 
 - Quando há **strings fixas** visíveis ao usuário (rótulos, mensagens, títulos, `aria-label`, `alt`).
+- Quando é preciso **adicionar uma nova string de UI** garantindo sua presença nos 4 bundles `.properties`.
 - Quando o código acessa `i18n` de forma **incorreta** (`i18n.key` ou `i18n['key']`).
 - Quando textos traduzidos são montados dentro de **template literals** (backticks) e a expressão `${...}` é interpretada pelo JavaScript em vez do FreeMarker (em `.js`, prefira `[=...]`).
 - Antes de publicar um artefato que precisa suportar múltiplos idiomas.
@@ -48,17 +49,18 @@ Somente o mínimo para orientar a tarefa; o detalhe está no contexto:
 
 ## Procedimento
 
-1. Ler o código alvo e localizar todo texto visível ao usuário (rótulos, mensagens, títulos, `aria-label`, `alt`) e usos incorretos de `i18n`.
-2. Definir/identificar uma chave de tradução descritiva para cada texto. Em `.ftl`, substituir por `${i18n.getTranslation('chave')}`; em arquivos `.js`, **respeitar o padrão já existente no arquivo** — se já usa `${i18n....}`, manter; para código novo (ou arquivo sem padrão), usar `[=i18n.getTranslation('chave')]`.
+1. Ler o código alvo e localizar todo texto visível ao usuário (rótulos, mensagens, títulos, `placeholder`, `title`, `aria-label`, `alt`) e usos incorretos de `i18n`. **Ignorar strings técnicas** (seletores, classes CSS, URLs, nomes de evento, chaves de `data-*`), que não são traduzíveis.
+2. Definir/identificar uma chave de tradução descritiva para cada texto, seguindo a convenção de dot-notation por domínio. **Reaproveitar uma chave existente** quando o mesmo texto já estiver traduzido em outro ponto, em vez de criar duplicatas. Em `.ftl`, substituir por `${i18n.getTranslation('chave')}`; em arquivos `.js`, **respeitar o padrão já existente no arquivo** — se já usa `${i18n....}`, manter; para código novo (ou arquivo sem padrão), usar `[=i18n.getTranslation('chave')]`.
 3. Em `.js`, envolver a expressão em aspas e atribuí-la a uma variável antes de usar.
 4. Para textos com valores dinâmicos, usar o método com parâmetros — `getTranslationP1` (1 parâmetro) ou `getTranslationPn` (N parâmetros) — declarando os marcadores `{0}`, `{1}`, ... na chave, em vez de concatenar valores na própria chave.
-5. Tratar com cuidado os **template literals**: em `.js`, preferir `[=...]` (que não conflita com backticks); se usar `${...}`, declarar a tradução em variável separada e só então concatenar.
-6. Remover qualquer acesso a `i18n` como objeto JavaScript (`i18n.key` / `i18n['key']`).
-7. Conferir o resultado com o checklist abaixo, preservando o comportamento.
+5. **Propagar cada chave nova nos 4 arquivos `.properties`** (base + `pt_BR`/`en_US`/`es`), em `src/main/resources/`: no fallback e no `pt_BR`, usar o texto original; em `en_US`/`es`, traduzir quando possível e, quando não, usar o PT como base marcando `# TODO i18n` na linha. Manter as chaves agrupadas/ordenadas conforme o arquivo existente. (O nome base dos `.properties` deve ser igual a `application.code` — ver `architecture.md`.)
+6. Tratar com cuidado os **template literals**: em `.js`, preferir `[=...]` (que não conflita com backticks); se usar `${...}`, declarar a tradução em variável separada e só então concatenar.
+7. Remover qualquer acesso a `i18n` como objeto JavaScript (`i18n.key` / `i18n['key']`).
+8. Conferir o resultado com o checklist abaixo, preservando o comportamento.
 
 ## Saída Esperada
 
-Código internacionalizado, com todo texto visível resolvido por i18n — em `.ftl` via `${i18n.getTranslation('chave')}` e em arquivos `.js` via `[=i18n.getTranslation('chave')]` (sintaxe recomendada) — usando `getTranslationP1`/`getTranslationPn` para valores dinâmicos, sem strings fixas, sem acesso a `i18n` como objeto JavaScript e com template literals tratados corretamente. Comportamento preservado e em conformidade com `context/conventions.md`.
+Código internacionalizado, com todo texto visível resolvido por i18n — em `.ftl` via `${i18n.getTranslation('chave')}` e em arquivos `.js` via `[=i18n.getTranslation('chave')]` (sintaxe recomendada) — usando `getTranslationP1`/`getTranslationPn` para valores dinâmicos, sem strings fixas, sem acesso a `i18n` como objeto JavaScript e com template literals tratados corretamente. Toda chave nova propagada nos 4 arquivos `.properties` (com `# TODO i18n` onde a tradução `en_US`/`es` faltar). Comportamento preservado e em conformidade com `context/conventions.md`.
 
 ## Exemplo de Uso
 
@@ -115,6 +117,9 @@ em `conventions.md` → ver [conventions.md](../../context/conventions.md).
 ## Checklist de Validação
 
 - [ ] Nenhuma string fixa visível ao usuário; todo texto vem de i18n.
+- [ ] Strings técnicas (seletores, classes, URLs, nomes de evento) **não** foram convertidas em chaves.
+- [ ] Toda chave nova existe nos **4 arquivos `.properties`** (base + `pt_BR`/`en_US`/`es`); traduções `en_US`/`es` ausentes marcadas com `# TODO i18n`.
+- [ ] Chaves seguem dot-notation por domínio; chaves existentes reaproveitadas quando o texto se repete.
 - [ ] Em arquivos `.js`, respeita o padrão existente do arquivo (mantém `${i18n....}` se já houver) e usa `[=i18n.getTranslation('chave')]` para código novo; em `.ftl`, `${i18n.getTranslation('chave')}`.
 - [ ] Sem acesso a `i18n` como objeto JavaScript (`i18n.key` / `i18n['key']`).
 - [ ] Expressões em `.js` estão entre aspas e atribuídas a variáveis.
