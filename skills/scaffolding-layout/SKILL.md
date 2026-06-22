@@ -58,7 +58,7 @@ a `layout.ftl` declara os **slots/regiões**. Use `<code>` como o código do lay
 
 ```text
 <layout>/
-├── pom.xml
+├── pom.xml                                # quando o projeto usa Maven ou sob pedido
 └── src/main/
     ├── resources/
     │   ├── application.info              # descritor (application.type=layout)
@@ -77,8 +77,39 @@ a `layout.ftl` declara os **slots/regiões**. Use `<code>` como o código do lay
 > No `application.info`, declare `layout.file=layout.ftl` e `layout.defaultSlot`
 > (slot padrão). Ponto de partida público: archetype Maven `layout-wcm`.
 >
+> A pasta `WEB-INF` traz `web.xml` e `jboss-web.xml` (com `context-root` =
+> `/<application.code>`); o `pom.xml` aparece **quando o projeto usa Maven ou sob
+> pedido**. Os blocos de referência desses arquivos vivem em `architecture.md`.
+>
 > **Em um projeto Fluig Studio**, o layout fica em `wcm/layout/<nome>` (ver a
 > seção "Estrutura de um Projeto Fluig Studio" em `architecture.md`).
+
+### `pom.xml` (quando o projeto usa Maven ou sob pedido)
+
+Quando for necessário gerar o `pom.xml`, use a estrutura abaixo como ponto de
+partida — ajustando `groupId`/`artifactId`/`version`/`name`/`description` ao
+artefato. O empacotamento é `war` e o `finalName` usa `${project.artifactId}`. A
+referência canônica completa está em `architecture.md`.
+
+```xml
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.fluig</groupId>
+    <version>1.0.0</version>
+    <artifactId>layout-<code></artifactId>
+    <packaging>war</packaging>
+    <name>Layout <Nome></name>
+    <description>Layout <Nome></description>
+    <build>
+        <finalName>${project.artifactId}</finalName>
+    </build>
+</project>
+```
+
+> Dentro de um projeto existente, inspecione o `pom.xml` do módulo pai para obter
+> as coordenadas reais (parent `groupId`/`artifactId`); **nunca invente**
+> coordenadas.
 
 ## Regras Aplicáveis (Resumo Executivo)
 
@@ -93,16 +124,18 @@ Somente o mínimo para orientar a geração; o detalhe está no contexto:
 - Estruture as regiões com o **grid responsivo** do Style Guide (`.container`/`.container-fluid` → `.row` → `.col-*`), em vez de medidas/posicionamento fixos → ver `style-guide.md`.
 - Todo texto visível via i18n: `${i18n.getTranslation('chave')}`; nunca strings fixas → ver `conventions.md`.
 - Sem CSS com **hexadecimais fixos** para cores de tema; use `var(--fs-color-*)` → ver `style-guide.md`.
+- **Minimizar CSS próprio; priorizar os componentes do Style Guide**; CSS próprio só sob pedido explícito (o CSS do layout permanece opcional) → ver `style-guide.md`/`conventions.md`.
 
 ## Procedimento
 
 1. Definir o nome do layout (em Inglês) e o `<code>` (minúsculo) a partir da entrada, e identificar as regiões/slots necessários (ex.: cabeçalho, conteúdo principal, lateral, rodapé).
-2. Criar a estrutura de pastas oficial (ver "Estrutura de Saída") e o descritor **`application.info`** com `application.type=layout`, `application.renderer=freemarker`, `layout.file=layout.ftl`, `layout.defaultSlot` e os dados do desenvolvedor.
+2. Criar a estrutura de pastas oficial (ver "Estrutura de Saída") e o descritor **`application.info`** com `application.type=layout`, `application.renderer=freemarker`, `layout.file=layout.ftl`, `layout.defaultSlot` e os **campos completos** do layout (incl. `application.fluig.version`, `application.category`, `application.newBuilder`, `application.responsiveLayout`, `application.icon`, recursos `css.N`, `developer.url` e `hash`) — ver a tabela completa em `architecture.md`.
 3. Iniciar a **view `layout.ftl`** (em `src/main/resources/`) importando os utilitários públicos de layout (`<#import "/wcm.ftl" as wcm/>`) e montando o **wrapper raiz com `fluig-style-guide`** (`wcm-wrapper-content` → `wcm-all-content` → `wcm-content`), usando o **grid do Style Guide** (`.row`/`.col-*`) para as regiões responsivas.
 4. **Declarar os slots nomeados** que receberão widgets, cada um em um contêiner identificável (ex.: `id="slotFull1"`) e renderizado pela macro pública `<@wcm.renderSlot id="SlotA" editableSlot="true" isResponsiveSlot="true" />`; garantir que o slot padrão case com `layout.defaultSlot`. Acrescentar as macros de portal (`@wcm.header`, `@wcm.menu`, `@wcm.footer`) conforme necessário.
 5. Criar os arquivos **`.properties` de i18n** (base + `pt_BR`/`en_US`/`es`) e aplicar i18n em qualquer título ou texto visível do layout com `${i18n.getTranslation('chave')}`.
 6. Reutilizar componentes/utilitários do Style Guide e, quando houver CSS próprio, usar `var(--fs-color-*)` para cores de tema (sem hexadecimais fixos).
-7. Validar o resultado com o checklist abaixo antes de entregar.
+7. Quando o projeto usa **Maven** (ou sob pedido), criar o `pom.xml` na raiz da estrutura (bloco de referência em `architecture.md`); inspecionar as coordenadas Maven (`groupId`, `artifactId` e o `parent`) no projeto existente e **nunca inventá-las**.
+8. Validar o resultado com o checklist abaixo antes de entregar.
 
 ## Saída Esperada
 
@@ -131,6 +164,10 @@ Use `examples/layout/` como referência mínima da view `.ftl` de um layout que 
 - [ ] A estrutura usa o **grid do Style Guide** (`.container`/`.row`/`.col-*`), sem posicionamento/medidas fixas.
 - [ ] Todo texto visível usa `${i18n.getTranslation('...')}` — sem strings fixas.
 - [ ] Sem hexadecimais fixos para cores de tema (use `var(--fs-color-*)`).
+- [ ] `WEB-INF` presente (`web.xml` + `jboss-web.xml`) com `context-root` = `/<application.code>`.
+- [ ] CSS próprio mínimo (Style Guide como padrão); CSS próprio sem pedido explícito = **pendência a revisar**.
+- [ ] Descritor de layout com **campos completos** (incl. `application.newBuilder`, `application.responsiveLayout`) — ver `architecture.md`.
+- [ ] `pom.xml` presente **quando o projeto usa Maven ou sob pedido**.
 
 ## Resumo da Geração
 
@@ -140,7 +177,7 @@ Ao concluir, apresente um resumo curto:
 - **Diretório:** onde o layout foi criado.
 - **Slots:** lista de slots (com destaque para o slot padrão) e slots pré-configurados, se houver.
 - **Arquivos gerados:** lista.
-- **Pendências manuais:** ex.: `icon.png` real, coordenadas do `pom.xml` pai, traduções `en_US`/`es` marcadas com TODO.
+- **Pendências manuais:** ex.: `icon.png` real, coordenadas do `pom.xml` pai, traduções `en_US`/`es` marcadas com TODO, **CSS próprio criado sem pedido explícito (revisar)**.
 
 ## Política de Fallback
 
@@ -148,3 +185,4 @@ Ao concluir, apresente um resumo curto:
 - **Coordenadas Maven** do parent: inspecionar o `pom.xml` do módulo onde o layout será criado; **nunca inventar**.
 - **`icon.png`**: gerar placeholder e registrar como pendência manual.
 - **Traduções `en_US`/`es` ausentes**: usar PT como base e marcar `# TODO i18n` por chave.
+- **CSS próprio sem pedido explícito**: registrar como **pendência a revisar** (Style Guide é o padrão; CSS próprio é exceção sob pedido).

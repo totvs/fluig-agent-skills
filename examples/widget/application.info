@@ -1,20 +1,29 @@
 # Exemplo mínimo de referência — descritor de Widget Fluig (application.info)
-# Demonstra os campos essenciais do descritor. Não é um projeto completo.
+# Demonstra os campos completos do descritor. Não é um projeto completo.
 # Ver context/architecture.md (estrutura oficial do artefato WCM).
 
 application.type=widget
 application.code=notifications
 application.title=notifications.title
 application.description=notifications.description
+application.fluig.version=null
+application.category=SYSTEM
 application.renderer=freemarker
-application.icon=icon.png
-
-view.file=view.ftl
-
-application.resource.css.1=/resources/css/notifications.css
-application.resource.js.1=/resources/js/notifications.js
-
-locale.file.base.name=notifications
 
 developer.code=example
 developer.name=Example Developer
+developer.url=http://www.fluig.com
+
+application.uiwidget=true
+application.mobileapp=false
+application.version=${build.version}-${build.revision}
+
+view.file=view.ftl
+edit.file=edit.ftl
+
+locale.file.base.name=notifications
+
+application.resource.js.1=/resources/js/notifications.js
+application.resource.css.2=/resources/css/notifications.css
+
+hash=4a16315e9e66fa7d797b3f6b1fb365b69f9a4ce2

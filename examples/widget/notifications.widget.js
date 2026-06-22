@@ -3,7 +3,9 @@
 // chamadas REST internas via FLUIGC.ajax/WCMAPI e i18n para texto visível.
 // Não é um projeto completo. Ver context/conventions.md e context/style-guide.md.
 
-const Notifications = SuperWidget.extend({
+// Exceção controlada à convenção ES6+: a variável raiz que recebe
+// SuperWidget.extend(...) usa `var`. O restante do código permanece em ES6+.
+var Notifications = SuperWidget.extend({
 
   // Ciclo de vida: ponto de entrada invocado pela plataforma ao montar o widget.
   init() {

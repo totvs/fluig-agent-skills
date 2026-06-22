@@ -1,0 +1,27 @@
+# Exemplo mínimo de referência — descritor de Layout Fluig (application.info)
+# Demonstra os campos completos do descritor de layout. Não é um projeto completo.
+# Ver context/architecture.md (estrutura oficial do artefato WCM).
+
+application.type=layout
+application.code=layoutexample
+application.title=layoutexample.title
+application.description=layoutexample.description
+application.fluig.version=null
+application.category=SYSTEM
+application.renderer=freemarker
+
+developer.code=example
+developer.name=Example Developer
+developer.url=http://www.fluig.com
+
+layout.defaultSlot=SlotA
+layout.file=layout.ftl
+
+locale.file.base.name=layoutexample
+
+application.icon=icon.png
+application.resource.css.1=/portal/resources/css/wcm_responsive_layout.css
+application.responsiveLayout=true
+application.newBuilder=true
+
+hash=4a16315e9e66fa7d797b3f6b1fb365b69f9a4ce2

@@ -119,8 +119,13 @@ lista.
 
 ### Quando criar CSS customizado
 
-Só escreva CSS próprio quando os helpers não cobrirem a necessidade:
+**Minimize o CSS próprio:** os componentes e helpers do Style Guide são o
+**padrão** de estilização; o CSS próprio é **exceção**, permitida apenas quando o
+desenvolvedor o solicita explicitamente ou quando os helpers não cobrem a
+necessidade. Quando o CSS próprio for de fato necessário, mantenha a regra de usar
+`var(--fs-color-*)` para cores de tema (sem hexadecimais fixos).
 
+- ✅ Quando o desenvolvedor **solicitar explicitamente** CSS customizado.
 - ✅ Quando **não houver** classe helper equivalente para o estilo desejado.
 - ✅ Quando um componente externo **não permitir** alterar suas classes.
 - ❌ **Nunca** para sobrescrever estilos de componentes existentes do Style Guide.

@@ -25,7 +25,7 @@ mesmo arquivo.
 
 | Recurso | Recomendação para código novo |
 |---------|-------------------------------|
-| Declaração de variável | `const` por padrão; `let` quando há reatribuição; evitar `var` |
+| Declaração de variável | `const` por padrão; `let` quando há reatribuição; evitar `var` (exceto a variável raiz da SuperWidget — ver [Convenções de Widget](#convenções-de-widget-superwidgetextend)) |
 | Funções anônimas | Arrow functions (concisão e `this` léxico) |
 | Concatenação de texto | Template literals |
 | Assíncrono | `async/await` em vez de cadeias longas de `.then()` |
@@ -73,6 +73,19 @@ automaticamente).
 // chave do binding sem o prefixo data-
 bindings: { local: { 'save-filter': ['click_onSaveFilter'] } }
 ```
+
+### Variável raiz da SuperWidget (`var`)
+
+A variável raiz que recebe `SuperWidget.extend({ ... })` é declarada com **`var`**:
+
+```javascript
+var MyWidget = SuperWidget.extend({ /* ... */ });
+```
+
+Esta é uma **exceção explícita** à convenção de
+[JavaScript Moderno (ES6+)](#javascript-moderno-es6) que recomenda evitar `var`.
+A exceção vale **apenas** para a variável raiz do widget; o **restante do JS do
+widget permanece em ES6+** (`const`/`let`, arrow functions, template literals).
 
 ## Convenções de Custom Elements (Web Components)
 
@@ -484,7 +497,7 @@ tokens de sessão são enviados automaticamente. **Não** usar `fetch()` ou
 
 ## CSS
 
-- **Reutilizar** classes e componentes do Fluig Style Guide antes de criar CSS próprio (ver [style-guide.md](style-guide.md)).
+- **Minimizar CSS próprio:** **reutilizar** classes e componentes do Fluig Style Guide é o padrão; o CSS próprio é **exceção**, permitida apenas sob pedido explícito do desenvolvedor (ver [style-guide.md](style-guide.md)).
 - **Escopar** o CSS à classe raiz do widget (ou à tag do Custom Element); evitar seletores por `id`, cadeias longas e `!important`.
 - **Sem** `style` inline e **sem** blocos `<style>` em templates.
 - **Sem** hexadecimais fixos para cores de tema — usar variáveis CSS que suportam dark mode. As regras de cores e variáveis (`var(--fs-color-*)`) são consolidadas em [style-guide.md](style-guide.md); não as duplique aqui.

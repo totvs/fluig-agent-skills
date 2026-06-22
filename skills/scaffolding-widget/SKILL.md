@@ -42,7 +42,7 @@ reconhece o widget. Use `<code>` como o código do widget (minúsculo).
 
 ```text
 <widget>/
-├── pom.xml
+├── pom.xml                                # quando o projeto usa Maven ou sob pedido
 └── src/main/
     ├── resources/
     │   ├── application.info              # descritor (application.type=widget)
@@ -50,7 +50,8 @@ reconhece o widget. Use `<code>` como o código do widget (minúsculo).
     │   ├── <code>_pt_BR.properties        # i18n pt-BR
     │   ├── <code>_en_US.properties        # i18n en-US
     │   ├── <code>_es.properties           # i18n es
-    │   └── view.ftl                       # view principal (elemento raiz)
+    │   ├── view.ftl                       # view principal (elemento raiz)
+    │   └── edit.ftl                        # view de edição (pode ser vazia, mas é obrigatória)
     └── webapp/
         ├── WEB-INF/{web.xml, jboss-web.xml}
         └── resources/
@@ -59,12 +60,40 @@ reconhece o widget. Use `<code>` como o código do widget (minúsculo).
             └── js/<code>.js               # SuperWidget.extend
 ```
 
-> A `view.ftl` fica em `src/main/resources/`; o `<code>.js` e o `<code>.css` em
-> `src/main/webapp/resources/`. Ponto de partida público: archetype Maven
+> A `view.ftl` e a `edit.ftl` ficam em `src/main/resources/`; o `<code>.js` e o
+> `<code>.css` em `src/main/webapp/resources/`. O `pom.xml` só é gerado quando o
+> projeto usa Maven ou sob pedido. Ponto de partida público: archetype Maven
 > `widget-wcm`.
 >
 > **Em um projeto Fluig Studio**, o widget fica em `wcm/widget/<nome>` (ver a
 > seção "Estrutura de um Projeto Fluig Studio" em `architecture.md`).
+
+### `pom.xml` (quando o projeto usa Maven ou sob pedido)
+
+Quando for necessário gerar o `pom.xml`, use a estrutura abaixo como ponto de
+partida — ajustando `groupId`/`artifactId`/`version`/`name`/`description` ao
+artefato. O empacotamento é `war` e o `finalName` usa `${project.artifactId}`. A
+referência canônica completa está em `architecture.md`.
+
+```xml
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.fluig</groupId>
+    <version>1.0.0</version>
+    <artifactId>widget-<code></artifactId>
+    <packaging>war</packaging>
+    <name>Widget <Nome></name>
+    <description>Widget <Nome></description>
+    <build>
+        <finalName>${project.artifactId}</finalName>
+    </build>
+</project>
+```
+
+> Dentro de um projeto existente, inspecione o `pom.xml` do módulo pai para obter
+> as coordenadas reais (parent `groupId`/`artifactId`); **nunca invente**
+> coordenadas.
 
 ## Regras Aplicáveis (Resumo Executivo)
 
@@ -76,7 +105,8 @@ Somente o mínimo para orientar a geração; o detalhe está no contexto:
 - `.instance()` chamado **sem** `instanceId` (injetado pelo framework; no JS use `this.instanceId`) → ver `conventions.md`.
 - Bindings declarativos: chave sem o prefixo `data-`; `local` para elementos dentro da raiz, `global` para elementos fora (modais) → ver `conventions.md`.
 - Texto visível via i18n; nunca strings fixas nem acesso a `i18n` como objeto JS → ver `conventions.md`.
-- JavaScript em **ES6+** (`const`/`let`, arrow functions, template literals); evitar `var` → ver `conventions.md`.
+- Variável raiz da SuperWidget declarada com `var` (ex.: `var MyWidget = SuperWidget.extend({...})`); o restante do JS em ES6+ (`const`/`let`, arrow functions, template literals) → ver `conventions.md`.
+- Minimizar CSS próprio; priorizar os componentes do Style Guide; CSS próprio só sob pedido explícito → ver `style-guide.md`/`conventions.md`.
 - CSS **escopado** à raiz, reutilizando o Style Guide; cores de tema via `var(--fs-color-*)`, sem hexadecimais fixos → ver `style-guide.md`.
 
 ### Política de fallback
@@ -86,18 +116,21 @@ Somente o mínimo para orientar a geração; o detalhe está no contexto:
 - **`icon.png`**: gerar um placeholder e registrar como pendência manual.
 - **Traduções `en_US`/`es` ausentes**: usar o texto PT como base e marcar `# TODO i18n` por chave, sem deixar de criar os 4 arquivos.
 - Dados do desenvolvedor (`developer.*`): usar placeholders genéricos; não assumir identificadores de terceiros.
+- **CSS próprio sem pedido explícito:** o padrão é reutilizar o Style Guide; se houver CSS próprio sem solicitação do desenvolvedor, registrar como **pendência a revisar**.
 
 ## Procedimento
 
 1. Definir o nome do widget (PascalCase) a partir da entrada e derivar a classe, o `id` raiz e o `<code>` (minúsculo) usado nos arquivos.
-2. Criar a estrutura de pastas oficial (ver "Estrutura de Saída") e o descritor **`application.info`** com `application.type=widget`, `application.renderer=freemarker`, `view.file=view.ftl`, os recursos CSS/JS e os dados do desenvolvedor.
-3. Criar a **view `view.ftl`** (em `src/main/resources/`) com um elemento raiz contendo `class="fluig-style-guide ..."`, `id="<Nome>_${instanceId}"` e `data-params="<Nome>.instance({})"`.
-4. Marcar os elementos interativos com atributos `data-*` (ex.: `data-save`) cujas chaves serão usadas nos bindings (sem o prefixo `data-`).
-5. Criar os arquivos **`.properties` de i18n** (base + `pt_BR`/`en_US`/`es`) com as chaves usadas e aplicar i18n em todo texto visível via `${i18n.getTranslation('chave')}`.
-6. Criar o **arquivo JS** (`webapp/resources/js/<code>.js`) com `SuperWidget.extend({ ... })`, declarando `init()` (preparar estado, carregar dados, vincular comportamento) e `bindings: { local: { ... }, global: { ... } }`.
-7. Implementar os métodos referenciados pelos bindings; dentro do JS, usar `this.instanceId` quando necessário.
-8. Adicionar CSS **escopado** (`webapp/resources/css/<code>.css`) à classe raiz, reutilizando componentes/grid do Style Guide e variáveis `var(--fs-color-*)` para cores de tema.
-9. Validar o resultado com o checklist abaixo antes de entregar.
+2. Criar a estrutura de pastas oficial (ver "Estrutura de Saída") e o descritor **`application.info`** com os campos completos: `application.type=widget`, `application.renderer=freemarker`, `view.file=view.ftl`, `edit.file=edit.ftl`, `application.version=${build.version}-${build.revision}`, os recursos CSS/JS e os dados do desenvolvedor (ver a tabela completa em `architecture.md`).
+3. Criar a **view de edição `edit.ftl`** (em `src/main/resources/`, irmã da `view.ftl`); pode ser vazia, mas é obrigatória e referenciada por `edit.file=edit.ftl`.
+4. Criar a **view `view.ftl`** (em `src/main/resources/`) com um elemento raiz contendo `class="fluig-style-guide ..."`, `id="<Nome>_${instanceId}"` e `data-params="<Nome>.instance({})"`.
+5. Marcar os elementos interativos com atributos `data-*` (ex.: `data-save`) cujas chaves serão usadas nos bindings (sem o prefixo `data-`).
+6. Criar os arquivos **`.properties` de i18n** (base + `pt_BR`/`en_US`/`es`) com as chaves usadas e aplicar i18n em todo texto visível via `${i18n.getTranslation('chave')}`.
+7. Criar o **arquivo JS** (`webapp/resources/js/<code>.js`) com `var <Nome> = SuperWidget.extend({ ... })` (a variável raiz usa `var` — exceção controlada; ver `conventions.md`), declarando `init()` (preparar estado, carregar dados, vincular comportamento) e `bindings: { local: { ... }, global: { ... } }`.
+8. Implementar os métodos referenciados pelos bindings; dentro do JS, usar `this.instanceId` quando necessário.
+9. Adicionar CSS **escopado** (`webapp/resources/css/<code>.css`) à classe raiz **apenas se necessário** (CSS próprio é exceção sob pedido explícito), reutilizando componentes/grid do Style Guide e variáveis `var(--fs-color-*)` para cores de tema.
+10. Quando o projeto usa Maven ou sob pedido, gerar o `pom.xml`, inspecionando as coordenadas Maven no projeto existente (**nunca inventar** coordenadas do parent).
+11. Validar o resultado com o checklist abaixo antes de entregar.
 
 ## Saída Esperada
 
@@ -117,16 +150,19 @@ Use `examples/widget/` como referência mínima (view `.ftl` + arquivo `*.widget
 
 ## Checklist de Validação
 
-- [ ] Estrutura oficial criada, com o descritor **`application.info`** (`application.type=widget`, `view.file=view.ftl`, recursos CSS/JS).
+- [ ] Estrutura oficial criada, com o descritor **`application.info`** com os campos completos (`application.type=widget`, `view.file=view.ftl`, `edit.file=edit.ftl`, `application.version=${build.version}-${build.revision}`, recursos CSS/JS, `developer.*`, `hash` — ver `architecture.md`).
 - [ ] `application.code` **igual** a `locale.file.base.name`.
+- [ ] Presença da `edit.ftl` (irmã da `view.ftl`, pode ser vazia) e do campo `edit.file=edit.ftl` no descritor.
 - [ ] Arquivos **`.properties` de i18n** (base + `pt_BR`/`en_US`/`es`) com as mesmas chaves usadas na view/JS.
+- [ ] Presença da pasta `WEB-INF` (com `web.xml` + `jboss-web.xml`) e `context-root` = `/<application.code>` → ver `architecture.md`.
+- [ ] `pom.xml` presente quando o projeto usa Maven ou sob pedido (coordenadas inspecionadas, nunca inventadas).
 - [ ] Elemento raiz da view contém a classe `fluig-style-guide`.
 - [ ] `instanceId` aparece **apenas** em atributos `id`, com separador `_`.
 - [ ] `.instance()` é chamado sem `instanceId`.
 - [ ] Bindings usam a chave sem o prefixo `data-` (escopo local/global correto).
 - [ ] Todo texto visível usa i18n — sem strings fixas.
-- [ ] JavaScript em ES6+ (sem `var`; `const`/`let`, arrow functions, template literals).
-- [ ] CSS escopado à raiz, sem hexadecimais fixos (cores via `var(--fs-color-*)`).
+- [ ] JavaScript em ES6+ (`const`/`let`, arrow functions, template literals), **exceto a variável raiz da SuperWidget** (declarada com `var`).
+- [ ] CSS próprio mínimo (componentes do Style Guide como padrão; CSS próprio sem pedido explícito = pendência a revisar) e, quando houver, escopado à raiz, sem hexadecimais fixos (cores via `var(--fs-color-*)`).
 
 ## Resumo da Geração
 
@@ -136,5 +172,5 @@ saber o estado e os próximos passos:
 - **Widget / `application.code`:** nome e código.
 - **Diretório:** onde o widget foi criado.
 - **Arquivos gerados:** lista.
-- **Pendências manuais:** ex.: `icon.png` real, coordenadas do `pom.xml` pai, traduções `en_US`/`es` marcadas com TODO.
+- **Pendências manuais:** ex.: `icon.png` real, coordenadas do `pom.xml` pai, traduções `en_US`/`es` marcadas com TODO, CSS próprio gerado sem pedido explícito (a revisar).
 - **Próximo passo:** implementar a lógica em `<code>.js` (ver as convenções em `conventions.md`).

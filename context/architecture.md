@@ -120,7 +120,8 @@ visíveis ficam em arquivos `.properties` de i18n (um base + um por locale).
     │   ├── <code>_pt_BR.properties        # i18n pt-BR
     │   ├── <code>_en_US.properties        # i18n en-US
     │   ├── <code>_es.properties           # i18n es
-    │   └── view.ftl                       # view principal (renderer freemarker)
+    │   ├── view.ftl                       # view principal (renderer freemarker)
+    │   └── edit.ftl                        # view de edição (pode ser vazio, mas é obrigatório)
     └── webapp/
         ├── WEB-INF/
         │   ├── web.xml
@@ -131,23 +132,34 @@ visíveis ficam em arquivos `.properties` de i18n (um base + um por locale).
             └── js/<code>.js               # SuperWidget.extend
 ```
 
-Campos essenciais do `application.info` de um widget:
+Campos do `application.info` de um widget (tabela completa):
 
 | Chave | Valor / Papel |
 |-------|---------------|
 | `application.type` | `widget` |
-| `application.code` | Código único do widget (minúsculo, sem espaços) |
+| `application.code` | Código único do widget (minúsculo, sem espaços) — **igual a** `locale.file.base.name` |
 | `application.title` / `application.description` | Título e descrição (admitem i18n) |
+| `application.fluig.version` | Versão da plataforma Fluig alvo |
 | `application.category` | Categoria do widget (ex.: `SYSTEM`, `APPLICATION`, `Social`) |
 | `application.renderer` | `freemarker` |
-| `application.icon` | `icon.png` |
-| `view.file` | `view.ftl` (view principal) |
+| `application.mobileapp` | Disponibilidade do widget em app mobile |
+| `application.version` | `${build.version}-${build.revision}` |
 | `application.uiwidget` | `true` quando o widget aparece no construtor de páginas (default `false`) |
+| `view.file` | `view.ftl` (view principal) |
+| `edit.file` | `edit.ftl` (view de edição; pode ser vazia, mas é obrigatória) |
 | `application.resource.css.N` | Caminho do CSS (`/resources/css/<code>.css`) |
 | `application.resource.js.N` | Caminho do JS (`/resources/js/<code>.js`) |
 | `application.resource.component.N` | Componente de negócio do Style Guide usado (ex.: `datatable`, `treeview`) |
-| `locale.file.base.name` | Nome base dos arquivos `.properties` de i18n |
-| `developer.code` / `developer.name` | Identificação do desenvolvedor |
+| `locale.file.base.name` | Nome base dos arquivos `.properties` de i18n — **igual a** `application.code` |
+| `developer.code` / `developer.name` / `developer.url` | Identificação do desenvolvedor |
+| `hash` | Hash do pacote/build |
+
+> **Versão e build:** `application.version` é declarada como
+> `${build.version}-${build.revision}`, resolvida pelo build a partir das
+> propriedades do projeto.
+
+> **`edit.file` obrigatório:** o descritor referencia a view de edição via
+> `edit.file=edit.ftl`. O arquivo `edit.ftl` precisa existir (mesmo vazio).
 
 > **Regra crítica:** `application.code` **deve ser igual** a
 > `locale.file.base.name`. Divergência entre os dois quebra a resolução de i18n
@@ -224,23 +236,26 @@ recebem widgets, em vez de lógica própria.
             └── images/icon.png            # ícone do layout
 ```
 
-Campos essenciais do `application.info` de um layout:
+Campos do `application.info` de um layout (tabela completa):
 
 | Chave | Valor / Papel |
 |-------|---------------|
 | `application.type` | `layout` |
-| `application.code` | Código único do layout (minúsculo, sem espaços) |
+| `application.code` | Código único do layout (minúsculo, sem espaços) — **igual a** `locale.file.base.name` |
 | `application.title` / `application.description` | Título e descrição (admitem i18n) |
+| `application.fluig.version` | Versão da plataforma Fluig alvo |
 | `application.category` | Categoria do layout (ex.: `SYSTEM`, `APPLICATION`) |
 | `application.renderer` | `freemarker` |
 | `layout.file` | `layout.ftl` (view do layout) |
 | `layout.defaultSlot` | Slot padrão que recebe conteúdo (deve existir entre os slots da `layout.ftl`) |
 | `slot.<NomeDoSlot>` | (Opcional) widget pré-configurado para um slot (ex.: `slot.SlotMenu=menu`) |
-| `application.uilayout` | `true` quando o layout aparece no construtor de páginas (default `false`) |
+| `application.icon` | `icon.png` |
 | `application.responsiveLayout` | `true` para layout responsivo |
+| `application.newBuilder` | Flag do novo construtor de páginas |
 | `application.resource.css.N` | Caminho do CSS (opcional) |
-| `locale.file.base.name` | Nome base dos arquivos `.properties` de i18n |
-| `developer.code` / `developer.name` | Identificação do desenvolvedor |
+| `locale.file.base.name` | Nome base dos arquivos `.properties` de i18n — **igual a** `application.code` |
+| `developer.code` / `developer.name` / `developer.url` | Identificação do desenvolvedor |
+| `hash` | Hash do pacote/build |
 
 > **Regra crítica:** `application.code` **deve ser igual** a
 > `locale.file.base.name` (mesma regra do widget). O `layout.defaultSlot` precisa
@@ -248,8 +263,9 @@ Campos essenciais do `application.info` de um layout:
 
 > **Diferenças em relação ao widget:** o layout usa `layout.file` (não
 > `view.file`), exige `layout.defaultSlot`, usa a flag `application.uilayout` (em
-> vez de `application.uiwidget`) e admite `application.responsiveLayout` e
-> `slot.<Nome>` para pré-configurar widgets em slots.
+> vez de `application.uiwidget`) para aparecer no construtor de páginas e admite
+> `application.responsiveLayout`, `application.newBuilder` e `slot.<Nome>` para
+> pré-configurar widgets em slots.
 
 As **regiões/slots** são declaradas na `layout.ftl`. A view de layout segue uma
 estrutura interna característica que o desenvolvedor reproduz:
@@ -277,6 +293,87 @@ estrutura interna característica que o desenvolvedor reproduz:
 O ponto de partida público para gerar essa estrutura é o **archetype Maven
 `layout-wcm`** (ver [technologies.md](technologies.md)). A referência mínima de
 uma `layout.ftl` está em `examples/layout/`.
+
+## Empacotamento web (WEB-INF)
+
+Tanto o widget quanto o layout são empacotados como módulos web e, por isso,
+contêm a pasta `src/main/webapp/WEB-INF/` com dois descritores: `web.xml` e
+`jboss-web.xml`. Os blocos abaixo são o **conteúdo de referência** desses
+arquivos — idênticos para widget e layout — e servem de fonte de verdade para as
+skills e referências (que apenas os mencionam por caminho relativo, sem duplicar
+o conteúdo).
+
+O `jboss-web.xml` define o `context-root` (caminho de contexto da aplicação) e
+desabilita o cross-context (`disable-cross-context=false`):
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<jboss-web>
+    <context-root>/<application.code></context-root>
+    <disable-cross-context>false</disable-cross-context>
+</jboss-web>
+```
+
+O `web.xml` declara a aplicação web na versão `3.0` da especificação Java EE, com
+o namespace e o `schemaLocation` correspondentes:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+     version="3.0">
+</web-app>
+```
+
+> **Regra `context-root`:** o `context-root` declarado no `jboss-web.xml`
+> corresponde a `/<application.code>` — ou seja, a barra (`/`) seguida do código
+> do artefato (`application.code`). Isso vale igualmente para widget e layout.
+
+## Empacotamento Maven (`pom.xml`)
+
+Quando o projeto é construído com Maven, tanto o widget quanto o layout possuem um
+`pom.xml` na raiz da estrutura. O bloco abaixo é o **conteúdo de referência** desse
+descritor de build — apresentado como **referência canônica** (não como um exemplo
+concreto a ser copiado) e servindo de fonte de verdade para as skills e referências
+(que apenas o mencionam por caminho relativo, sem duplicar o conteúdo).
+
+```xml
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.fluig</groupId>
+    <version>1.0.0</version>
+    <artifactId>widget-football-career</artifactId>
+    <packaging>war</packaging>
+    <name>Widget Football Career</name>
+    <description>Widget Football Career</description>
+    <build>
+        <finalName>${project.artifactId}</finalName>
+    </build>
+</project>
+```
+
+Papel de cada elemento do bloco de referência:
+
+| Elemento | Papel |
+|----------|-------|
+| `modelVersion` | Versão do modelo do POM (`4.0.0`) |
+| `groupId` | Grupo das coordenadas Maven do artefato |
+| `version` | Versão do artefato |
+| `artifactId` | Identificador do artefato (base do `finalName`) |
+| `packaging` | `war` — vale tanto para widget quanto para layout |
+| `name` / `description` | Nome e descrição do módulo Maven |
+| `build` → `finalName` | Nome final do pacote, declarado como `${project.artifactId}` |
+
+> **Regra `packaging=war`:** o empacotamento do `pom.xml` é `war` tanto para widget
+> quanto para layout, coerente com o fato de ambos serem módulos web (ver
+> "Empacotamento web (WEB-INF)").
+
+> **Coordenadas Maven nunca inventadas:** as coordenadas Maven (`groupId`,
+> `artifactId` e, quando houver, o `parent`) devem ser **inspecionadas no projeto**
+> existente e nunca inventadas. Na ausência dessa informação, aplica-se a política
+> de fallback das skills (não fabricar coordenadas; solicitar ou inspecionar).
 
 ## Form (Formulário eletrônico)
 
