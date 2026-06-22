@@ -10,7 +10,7 @@ Esta skill gera o esqueleto de um Layout WCM do Fluig; ela **não duplica** conv
 
 ## Objetivo
 
-Produzir, com responsabilidade única, o **esqueleto de um Layout WCM** do Fluig na **estrutura oficial de pastas/arquivos**: o descritor `application.info` (`application.type=layout`), a view FreeMarker (`layout.ftl`) que estabelece a estrutura visual da página e declara os **slots/regiões** onde os widgets são encaixados, e os arquivos `.properties` de i18n — já apoiada no grid responsivo do Style Guide.
+Produzir, com responsabilidade única, o **esqueleto de um Layout WCM** do Fluig na **estrutura oficial de pastas/arquivos**: o descritor `application.info` (`application.type=layout`), a view FreeMarker (`layout.ftl`) que reproduz a **estrutura HTML rígida de portal** e declara os **slots/regiões** onde os widgets são encaixados, e os arquivos `.properties` de i18n.
 
 ## Quando Usar
 
@@ -70,12 +70,23 @@ a `layout.ftl` declara os **slots/regiões**. Use `<code>` como o código do lay
     └── webapp/
         ├── WEB-INF/{web.xml, jboss-web.xml}
         └── resources/
-            ├── css/<code>.css             # CSS do layout (opcional)
+            ├── css/responsive_layout.css  # CSS padrão de responsividade (obrigatório)
+            ├── css/<code>.css             # CSS próprio do layout (opcional)
             └── images/icon.png            # ícone
 ```
 
 > No `application.info`, declare `layout.file=layout.ftl` e `layout.defaultSlot`
 > (slot padrão). Ponto de partida público: archetype Maven `layout-wcm`.
+>
+> **`responsive_layout.css` é padrão:** todo layout inclui um
+> `responsive_layout.css` em `webapp/resources/css/`, que cuida da responsividade
+> das regiões/slots (container queries + media queries; empilha colunas em telas
+> estreitas, com fallback `.not-supports-container-queries`). O descritor declara
+> **dois** recursos CSS, nesta ordem: `application.resource.css.1` aponta para a
+> folha **global do Fluig** (`/portal/resources/css/wcm_responsive_layout.css`,
+> caminho do portal) e `application.resource.css.2` para o `responsive_layout.css`
+> padrão do layout. Um `<code>.css` próprio (opcional) entra como recurso
+> adicional. Conteúdo de referência em `architecture.md`.
 >
 > A pasta `WEB-INF` traz `web.xml` e `jboss-web.xml` (com `context-root` =
 > `/<application.code>`); o `pom.xml` aparece **quando o projeto usa Maven ou sob
@@ -117,51 +128,59 @@ Somente o mínimo para orientar a geração; o detalhe está no contexto:
 
 - `application.code` **deve ser igual** a `locale.file.base.name` — divergência quebra a i18n (regra crítica) → ver `architecture.md`.
 - O layout define a **estrutura visual** e as **regiões/áreas** onde os widgets são posicionados; ele não contém a lógica dos widgets → ver `architecture.md`.
-- A view do layout é escrita em **FreeMarker (`.ftl`)** e renderizada no servidor; comece importando os utilitários públicos de layout: `<#import "/wcm.ftl" as wcm/>` → ver `architecture.md`.
-- Envolva o conteúdo em um **wrapper raiz com `fluig-style-guide`** (estrutura padrão `wcm-wrapper-content` → `wcm-all-content` → `wcm-content`) → ver `architecture.md` e `style-guide.md`.
-- **Declare slots nomeados renderizados pela macro pública** `<@wcm.renderSlot id="SlotA" editableSlot="true" isResponsiveSlot="true" />`, cada um em um contêiner identificável (ex.: `id="slotFull1"`); o identificador do slot padrão deve casar com `layout.defaultSlot` do `application.info` → ver `architecture.md`.
-- Use as **macros públicas de portal** quando aplicável (`@wcm.header`, `@wcm.menu`, `@wcm.footer`) e as verificações de modo (`pageRender.isEditMode()`/`isPreviewMode()`) → ver `architecture.md`.
-- Estruture as regiões com o **grid responsivo** do Style Guide (`.container`/`.container-fluid` → `.row` → `.col-*`), em vez de medidas/posicionamento fixos → ver `style-guide.md`.
+- A `layout.ftl` segue uma **estrutura HTML rígida e obrigatória**: começa com `<#import "/wcm.ftl" as wcm/>` e `<#import "/layout-globals.ftl" as globals />`, e usa a hierarquia fixa `wcm-wrapper-content` → `wcm-all-content` → `wcm-content` → `${divMasterId!""}`. **Não altere** o wrapper, as classes estruturais nem a ordem dos blocos → ver "Estrutura HTML da `layout.ftl`" em `architecture.md`.
+- **Não** coloque `fluig-style-guide` no wrapper raiz de um layout de portal — essa classe pertence ao escopo de widgets/telas standalone, não à moldura do portal → ver `architecture.md`.
+- Reproduza os **blocos condicionais fixos**: pré-visualização (`pageRender.isPreviewMode()` → `@wcm.previewPageAlert`/`@wcm.deviceTogglePreview`), cabeçalho/menu fora da edição (`pageRender.isEditMode() != true` → `@wcm.header`/`@wcm.menu`), controles do construtor na edição (`@wcm.editHeader`/`@wcm.widgetsList`) e footer fora do tema responsivo (`fluigThemeCode != "responsive_theme"` → `@wcm.footer`) → ver `architecture.md`.
+- **A liberdade está nos slots**, dentro de `${divMasterId!""}`: cada região é um `<div class="editable-slot slotfull <grid>" id="slotFullN">` com `<@wcm.renderSlot id="SlotX" editableSlot="true" isResponsiveSlot="true" />`. O identificador do slot padrão deve casar com `layout.defaultSlot` do `application.info` → ver `architecture.md`.
+- Para o **grid das regiões**, use as classes de layout do contêiner-mestre (`layout-1-1`, `layout-1-2left`/`layout-1-2right`, `layout-1-3`, agrupamentos `all-slots-left`/`all-slots-right`), não posicionamento fixo → ver `architecture.md`.
 - Todo texto visível via i18n: `${i18n.getTranslation('chave')}`; nunca strings fixas → ver `conventions.md`.
+- Inclua o **`responsive_layout.css` padrão** em `webapp/resources/css/` (responsividade das regiões/slots) e declare os dois CSS no descritor na ordem: `application.resource.css.1` = folha global do Fluig (`/portal/resources/css/wcm_responsive_layout.css`) e `application.resource.css.2` = `/resources/css/responsive_layout.css`. Distintos do `<code>.css` próprio → ver `architecture.md`.
 - Sem CSS com **hexadecimais fixos** para cores de tema; use `var(--fs-color-*)` → ver `style-guide.md`.
 - **Minimizar CSS próprio; priorizar os componentes do Style Guide**; CSS próprio só sob pedido explícito (o CSS do layout permanece opcional) → ver `style-guide.md`/`conventions.md`.
 
+> **Layout standalone (exceção):** quando o layout **não** se integra à moldura do portal (ex.: telas "boards" com `navbar` própria), usa-se um wrapper raiz `<div class="fluig-style-guide ...">` sem `@wcm.header`/`@wcm.menu`/`@wcm.footer` e sem a hierarquia `wcm-wrapper-content`. Use esse formato apenas nesse caso; o padrão é a estrutura rígida de portal.
+
 ## Procedimento
 
-1. Definir o nome do layout (em Inglês) e o `<code>` (minúsculo) a partir da entrada, e identificar as regiões/slots necessários (ex.: cabeçalho, conteúdo principal, lateral, rodapé).
+1. Definir o nome do layout (em Inglês) e o `<code>` (minúsculo) a partir da entrada, e identificar as regiões/slots necessários e o arranjo do grid (ex.: largura total, duas colunas, lateral + conteúdo).
 2. Criar a estrutura de pastas oficial (ver "Estrutura de Saída") e o descritor **`application.info`** com `application.type=layout`, `application.renderer=freemarker`, `layout.file=layout.ftl`, `layout.defaultSlot` e os **campos completos** do layout (incl. `application.fluig.version`, `application.category`, `application.newBuilder`, `application.responsiveLayout`, `application.icon`, recursos `css.N`, `developer.url` e `hash`) — ver a tabela completa em `architecture.md`.
-3. Iniciar a **view `layout.ftl`** (em `src/main/resources/`) importando os utilitários públicos de layout (`<#import "/wcm.ftl" as wcm/>`) e montando o **wrapper raiz com `fluig-style-guide`** (`wcm-wrapper-content` → `wcm-all-content` → `wcm-content`), usando o **grid do Style Guide** (`.row`/`.col-*`) para as regiões responsivas.
-4. **Declarar os slots nomeados** que receberão widgets, cada um em um contêiner identificável (ex.: `id="slotFull1"`) e renderizado pela macro pública `<@wcm.renderSlot id="SlotA" editableSlot="true" isResponsiveSlot="true" />`; garantir que o slot padrão case com `layout.defaultSlot`. Acrescentar as macros de portal (`@wcm.header`, `@wcm.menu`, `@wcm.footer`) conforme necessário.
-5. Criar os arquivos **`.properties` de i18n** (base + `pt_BR`/`en_US`/`es`) e aplicar i18n em qualquer título ou texto visível do layout com `${i18n.getTranslation('chave')}`.
-6. Reutilizar componentes/utilitários do Style Guide e, quando houver CSS próprio, usar `var(--fs-color-*)` para cores de tema (sem hexadecimais fixos).
-7. Quando o projeto usa **Maven** (ou sob pedido), criar o `pom.xml` na raiz da estrutura (bloco de referência em `architecture.md`); inspecionar as coordenadas Maven (`groupId`, `artifactId` e o `parent`) no projeto existente e **nunca inventá-las**.
-8. Validar o resultado com o checklist abaixo antes de entregar.
+3. Montar a **view `layout.ftl`** (em `src/main/resources/`) **reproduzindo o esqueleto rígido** da seção "Estrutura HTML da `layout.ftl`" em `architecture.md`: os dois imports (`/wcm.ftl` e `/layout-globals.ftl`), o bloco de preview, o wrapper `wcm-wrapper-content` → `wcm-all-content` → `wcm-content` → `${divMasterId!""}` e os blocos condicionais de edição. **Não** adicione `fluig-style-guide` ao wrapper raiz de portal.
+4. **Posicionar os slots** dentro de `${divMasterId!""}`: para cada região, um `<div class="editable-slot slotfull <grid>" id="slotFullN">` com `<@wcm.renderSlot id="SlotX" editableSlot="true" isResponsiveSlot="true" />`; garantir que o slot padrão case com `layout.defaultSlot`. Ajustar a classe de grid (`layout-1-1`, `layout-1-2left`/`right`, etc.) conforme o arranjo desejado.
+5. Acrescentar o **footer** dentro do bloco `fluigThemeCode != "responsive_theme"` via `@wcm.footer` com o `layoutuserlabel` apropriado (chave de i18n).
+6. Criar os arquivos **`.properties` de i18n** (base + `pt_BR`/`en_US`/`es`) e aplicar i18n em qualquer título ou texto visível do layout com `${i18n.getTranslation('chave')}`.
+7. Criar o **`responsive_layout.css` padrão** em `webapp/resources/css/` (conteúdo de referência em `architecture.md`) e declarar os dois recursos CSS no descritor na ordem: `application.resource.css.1=/portal/resources/css/wcm_responsive_layout.css` (folha global do Fluig) e `application.resource.css.2=/resources/css/responsive_layout.css`. Se houver CSS próprio do layout (`<code>.css`), declará-lo como recurso adicional e usar `var(--fs-color-*)` para cores de tema (sem hexadecimais fixos).
+8. Quando o projeto usa **Maven** (ou sob pedido), criar o `pom.xml` na raiz da estrutura (bloco de referência em `architecture.md`); inspecionar as coordenadas Maven (`groupId`, `artifactId` e o `parent`) no projeto existente e **nunca inventá-las**.
+9. Validar o resultado com o checklist abaixo antes de entregar.
 
 ## Saída Esperada
 
 Esqueleto de layout pronto para evoluir, na estrutura oficial, contendo:
 
 - O **descritor `application.info`** (`application.type=layout`) declarando `layout.file`, slot padrão e i18n.
-- A **view `layout.ftl`** do layout iniciando com `<#import "/wcm.ftl" as wcm/>`, com o wrapper raiz `fluig-style-guide`, a estrutura sobre o **grid responsivo** do Style Guide e os **slots nomeados** renderizados por `@wcm.renderSlot`, identificáveis e prontos para receber widgets.
+- A **view `layout.ftl`** reproduzindo a **estrutura HTML rígida** (imports `/wcm.ftl` e `/layout-globals.ftl`, bloco de preview, hierarquia `wcm-wrapper-content` → `wcm-all-content` → `wcm-content` → `${divMasterId!""}`, blocos condicionais de edição e footer), com os **slots nomeados** renderizados por `@wcm.renderSlot` dentro do contêiner-mestre.
 - Os arquivos **`.properties` de i18n** (base + locales) com as chaves de tradução.
-- (Opcional) CSS do layout com cores de tema por `var(--fs-color-*)` e os arquivos de empacotamento (`pom.xml`, `WEB-INF`).
+- O **`responsive_layout.css` padrão** em `webapp/resources/css/`, declarado no descritor.
+- (Opcional) CSS próprio do layout (`<code>.css`) com cores de tema por `var(--fs-color-*)` e os arquivos de empacotamento (`pom.xml`, `WEB-INF`).
 
 Tudo em conformidade com `context/architecture.md`, `context/style-guide.md` e `context/conventions.md`.
 
 ## Exemplo de Uso
 
-Use `examples/layout/` como referência mínima da view `.ftl` de um layout que demonstra o uso do grid do Style Guide e a declaração de regiões de conteúdo. Trate-o como trecho de referência, não como projeto completo.
+Use `examples/layout/` como referência mínima da view `.ftl` de um layout que demonstra a **estrutura HTML rígida** de portal (imports, wrapper `wcm-wrapper-content`, blocos condicionais e slots renderizados por `@wcm.renderSlot`). Trate-o como trecho de referência, não como projeto completo.
 
 ## Checklist de Validação
 
 - [ ] Estrutura oficial criada, com o descritor **`application.info`** (`application.type=layout`, `layout.file=layout.ftl`, `layout.defaultSlot`).
 - [ ] `application.code` **igual** a `locale.file.base.name`.
+- [ ] A `layout.ftl` começa com `<#import "/wcm.ftl" as wcm/>` e `<#import "/layout-globals.ftl" as globals />`.
+- [ ] Wrapper raiz é `wcm-wrapper-content` com a hierarquia fixa `wcm-all-content` → `wcm-content` → `${divMasterId!""}` (sem `fluig-style-guide` no root, salvo layout standalone).
+- [ ] Blocos condicionais presentes: preview (`isPreviewMode`), header/menu fora da edição, `@wcm.editHeader`/`@wcm.widgetsList` na edição e footer fora do tema responsivo.
 - [ ] `layout.defaultSlot` está presente entre os slots declarados na `layout.ftl`.
-- [ ] Cada slot declarado tem um `<@wcm.renderSlot id="..." />` correspondente.
+- [ ] Cada slot é um `<div class="editable-slot slotfull <grid>" id="slotFullN">` com `<@wcm.renderSlot id="..." />` correspondente.
 - [ ] Cada `slot.<Nome>=<widget>` (se houver) referencia um código de widget válido.
 - [ ] Arquivos **`.properties` de i18n** (base + `pt_BR`/`en_US`/`es`).
-- [ ] A `layout.ftl` importa os utilitários de layout (`<#import "/wcm.ftl" as wcm/>`) e tem wrapper raiz com `fluig-style-guide`.
-- [ ] A estrutura usa o **grid do Style Guide** (`.container`/`.row`/`.col-*`), sem posicionamento/medidas fixas.
+- [ ] **`responsive_layout.css` padrão** presente em `webapp/resources/css/`; descritor declara `application.resource.css.1` = folha global do Fluig (`/portal/resources/css/wcm_responsive_layout.css`) e `application.resource.css.2` = `/resources/css/responsive_layout.css`.
+- [ ] Grid das regiões via classes de layout (`layout-1-1`, `layout-1-2left`/`right`, `layout-1-3`), sem posicionamento/medidas fixas.
 - [ ] Todo texto visível usa `${i18n.getTranslation('...')}` — sem strings fixas.
 - [ ] Sem hexadecimais fixos para cores de tema (use `var(--fs-color-*)`).
 - [ ] `WEB-INF` presente (`web.xml` + `jboss-web.xml`) com `context-root` = `/<application.code>`.

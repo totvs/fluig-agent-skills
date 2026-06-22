@@ -1,0 +1,33 @@
+/* Exemplo de referência — CSS padrão de responsividade do Layout WCM Fluig. */
+/* Arquivo padrão criado junto com todo layout (webapp/resources/css/).        */
+/* Garante o empilhamento das regiões/slots em telas estreitas, em edição       */
+/* (#edicaoPagina, via container query) e visualização (#visualizacaoPagina,    */
+/* via media query), com fallback para ambientes sem container queries.         */
+/* Declarado no application.info via application.resource.css.N.                 */
+
+#edicaoPagina {
+    container-type: inline-size!important;
+    container-name: wcm-master-wrapper!important;
+}
+
+@container wcm-master-wrapper (max-width: 991px) {
+    #edicaoPagina .layout-2-3left,
+    #edicaoPagina #all-slots-right {
+        width: 100% !important;
+    }
+    .wcm-all-content > #wcm-content {
+        padding-right: 0 !important;
+    }
+}
+
+@media (max-width: 991px) {
+    #visualizacaoPagina .layout-2-3left,
+    #visualizacaoPagina #all-slots-right,
+    .not-supports-container-queries #edicaoPagina .layout-2-3left,
+    .not-supports-container-queries #edicaoPagina #all-slots-right {
+        width: 100% !important;
+    }
+    .wcm-all-content > #wcm-content {
+        padding-right: 0 !important;
+    }
+}

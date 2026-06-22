@@ -21,6 +21,7 @@ locale.file.base.name=layoutexample
 
 application.icon=icon.png
 application.resource.css.1=/portal/resources/css/wcm_responsive_layout.css
+application.resource.css.2=/resources/css/responsive_layout.css
 application.responsiveLayout=true
 application.newBuilder=true
 

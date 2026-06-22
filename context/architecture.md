@@ -203,7 +203,8 @@ pontos de ancoragem em que o conteúdo (widgets) é encaixado.
 Pontos de extensão e execução visíveis ao código:
 
 - **View em FreeMarker (`.ftl`)**: o desenvolvedor escreve a marcação do layout,
-  renderizada no servidor.
+  renderizada no servidor, seguindo uma **estrutura HTML rígida** (ver "Estrutura
+  HTML da `layout.ftl`"); a liberdade está no arranjo dos slots, não no wrapper.
 - **Regiões de conteúdo**: o layout declara áreas que recebem widgets, permitindo
   que diferentes páginas reutilizem a mesma estrutura.
 - Aproveita o grid e os componentes do Style Guide (ver
@@ -232,8 +233,61 @@ recebem widgets, em vez de lógica própria.
         │   ├── web.xml
         │   └── jboss-web.xml
         └── resources/
-            ├── css/<code>.css             # CSS do layout (opcional)
+            ├── css/responsive_layout.css  # CSS padrão de responsividade dos slots (obrigatório)
+            ├── css/<code>.css             # CSS próprio do layout (opcional)
             └── images/icon.png            # ícone do layout
+```
+
+> **`responsive_layout.css` (padrão):** todo layout é criado com um
+> `responsive_layout.css` em `webapp/resources/css/`. Ele garante a
+> responsividade das regiões/slots (via container queries e media queries),
+> empilhando as colunas (`layout-2-3left`/`all-slots-right`) em telas estreitas,
+> tanto em edição (`#edicaoPagina`) quanto em visualização (`#visualizacaoPagina`),
+> com fallback para ambientes sem suporte a container queries
+> (`.not-supports-container-queries`). É declarado no descritor via
+> `application.resource.css.N` e **não** se confunde com o CSS próprio do layout
+> (`<code>.css`, opcional). O conteúdo de referência está logo abaixo.
+
+> **CSS de layout no descritor (ordem):** o layout declara dois recursos CSS no
+> `application.info`, nesta ordem:
+> 1. `application.resource.css.1=/portal/resources/css/wcm_responsive_layout.css`
+>    — folha **global do Fluig** (caminho do portal), base de responsividade dos
+>    layouts; o caminho é fixo e não pertence ao pacote do layout.
+> 2. `application.resource.css.2=/resources/css/responsive_layout.css` — o
+>    `responsive_layout.css` **padrão do próprio layout** (empacotado em
+>    `webapp/resources/css/`).
+> Um eventual CSS próprio do layout (`<code>.css`) entra como recurso adicional
+> (`application.resource.css.3`, etc.).
+
+Conteúdo de referência do `responsive_layout.css`:
+
+```css
+#edicaoPagina {
+    container-type: inline-size!important;
+    container-name: wcm-master-wrapper!important;
+}
+
+@container wcm-master-wrapper (max-width: 991px) {
+    #edicaoPagina .layout-2-3left,
+    #edicaoPagina #all-slots-right {
+        width: 100% !important;
+    }
+    .wcm-all-content > #wcm-content {
+        padding-right: 0 !important;
+    }
+}
+
+@media (max-width: 991px) {
+    #visualizacaoPagina .layout-2-3left,
+    #visualizacaoPagina #all-slots-right,
+    .not-supports-container-queries #edicaoPagina .layout-2-3left,
+    .not-supports-container-queries #edicaoPagina #all-slots-right {
+        width: 100% !important;
+    }
+    .wcm-all-content > #wcm-content {
+        padding-right: 0 !important;
+    }
+}
 ```
 
 Campos do `application.info` de um layout (tabela completa):
@@ -252,7 +306,7 @@ Campos do `application.info` de um layout (tabela completa):
 | `application.icon` | `icon.png` |
 | `application.responsiveLayout` | `true` para layout responsivo |
 | `application.newBuilder` | Flag do novo construtor de páginas |
-| `application.resource.css.N` | Caminho do CSS (opcional) |
+| `application.resource.css.N` | Caminhos do CSS — `css.1` aponta para a folha global do Fluig (`/portal/resources/css/wcm_responsive_layout.css`) e `css.2` para o `responsive_layout.css` padrão do layout (e o `<code>.css` próprio como recurso adicional, se houver) |
 | `locale.file.base.name` | Nome base dos arquivos `.properties` de i18n — **igual a** `application.code` |
 | `developer.code` / `developer.name` / `developer.url` | Identificação do desenvolvedor |
 | `hash` | Hash do pacote/build |
@@ -267,28 +321,105 @@ Campos do `application.info` de um layout (tabela completa):
 > `application.responsiveLayout`, `application.newBuilder` e `slot.<Nome>` para
 > pré-configurar widgets em slots.
 
-As **regiões/slots** são declaradas na `layout.ftl`. A view de layout segue uma
-estrutura interna característica que o desenvolvedor reproduz:
+### Estrutura HTML da `layout.ftl` (rígida)
 
-- **Import dos utilitários de layout**: a `layout.ftl` começa importando o
-  namespace público de macros de layout — `<#import "/wcm.ftl" as wcm/>` — que
-  fornece as macros de montagem da página (`@wcm.header`, `@wcm.menu`,
-  `@wcm.renderSlot`, `@wcm.footer`, etc.).
-- **Wrapper raiz com `fluig-style-guide`**: o conteúdo é envolvido por uma
-  estrutura padrão de contêineres (`wcm-wrapper-content` → `wcm-all-content` →
-  `wcm-content`), e o wrapper recebe a classe `fluig-style-guide` para ativar o
-  escopo do Style Guide.
-- **Slots nomeados renderizados por macro**: cada região é um contêiner
-  identificável (ex.: `id="slotFull1"`, classe `editable-slot slotfull
-  layout-1-1`) cujo conteúdo é renderizado pela macro pública
-  `<@wcm.renderSlot id="SlotA" editableSlot="true" isResponsiveSlot="true" />`.
-  O identificador do slot (ex.: `SlotA`, `SlotB`, `SlotC`) é o que a plataforma
-  usa para encaixar os widgets; o slot padrão deve casar com
-  `layout.defaultSlot` no `application.info`. Para casos de baixo nível, a
-  plataforma também expõe o objeto `pageRender` (ex.:
-  `pageRender.getInstancesIds("SlotA")` / `pageRender.renderInstanceNoDecorator(id)`)
-  e verificações de modo de página (`pageRender.isEditMode()`,
-  `pageRender.isPreviewMode()`).
+A `layout.ftl` de um **layout de portal** segue uma **estrutura HTML rígida e
+obrigatória**: a hierarquia de contêineres, as classes e os pontos de extensão são
+fixos e **não devem ser alterados**. O desenvolvedor só tem liberdade para arranjar
+os **slots** dentro do contêiner mais interno (`${divMasterId!""}`) — quantos slots,
+seus identificadores e o grid de cada região. Mudar o wrapper, as classes
+estruturais ou a ordem dos blocos condicionais quebra a renderização da página.
+
+Esqueleto canônico de um layout de portal (reproduza-o como está, variando apenas
+os slots internos):
+
+```ftl
+<#import "/wcm.ftl" as wcm/>
+
+<#-- Variáveis globais dos layouts -->
+<#import "/layout-globals.ftl" as globals />
+
+<#-- Bloco de pré-visualização da página (modo preview) -->
+<#if pageRender.isPreviewMode() = true>
+    <@wcm.previewPageAlert />
+    <@wcm.deviceTogglePreview />
+</#if>
+
+<#-- Wrapper raiz OBRIGATÓRIO (classes de estado preenchidas pela plataforma) -->
+<div class="wcm-wrapper-content ${wcmLayoutEditClass!""} ${pageAuthTypeClass!""}">
+
+    <#-- Cabeçalho e menu do portal: somente fora do modo de edição -->
+    <#if pageRender.isEditMode() != true>
+        <@wcm.header authenticated=pageRender.isUserLogged()?c />
+        <@wcm.menu />
+    </#if>
+
+    <div class="wcm-all-content ${wcmResponsiveMenuOpenClass!""}">
+
+        <div id="wcm-content" class="clearfix wcm-background">
+
+            <#-- Controles do construtor de páginas: somente no modo de edição -->
+            <#if pageRender.isEditMode() = true>
+                <@wcm.editHeader />
+                <@wcm.widgetsList />
+            </#if>
+
+            <div id="${divMasterId!""}">
+
+                <!-- Slot A (região editável) -->
+                <div class="editable-slot slotfull layout-1-1" id="slotFull1">
+                    <@wcm.renderSlot id="SlotA" editableSlot="true" isResponsiveSlot="true" />
+                </div>
+
+                <#-- Acrescente outras regiões/slots aqui, variando id e grid -->
+
+                <#-- Footer omitido no tema responsivo -->
+                <#if fluigThemeCode != "responsive_theme">
+                    <@wcm.footer layoutuserlabel="<code>.user" />
+                </#if>
+            </div>
+        </div>
+    </div>
+</div>
+```
+
+Elementos **fixos** dessa estrutura (não alterar):
+
+| Elemento | Papel | Observação |
+|----------|-------|------------|
+| `<#import "/wcm.ftl" as wcm/>` | Importa as macros públicas de layout | Sempre a primeira linha |
+| `<#import "/layout-globals.ftl" as globals />` | Variáveis globais dos layouts | Logo após o `wcm.ftl` |
+| Bloco `isPreviewMode()` | `@wcm.previewPageAlert` + `@wcm.deviceTogglePreview` | Pré-visualização da página |
+| `div.wcm-wrapper-content` | **Wrapper raiz obrigatório** | Recebe `${wcmLayoutEditClass!""}` e `${pageAuthTypeClass!""}` |
+| Bloco `isEditMode() != true` | `@wcm.header` + `@wcm.menu` | Cabeçalho/menu só fora da edição |
+| `div.wcm-all-content` | Contêiner de conteúdo | Recebe `${wcmResponsiveMenuOpenClass!""}` |
+| `div#wcm-content.clearfix.wcm-background` | Área de conteúdo | Classes fixas |
+| Bloco `isEditMode() = true` | `@wcm.editHeader` + `@wcm.widgetsList` | Controles do construtor, só na edição |
+| `div#${divMasterId!""}` | Contêiner-mestre dos slots | É **aqui** que os slots variam |
+| Bloco `fluigThemeCode != "responsive_theme"` | `@wcm.footer` | Footer omitido no tema responsivo |
+
+O que o desenvolvedor **pode** variar:
+
+- **Slots**: cada região é um `<div class="editable-slot slotfull <grid>" id="slotFullN">`
+  com um `<@wcm.renderSlot id="SlotX" editableSlot="true" isResponsiveSlot="true" />`.
+- **Identificadores de slot** (`SlotA`, `SlotB`, ...): o slot padrão deve casar com
+  `layout.defaultSlot` no `application.info`.
+- **Grid das regiões**: classes como `layout-1-1` (largura total), `layout-1-2left`/
+  `layout-1-2right` (duas colunas), `layout-1-3` (três colunas) ou agrupamentos
+  `all-slots-left`/`all-slots-right`.
+
+> **Atributos do `@wcm.renderSlot`:** `editableSlot="true"` torna o slot editável no
+> construtor; `decorator="true"` aplica a decoração padrão de slot; e
+> `isResponsiveSlot="true"` habilita o comportamento responsivo. Para casos de baixo
+> nível, a plataforma também expõe o objeto `pageRender` (ex.:
+> `pageRender.getInstancesIds("SlotA")` / `pageRender.renderInstanceNoDecorator(id)`).
+
+> **Layouts standalone (exceção):** layouts que **não** são de portal (ex.: telas
+> "boards" com navegação própria) usam um wrapper raiz `<div class="fluig-style-guide ...">`
+> com `navbar` própria, **sem** `@wcm.header`/`@wcm.menu`/`@wcm.footer` e sem a
+> hierarquia `wcm-wrapper-content`. Nesse caso, o `fluig-style-guide` é necessário no
+> root para ativar o Style Guide. Use esse formato **apenas** quando o layout não se
+> integra à moldura do portal; o padrão é o esqueleto rígido acima.
 
 O ponto de partida público para gerar essa estrutura é o **archetype Maven
 `layout-wcm`** (ver [technologies.md](technologies.md)). A referência mínima de
