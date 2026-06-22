@@ -1,21 +1,29 @@
-# Checklist de Revisão de Código Frontend Fluig
+# Checklist de Validação de Widget e Código Frontend Fluig
 
 > Asset da skill `code-review`. Checklist completo, organizado por categoria, para
-> revisar código frontend de customização Fluig. A fonte de verdade das regras está
-> em `../../context/conventions.md` e `../../context/style-guide.md`; aqui ficam os
-> itens verificáveis. Para cada item marcado como desvio, registre um achado com
-> severidade e a regra de contexto correspondente.
+> revisar e **validar widgets** e demais código frontend de customização Fluig. A
+> fonte de verdade das regras está em `../../../context/conventions.md` e
+> `../../../context/style-guide.md` (a skill `SKILL.md` referencia o contexto por
+> `../../context/...`; este asset, por estar em `assets/`, usa `../../../context/...`).
+> Aqui ficam apenas os **itens verificáveis no código de customização externo** —
+> backend Java, CI interno e estrutura de módulos do monorepo estão fora de escopo.
+> Cada grupo aponta a **regra-fonte completa** no contexto; para cada item marcado
+> como desvio, registre um achado com severidade e a regra de contexto correspondente.
 
 ## 1. JavaScript Moderno (ES6+)
+
+> Regra-fonte: [`../../../context/conventions.md`](../../../context/conventions.md) › "JavaScript Moderno (ES6+)".
 
 - [ ] Usa `const` por padrão e `let` apenas quando há reatribuição; **não** usa `var`.
 - [ ] Usa arrow functions para funções anônimas (concisão e `this` léxico).
 - [ ] Usa template literals em vez de concatenação com `+`.
 - [ ] Trata assíncrono com `async/await` em `try/catch`, não cadeias longas de `.then()`.
 - [ ] Funções pequenas, com responsabilidade única; organização em módulos ES6.
-- [ ] **Não** mistura jQuery e ES6+ no mesmo arquivo (jQuery só em manutenção de legado).
+- [ ] **Não** mistura jQuery e ES6+ no mesmo arquivo (jQuery só em manutenção de legado); **não** usa `$()` em código novo.
 
 ## 2. Nomenclatura
+
+> Regra-fonte: [`../../../context/conventions.md`](../../../context/conventions.md) › "Nomenclatura".
 
 - [ ] Nomes descritivos em Inglês; sem abreviações obscuras.
 - [ ] Booleanos com prefixo `is`/`has`/`can`/`should`.
@@ -25,15 +33,19 @@
 
 ## 3. Convenções de Widget (`SuperWidget.extend`)
 
+> Regra-fonte: [`../../../context/conventions.md`](../../../context/conventions.md) › "Convenções de Widget (`SuperWidget.extend`)".
+
 - [ ] Elemento raiz contém a classe `fluig-style-guide`.
 - [ ] `instanceId` usado **exclusivamente** em atributos `id`, com separador `_` (ex.: `MyWidget_${instanceId}`).
 - [ ] `instanceId` **não** aparece em atributos `class` nem `data-*`.
 - [ ] `.instance()` é chamado **sem** `instanceId` (injetado pelo framework); no JS usa `this.instanceId`.
 - [ ] Separador antes do `instanceId` é sempre `_`, nunca `-`.
-- [ ] Chave de binding é o valor do `data-*` **sem** o prefixo `data-`.
+- [ ] Chave de binding é o valor do `data-*` **sem** o prefixo `data-` (o framework adiciona `data-`).
 - [ ] `bindings.local` para elementos dentro da raiz; `bindings.global` para elementos fora (modais/dropdowns no `body`).
 
 ## 4. Convenções de Custom Elements (Web Components)
+
+> Regra-fonte: [`../../../context/conventions.md`](../../../context/conventions.md) › "Convenções de Custom Elements (Web Components)".
 
 - [ ] Nome de arquivo `[name].[category].js` em kebab-case (ex.: `user-profile.component.js`).
 - [ ] Categoria por sufixo: `component`, `service`, `api`.
@@ -44,6 +56,8 @@
 
 ## 5. Internacionalização (i18n)
 
+> Regra-fonte: [`../../../context/conventions.md`](../../../context/conventions.md) › "Internacionalização (i18n)".
+
 - [ ] Todo texto visível ao usuário vem de i18n (`${i18n.getTranslation('key')}`); sem strings fixas.
 - [ ] **Não** acessa `i18n` como objeto JavaScript (`i18n.key` / `i18n['key']`).
 - [ ] A expressão de i18n está entre aspas quando atribuída a variável.
@@ -51,6 +65,8 @@
 - [ ] Usa `getTranslationP1`/`getTranslationPn` quando há parâmetros.
 
 ## 6. Segurança
+
+> Regra-fonte: [`../../../context/conventions.md`](../../../context/conventions.md) › "Segurança (APIs públicas)".
 
 - [ ] Toda entrada do usuário é tratada como não confiável antes de uso no DOM ou persistência.
 - [ ] HTML derivado de input é sanitizado com `DOMPurify.sanitize` antes de inserir.
@@ -62,11 +78,16 @@
 
 ## 7. Chamadas REST internas
 
+> Regra-fonte: [`../../../context/conventions.md`](../../../context/conventions.md) › "Chamadas REST internas".
+
 - [ ] Endpoints internos chamados via `FLUIGC.ajax` (código novo) ou `WCMAPI.Read/Create/Update/Delete` (legado).
 - [ ] **Não** usa `fetch()` nem `$.ajax()` direto para endpoints internos.
 - [ ] Erros de rede tratados (ex.: `try/catch` com `async/await`).
 
 ## 8. CSS e Style Guide
+
+> Regra-fonte: [`../../../context/conventions.md`](../../../context/conventions.md) › "CSS" e
+> [`../../../context/style-guide.md`](../../../context/style-guide.md) › "Classes helper `fs-*`" e "Theming e dark mode (variáveis CSS)".
 
 - [ ] Reutiliza classes/componentes do Fluig Style Guide antes de criar CSS próprio.
 - [ ] CSS escopado à classe raiz do widget (ou à tag do Custom Element); evita seletores por `id`, cadeias longas e `!important`.
@@ -77,6 +98,9 @@
 
 ## 9. Acessibilidade
 
+> Regra-fonte: [`../../../context/conventions.md`](../../../context/conventions.md) e
+> [`../../../context/style-guide.md`](../../../context/style-guide.md) (HTML semântico, nome acessível, contraste via `var(--fs-color-*)`).
+
 - [ ] HTML semântico (`header`, `nav`, `main`, `button`, `label`) em vez de `div`/`span` genéricos.
 - [ ] Campos com rótulo associado (`label`/`for`) ou nome acessível (`aria-label`), com texto via i18n.
 - [ ] Navegável por teclado, ordem de tabulação lógica e foco visível/gerenciado (modais).
@@ -85,6 +109,8 @@
 - [ ] Contraste adequado via `var(--fs-color-*)`.
 
 ## 10. Performance
+
+> Regra-fonte: [`../../../context/conventions.md`](../../../context/conventions.md) (manipulação de DOM, eventos de alta frequência, carga sob demanda).
 
 - [ ] Alterações de DOM agrupadas (ex.: `DocumentFragment`); sem inserções repetidas em laço.
 - [ ] Referências de elementos cacheadas; sem seletores redundantes.

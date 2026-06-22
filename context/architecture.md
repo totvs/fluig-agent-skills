@@ -171,7 +171,9 @@ Pontos de extensão e ciclo de vida visíveis ao código:
   baixo acoplamento entre artefatos client-side.
 
 Convenções de nomenclatura de arquivo, classe e tag são fonte de verdade de
-[conventions.md](conventions.md).
+[conventions.md](conventions.md). As regras de **uso de eventos**
+(`CustomEvent`/`dispatchEvent` e `WCMAPI.fireEvent`/`addListener`) também são
+fonte de verdade de [conventions.md](conventions.md) — não as duplique.
 
 ## Layout (WCM)
 
@@ -316,7 +318,9 @@ aciona nos pontos de extensão acima:
   público de scripting e interagem apenas com as APIs públicas de seu contexto.
 - A comunicação **entre artefatos cliente** ocorre por eventos globais /
   `CustomEvent` no DOM; a comunicação **cliente → dados** ocorre via datasets e
-  endpoints expostos publicamente.
+  endpoints expostos publicamente. As regras de **uso de eventos**
+  (`CustomEvent`/`dispatchEvent` e `WCMAPI.fireEvent`/`addListener`) são fonte de
+  verdade de [conventions.md](conventions.md) — não as duplique.
 
 O desenvolvedor enxerga a plataforma como um host que oferece pontos de extensão
 estáveis: ele preenche os contratos (métodos de ciclo de vida, funções nomeadas,

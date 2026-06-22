@@ -30,7 +30,7 @@ Produzir, com responsabilidade única, o **esqueleto de um Widget WCM** do Fluig
 
 Leia antes de executar — não reproduza o conteúdo aqui:
 
-- [conventions.md](../../context/conventions.md) — convenções de Widget (`fluig-style-guide`, `instanceId`, `.instance()`, bindings local/global), i18n, segurança, CSS escopado e ES6+.
+- [conventions.md](../../context/conventions.md) — convenções de Widget (`fluig-style-guide`, `instanceId`, `.instance()`, bindings local/global), i18n, segurança, CSS escopado e ES6+. Inclui também as **convenções de Custom Elements** (arquivos `[name].[category].js`, membros privados `#`, topo do módulo só com `import`, CSS escopado/agrupado por tag e variáveis CSS para números mágicos), aplicáveis quando o widget incorpora Web Components.
 - [style-guide.md](../../context/style-guide.md) — componentes/helpers (`FLUIGC`), grid e variáveis CSS de tema (`var(--fs-color-*)`) para o markup e o estilo do widget.
 - [architecture.md](../../context/architecture.md) — modelo conceitual do Widget, seu ciclo de vida (`init()`, `.instance()`, bindings) e a **estrutura oficial de pastas/arquivos** do widget (descritor `application.info`, `view.ftl`, `.properties` de i18n, JS/CSS).
 

@@ -31,7 +31,8 @@ Revisar, com responsabilidade única, a **aderência de código de customizaçã
 
 Leia antes de executar — não reproduza o conteúdo aqui:
 
-- [conventions.md](../../context/conventions.md) — ES6+, nomenclatura, convenções de widget (`fluig-style-guide` na raiz, `instanceId` só em `id` com `_`, `instance()` sem `instanceId`, bindings), Custom Elements, i18n, segurança via APIs públicas, chamadas REST internas e CSS.
+- [conventions.md](../../context/conventions.md) — ES6+, nomenclatura, convenções de widget (`fluig-style-guide` na raiz, `instanceId` só em `id` com `_`, `instance()` sem `instanceId`, bindings), Custom Elements, comunicação por eventos, i18n, segurança via APIs públicas, chamadas REST internas e CSS.
+- [style-guide.md](../../context/style-guide.md) — componentes, grid, classes helper `fs-*` e variáveis CSS de tema (`var(--fs-color-*)`, dark mode).
 
 ## Regras Aplicáveis (Resumo Executivo)
 
@@ -44,6 +45,23 @@ Somente o mínimo para orientar a revisão; o detalhe está no contexto. Cada ac
 - **Style Guide:** reutilizar componentes/helpers/grid antes de criar CSS próprio; `var(--fs-color-*)` para cores de tema → ver `conventions.md` e `style-guide.md`.
 - **REST interna:** chamadas via `WCMAPI`/`FLUIGC.ajax` (nunca `fetch`/`$.ajax` direto) → ver `conventions.md`.
 - **Nomenclatura:** nomes descritivos em Inglês; booleanos com `is`/`has`/`can`/`should` → ver `conventions.md`.
+
+## Tabela de Anti-padrões de Widget
+
+Instrumento rápido de revisão: identifique o anti-padrão no código e aplique a
+alternativa recomendada. A tabela **não duplica** a regra — cada item aponta para
+a regra-fonte completa em `context/`, que permanece a fonte de verdade.
+
+| ❌ Anti-padrão | ✅ Alternativa | Regra-fonte |
+|---------------|----------------|-------------|
+| Widget monolítico com responsabilidades misturadas | Modularizar em métodos/funções menores, com responsabilidade única; `init()` delega a métodos claros | [conventions.md](../../context/conventions.md) › JavaScript Moderno (ES6+) |
+| Nomes vagos ou abreviações obscuras | Nomenclatura descritiva e consistente, em Inglês; booleanos com `is`/`has`/`can`/`should` | [conventions.md](../../context/conventions.md) › Nomenclatura |
+| Strings fixas sem i18n quando há chave disponível | Resolver o texto via `${i18n.getTranslation('chave')}` (e variantes `getTranslationP1`/`getJSTranslation`) | [conventions.md](../../context/conventions.md) › Internacionalização (i18n) |
+| Customização inline em HTML (`style` inline) | Classe dedicada no CSS, escopada à raiz do widget | [conventions.md](../../context/conventions.md) › CSS |
+| Seletor frágil com `id`, cadeia longa e `!important` | Escopo por classe da widget, com especificidade controlada | [conventions.md](../../context/conventions.md) › CSS |
+| Variáveis globais ou `window.*` para comunicação entre artefatos | Eventos: `CustomEvent`/`dispatchEvent` (Web Components) ou `WCMAPI.fireEvent`/`addListener` (widgets) | [conventions.md](../../context/conventions.md) › Comunicação entre artefatos (eventos) |
+| `fetch()`/`$.ajax()` direto a endpoint interno | Cliente público: `FLUIGC.ajax` (ES6+) ou `WCMAPI.Read/Create/Update/Delete` (legado) | [conventions.md](../../context/conventions.md) › Chamadas REST internas |
+| CSS customizado onde já existe helper/componente do Style Guide | Reutilizar componentes/helpers `fs-*`; cores de tema via `var(--fs-color-*)` | [style-guide.md](../../context/style-guide.md) › Classes helper `fs-*` |
 
 ## Escala de Severidade
 

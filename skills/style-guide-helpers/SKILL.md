@@ -6,7 +6,7 @@ argument-hint: o código/CSS/markup alvo a substituir por helpers e componentes 
 
 # Substituição de CSS Customizado por Helpers do Style Guide
 
-Esta skill substitui CSS/markup próprio por recursos do Fluig Style Guide; ela **não duplica** o catálogo — o arquivo de `context/` é a fonte de verdade, referenciada abaixo.
+Esta skill substitui CSS/markup próprio por recursos do Fluig Style Guide; ela **não duplica** o catálogo. As **categorias do Style Guide** (CSS, Components, Forms, JavaScript plugins, Chart, Miscellaneous) e as **famílias de classes helper `fs-*`** vivem em `context/style-guide.md`, que é a fonte única de verdade referenciada abaixo.
 
 ## Objetivo
 
@@ -31,7 +31,7 @@ Substituir, com responsabilidade única, **CSS customizado e comportamentos recr
 
 Leia antes de executar — não reproduza o conteúdo aqui:
 
-- [style-guide.md](../../context/style-guide.md) — API JavaScript pública (`FLUIGC`), sistema de grid (Bootstrap 3.4.1), ícones, componentes/classes utilitárias, helpers de comportamento (`FLUIGC.utilities`) e a regra de tema via `var(--fs-color-*)`.
+- [style-guide.md](../../context/style-guide.md) — **categorias do Style Guide** (CSS, Components, Forms, JavaScript plugins, Chart, Miscellaneous) e **famílias de classes helper `fs-*`** (espaçamento, display, flexbox, texto, tamanho, float, background, borda, cursor e alinhamento); além da API JavaScript pública (`FLUIGC`), sistema de grid (Bootstrap 3.4.1), ícones, componentes/classes utilitárias, helpers de comportamento (`FLUIGC.utilities`) e a regra de tema via `var(--fs-color-*)`.
 
 ## Regras Aplicáveis (Resumo Executivo)
 
@@ -41,7 +41,7 @@ Somente o mínimo para orientar a tarefa; o catálogo completo está no contexto
 - Usar o **grid responsivo** (`.container`/`.row`/`.col-*`) em vez de posicionamento/medidas fixas → ver `style-guide.md`.
 - Usar a **API pública `FLUIGC.*`** (ex.: `modal`, `toast`, `datatable`, `calendar`, `select`, `loading`) em vez de recriar comportamentos → ver `style-guide.md`.
 - Usar **ícones do Style Guide** (`flat`/`animalia`, `FLUIGC.icons()`) em vez de imagens próprias → ver `style-guide.md`.
-- Aproveitar **classes utilitárias** (espaçamento, alinhamento, visibilidade responsiva) e `FLUIGC.utilities` (ex.: `randomUUID`, `parseBoolean`) → ver `style-guide.md`.
+- Aproveitar **classes utilitárias** (espaçamento, alinhamento, visibilidade responsiva) e as **famílias de classes helper `fs-*`** do Style Guide, além de `FLUIGC.utilities` (ex.: `randomUUID`, `parseBoolean`) → ver `style-guide.md` (categorias e famílias `fs-*`).
 - Manter cores de tema via `var(--fs-color-*)` (sem hexadecimais fixos) ao ajustar estilos remanescentes → ver `style-guide.md`.
 - Garantir a classe `fluig-style-guide` na raiz para que os estilos/componentes se apliquem no escopo do widget → ver `style-guide.md`.
 

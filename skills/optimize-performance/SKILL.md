@@ -31,7 +31,7 @@ Otimizar, com responsabilidade única, a **performance de código frontend Fluig
 
 Leia antes de executar — não reproduza o conteúdo aqui:
 
-- [conventions.md](../../context/conventions.md) — manipulação de DOM, ES6+ e `async/await`, REST a endpoints internos via `WCMAPI`/`FLUIGC.ajax`, bindings de widget, i18n e segurança.
+- [conventions.md](../../context/conventions.md) — manipulação de DOM, ES6+ e `async/await`, REST a endpoints internos via `WCMAPI`/`FLUIGC.ajax`, bindings de widget, i18n, segurança e **CSS responsivo e funções CSS modernas** (`calc`/`var`/`rgba`/`hsla`/`min`/`max`/`clamp`/`minmax`, media e container queries).
 - [style-guide.md](../../context/style-guide.md) — reutilização de componentes/helpers/grid do Fluig Style Guide em vez de soluções próprias mais custosas.
 
 ## Regras Aplicáveis (Resumo Executivo)
@@ -46,6 +46,7 @@ Somente o mínimo para orientar a otimização; o detalhe está no contexto. Boa
 - **Carregar dados sob demanda** (paginação/lazy load) e tratar o assíncrono com `async/await` em `try/catch` → ver `conventions.md`.
 - **REST a endpoints internos** via `WCMAPI`/`FLUIGC.ajax` (nunca `fetch`/`$.ajax` direto) → ver `conventions.md`.
 - **Reutilizar componentes** do Style Guide em vez de recriar comportamentos custosos → ver `style-guide.md`.
+- **CSS responsivo e funções CSS modernas:** preferir funções nativas (`calc`/`var`/`rgba`/`hsla`/`min`/`max`/`clamp`/`minmax`) e media/container queries para layouts fluidos e eficientes em vez de valores fixos repetidos → ver `conventions.md` (CSS responsivo e moderno).
 - **Liberar recursos:** remover listeners/timers ao destruir o widget para evitar vazamentos.
 
 ## Procedimento
