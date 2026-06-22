@@ -74,6 +74,78 @@ Fluxo de consumo por um agente de IA:
    artefato em questão.
 5. **Produza o código** seguindo as convenções oficiais descritas no contexto.
 
+## Uso com VS Code + GitHub Copilot
+
+O GitHub Copilot no VS Code suporta o padrão aberto **Agent Skills**: cada skill
+é uma pasta com um `SKILL.md`, descoberta automaticamente em locais fixos. Como o
+pacote já segue esse formato, basta posicioná-lo onde o Copilot procura.
+
+O Copilot descobre **skills de projeto** em `.github/skills/` (também aceita
+`.claude/skills/` e `.agents/skills/`). Como as nossas skills referenciam os
+arquivos de `context/` e `examples/` por **caminho relativo** (ex.:
+`../../context/conventions.md`), o `context/` e o `examples/` precisam ficar em
+uma posição que preserve esses caminhos. A forma mais segura é replicar a
+estrutura `skills/` + `context/` + `examples/` lado a lado dentro de `.github/`.
+
+Já o **`AGENTS.md`** é uma instrução de repositório (não é uma skill) e **deve
+ficar na raiz do projeto** (`seu-projeto/AGENTS.md`) — o Copilot usa o
+`AGENTS.md` mais próximo na árvore de diretórios, e a raiz é o local canônico e
+mais previsível:
+
+```text
+seu-projeto/
+├── AGENTS.md          # instrução de repositório — fica na RAIZ do projeto
+└── .github/
+    ├── skills/        # copie o skills/ deste pacote
+    │   └── <nome>/SKILL.md
+    ├── context/       # copie o context/ deste pacote
+    │   ├── architecture.md
+    │   ├── technologies.md
+    │   ├── conventions.md
+    │   └── style-guide.md
+    └── examples/      # copie o examples/ deste pacote
+        ├── widget/  ├── layout/  ├── form/  ├── dataset/  └── process-event/
+```
+
+Com essa disposição os links relativos das skills resolvem corretamente:
+
+- De `.github/skills/<skill>/SKILL.md`, o caminho `../../context/conventions.md`
+  resolve para `.github/context/conventions.md`.
+- De um asset em `.github/skills/<skill>/assets/`, o caminho
+  `../../../context/conventions.md` resolve para `.github/context/conventions.md`.
+
+> **Atenção aos caminhos do `AGENTS.md`:** o `AGENTS.md` deste pacote referencia
+> `context/`, `skills/` e `examples/` por caminho relativo. Ao colocá-lo na raiz
+> com as pastas em `.github/`, ajuste essas referências para apontar para
+> `.github/context/...`, `.github/skills/...` e `.github/examples/...`.
+
+> **Importante:** o campo `name` no frontmatter de cada `SKILL.md` **deve ser
+> igual ao nome da pasta** da skill (já é o caso neste pacote). Nomes divergentes
+> fazem a skill falhar silenciosamente ao carregar.
+
+### Passo a passo
+
+1. Crie a pasta `.github/` no seu projeto (se ainda não existir).
+2. Copie as pastas `skills/`, `context/` e `examples/` deste pacote para dentro
+   de `.github/`.
+3. No VS Code, abra o chat do Copilot e digite `/` — as skills aparecem como
+   slash commands (ex.: `/scaffolding-widget`, `/code-review`). Você também pode
+   rodar **Chat: Open Customizations** na paleta de comandos para visualizar e
+   gerenciar as skills.
+4. Invoque uma skill com contexto adicional, por exemplo:
+   `/scaffolding-widget widget de notificações`.
+
+> **Escopo de projeto vs. pessoal:** `.github/skills/` deixa as skills versionadas
+> e isoladas no projeto — ideal para testes e para o time. Para reusar as skills
+> em vários projetos, há também os locais pessoais (`~/.copilot/skills/`,
+> `~/.claude/skills/`, `~/.agents/skills/`); nesse caso, o `context/` e o
+> `examples/` também precisam ficar em uma posição que preserve os caminhos
+> relativos. Alternativamente, o setting `chat.agentSkillsLocations` permite
+> apontar outras pastas de skills, mas ele não altera a resolução dos links para
+> `context/` — por isso a estrutura lado a lado continua sendo o caminho mais
+> seguro.
+
+
 ## Arquivos de contexto disponíveis
 
 | Arquivo | Responde |
