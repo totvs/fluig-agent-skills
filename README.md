@@ -56,7 +56,11 @@ fluig-agent-skills/
 ├── skills/                           # procedimentos especializados — "como fazer"
 │   └── <nome>/SKILL.md               # cada skill é um diretório com um SKILL.md
 └── examples/                         # referências concretas mínimas — "como se parece"
-    ├── widget/  ├── layout/  ├── form/  ├── dataset/  └── process-event/
+    ├── widget/
+    ├── layout/
+    ├── form/
+    ├── dataset/
+    └── process-event/
 ```
 
 ## Como usar
@@ -104,7 +108,11 @@ seu-projeto/
     │   ├── conventions.md
     │   └── style-guide.md
     └── examples/      # copie o examples/ deste pacote
-        ├── widget/  ├── layout/  ├── form/  ├── dataset/  └── process-event/
+        ├── widget/
+        ├── layout/
+        ├── form/
+        ├── dataset/
+        └── process-event/
 ```
 
 Com essa disposição os links relativos das skills resolvem corretamente:
