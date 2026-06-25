@@ -426,6 +426,56 @@ corresponde ao **código do artefato**.
 no arquivo base; se ainda assim não existir, retorna a própria chave como string
 literal. Por isso o arquivo base deve conter **todas** as chaves.
 
+### Codificação dos arquivos `.properties`
+
+O tratamento de caracteres especiais difere entre o arquivo base e os arquivos de locale:
+
+| Arquivo | Idioma | Acentuação |
+|---------|--------|------------|
+| `<code>.properties` (base) | **Português** — é o fallback principal | Acentos e caracteres especiais são **permitidos diretamente** |
+| `<code>_pt_BR.properties` e demais locales | Idioma do locale | **Proibido** caractere acentuado ou não-ASCII diretamente; **obrigatório** usar escapes `\uXXXX` (padrão Java Properties) |
+
+**Regra para os arquivos de locale:** nunca escreva caracteres acentuados ou
+fora do ASCII diretamente. Converta-os para a notação `\uXXXX`.
+
+```properties
+# ✅ <code>.properties (base, em Português) — acentuação direta permitida
+application.description=Acompanhe as publicações de uma das comunidades criadas.
+menu.configuration=Configurações
+button.save=Salvar alterações
+```
+
+```properties
+# ✅ <code>_pt_BR.properties (locale) — escapes \uXXXX obrigatórios
+application.description=Acompanhe as publica\u00E7\u00F5es de uma das comunidades criadas.
+menu.configuration=Configura\u00E7\u00F5es
+button.save=Salvar altera\u00E7\u00F5es
+```
+
+```properties
+# ❌ <code>_pt_BR.properties (locale) — NÃO deixar acentos diretamente
+application.description=Acompanhe as publicações de uma das comunidades criadas.
+```
+
+Referência rápida de escapes comuns:
+
+| Caractere | Escape |
+|-----------|--------|
+| ã | `\u00E3` |
+| Ã | `\u00C3` |
+| ç | `\u00E7` |
+| Ç | `\u00C7` |
+| õ | `\u00F5` |
+| Õ | `\u00D5` |
+| á | `\u00E1` |
+| é | `\u00E9` |
+| í | `\u00ED` |
+| ó | `\u00F3` |
+| ú | `\u00FA` |
+| â | `\u00E2` |
+| ê | `\u00EA` |
+| ô | `\u00F4` |
+
 ### Convenção de nomes de chave (dot-notation)
 
 As chaves seguem **notação de ponto** (dot-notation), agrupadas por
