@@ -541,6 +541,18 @@ Pontos de extensão e contexto de execução visíveis ao código:
   e interage **somente** com a API pública de Dataset — sem acesso a componentes
   internos do servidor. A sintaxe segue o padrão rígido do Rhino (não é ES6+) e
   admite interop com Java.
+- **Leitura dos parâmetros (`constraints`)**: os filtros passados pelo chamador
+  chegam no parâmetro `constraints`. Para obter o valor de um filtro, percorra o
+  array e compare `constraint.getFieldName()` com o campo desejado, lendo o valor
+  com `constraint.getInitialValue()` (use os **métodos**, não propriedades). É
+  comum isolar isso em uma função auxiliar (ex.: `obterParametro(constraints, campo)`).
+- **Consumo de serviço externo (REST)**: como não há `fetch` no runtime, o acesso
+  a um sistema externo é feito pelo **Cadastro de Serviços** via
+  `fluigAPI.getAuthorizeClientService()` + `invoke(JSON.stringify(data))`, lendo a
+  resposta com `vo.getResult()` (ver [technologies.md](technologies.md)).
+- **Erro como dado de retorno**: em vez de deixar uma exceção escapar, o padrão é
+  capturar o erro e **retornar um dataset com uma coluna/linha de erro** (ex.: uma
+  coluna `ERROR`), para que o consumidor receba um resultado previsível.
 - **Consumo**: o resultado é consumido por widgets/forms na camada cliente.
 
 ## Evento de processo (BPM)

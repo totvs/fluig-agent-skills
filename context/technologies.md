@@ -95,6 +95,25 @@ Os mecanismos públicos do Rhino para isso são:
 > artefato. A interop não dá acesso a componentes internos do servidor: restringe-se
 > às classes Java padrão da plataforma de execução.
 
+### Sem APIs de navegador; HTTP externo via Cadastro de Serviços
+
+O runtime server-side **não** tem APIs de navegador: não existem `fetch`,
+`XMLHttpRequest`, `window`, `document`, DOM nem `jQuery`. Para consumir um sistema
+**externo via HTTP/REST**, o caminho público e oficial é o **Cadastro de Serviços**
+do Fluig — a URL base e as credenciais são cadastradas na plataforma e o código
+apenas referencia o serviço pelo seu **código** (`serviceCode`):
+
+- Obtenha o cliente com **`fluigAPI.getAuthorizeClientService()`**.
+- Monte um objeto com `companyId`, `serviceCode` (código do serviço cadastrado),
+  `endpoint` (complementa a URL base), `method` (`get`/`post`/...) e
+  `timeoutService`. O `companyId` (tenant atual) pode vir de
+  `fluigAPI.getSecurityService().getCurrentTenantId()`.
+- Invoque com **`clientService.invoke(JSON.stringify(data))`** e leia a resposta
+  com **`vo.getResult()`** (texto, normalmente JSON) — parseando com `JSON.parse(...)`.
+
+> O serviço **precisa estar previamente cadastrado** no Fluig; o código não define
+> URL base nem credenciais.
+
 ## Build e empacotamento público de artefatos WCM
 
 Para iniciar artefatos WCM (widgets, layouts e temas), o Fluig publica
