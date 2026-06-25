@@ -4,9 +4,12 @@
 > Reflete as APIs e convenções de `context/`.
 
 ## Arquivos
+- `form.example.html` — view/markup do formulário: contêiner `fluig-style-guide` e `<form name="form" role="form">`, com CSS do Style Guide e `<script>` de bibliotecas no `<head>`, campos com atributo `name` (obrigatório) e `id`/`for`/`placeholder` por boa prática, rótulos via i18n e script inline antes de `</body>`.
 - `form.example.js` — eventos do formulário: handlers de ciclo de vida (carga e validação) e de campo, em ES6+, com texto visível via i18n e entrada do usuário validada/sanitizada com `WCMAPI.validateXSS`/`DOMPurify.sanitize`.
 
 ## Pontos-chave demonstrados
+- View envolvida por `fluig-style-guide` + `<form>` nomeado; estilos/scripts de biblioteca no `<head>` e scripts inline antes de `</body>`.
+- Todo campo com atributo `name` (obrigatório para o Fluig gravar/ler o valor); `id`/`for`/`placeholder` recomendados por semântica e acessibilidade.
 - Handlers nos pontos de extensão públicos do formulário: ciclo de vida (carga e validação) e eventos de campo.
 - Entrada do usuário tratada como não confiável e validada/sanitizada (`WCMAPI.validateXSS`, `DOMPurify.sanitize`).
 - Texto visível (rótulos/mensagens) via `${i18n.getTranslation('chave')}` — sem strings fixas.

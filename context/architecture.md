@@ -514,6 +514,10 @@ vida do formulário e aos eventos de seus campos.
 
 Pontos de extensão visíveis ao código:
 
+- **View/markup do formulário**: documento HTML com os campos, envolvido por um
+  contêiner `fluig-style-guide` e um `<form>` nomeado. A ordem de scripts/estilos
+  e a obrigatoriedade do atributo `name` nos campos são fonte de verdade de
+  [conventions.md](conventions.md) (seção "Convenções de Form").
 - **Handlers de eventos do formulário**: funções que o desenvolvedor implementa
   para reagir a momentos do ciclo de vida do formulário (ex.: carga e validação).
 - **Eventos de campo**: hooks de validação e reação a mudanças em campos

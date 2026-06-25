@@ -227,6 +227,53 @@ user-profile {
 > em [style-guide.md](style-guide.md); aqui o foco é o escopo por tag, o
 > agrupamento e o uso de variáveis nomeadas para números mágicos.
 
+## Convenções de Form (formulário eletrônico)
+
+A view de um formulário eletrônico é um documento HTML que **deve** envolver os
+campos em um contêiner com a classe `fluig-style-guide` (ativa os estilos e
+componentes do Style Guide) e em um elemento `<form>` nomeado.
+
+### Estrutura base da view
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css"
+          href="/style-guide/css/fluig-style-guide-flat.min.css">
+    <script src="/portal/resources/js/jquery/jquery.js"></script>
+    <script src="/portal/resources/js/jquery/jquery-ui.min.js"></script>
+    <script src="/portal/resources/js/mustache/mustache-min.js"></script>
+    <script src="/style-guide/js/fluig-style-guide.min.js"></script>
+</head>
+<body>
+    <div class="fluig-style-guide">
+        <form name="form" role="form">
+            <!-- campos do formulário -->
+        </form>
+    </div>
+</body>
+</html>
+```
+
+### Ordem de scripts e estilos
+
+| Recurso | Onde declarar | Motivo |
+|---------|---------------|--------|
+| CSS (Style Guide) e `<script>` de bibliotecas | No `<head>` | O funcionamento interno do Fluig depende de os estilos e as bibliotecas estarem disponíveis no carregamento da página |
+| Scripts **inline** do formulário | No **fim** da página, antes de `</body>` | Garante que o DOM dos campos já exista quando o script roda |
+
+### Campos do formulário
+
+| Atributo | Obrigatório | Diretriz |
+|----------|-------------|----------|
+| `name` | **Sim** | Todo campo de formulário **deve** ter `name` — é por ele que o Fluig persiste e lê o valor do campo |
+| `id`, `for`, `placeholder`, etc. | Não | **Recomendados** por semântica e boas práticas (acessibilidade, associação `label`/campo, dicas de preenchimento), embora não exigidos pela plataforma |
+
+> **Regra crítica:** um campo sem `name` não é gravado nem recuperado pelo Fluig.
+> Associe cada `label` ao seu campo via `for`/`id` para acessibilidade, mesmo que
+> não seja obrigatório.
+
 ## Comunicação entre artefatos (eventos)
 
 Artefatos de cliente (widgets e Web Components) comunicam-se por **eventos**,

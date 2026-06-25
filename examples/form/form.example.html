@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<!-- Exemplo mínimo de referência — view de Form Fluig -->
+<!-- Demonstra: contêiner fluig-style-guide, <form> nomeado, CSS/scripts de -->
+<!-- biblioteca no <head>, campos com atributo name (obrigatório) e label -->
+<!-- associada via for/id. Não é um projeto completo. -->
+<!-- Ver context/conventions.md (seção "Convenções de Form") e context/architecture.md. -->
+<html>
+<head>
+    <!-- Estilos e scripts de biblioteca SEMPRE no <head> (funcionamento interno do Fluig) -->
+    <link rel="stylesheet" type="text/css"
+          href="/style-guide/css/fluig-style-guide-flat.min.css">
+    <script src="/portal/resources/js/jquery/jquery.js"></script>
+    <script src="/portal/resources/js/jquery/jquery-ui.min.js"></script>
+    <script src="/portal/resources/js/mustache/mustache-min.js"></script>
+    <script src="/style-guide/js/fluig-style-guide.min.js"></script>
+</head>
+<body>
+    <!-- Contêiner fluig-style-guide ativa os estilos/componentes do Style Guide -->
+    <div class="fluig-style-guide">
+        <form name="form" role="form">
+
+            <!-- Campo: name é OBRIGATÓRIO; id/for/placeholder recomendados por semântica -->
+            <div class="form-group">
+                <label for="requesterName">${i18n.getTranslation('form.label.requesterName')}</label>
+                <input type="text" class="form-control"
+                       id="requesterName" name="requesterName"
+                       placeholder="${i18n.getTranslation('form.placeholder.requesterName')}">
+            </div>
+
+            <div class="form-group">
+                <label for="startDate">${i18n.getTranslation('form.label.startDate')}</label>
+                <input type="date" class="form-control"
+                       id="startDate" name="startDate">
+            </div>
+
+            <div class="form-group">
+                <label for="days">${i18n.getTranslation('form.label.days')}</label>
+                <input type="number" class="form-control"
+                       id="days" name="days" min="1">
+            </div>
+
+        </form>
+    </div>
+
+    <!-- Scripts inline do formulário: no FIM da página, antes de </body> -->
+    <script>
+        // Lógica inline opcional do formulário (ex.: inicialização de componentes).
+    </script>
+</body>
+</html>
