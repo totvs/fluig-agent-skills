@@ -100,8 +100,8 @@ referência canônica completa está em `architecture.md`.
 Somente o mínimo para orientar a geração; o detalhe está no contexto:
 
 - `application.code` **deve ser igual** a `locale.file.base.name` — divergência quebra a i18n (regra crítica) → ver `architecture.md`.
-- Elemento raiz **deve** conter a classe `fluig-style-guide` → ver `conventions.md`.
-- `instanceId` **só** em atributos `id`, com separador `_` (ex.: `id="MyWidget_${instanceId}"`); proibido em `data-*` e `class` → ver `conventions.md`.
+- Elemento raiz **deve** conter as 3 classes obrigatórias fixas: `fluig-style-guide`, `super-widget` e `wcm-widget-class`, além da classe específica do widget → ver `conventions.md`.
+- `instanceId` **só** em atributos `id`, com **exatamente um** `_` como separador; **na `div` raiz**, a parte antes do `_` em **camelCase com inicial minúscula** (ex.: `id="myWidget_${instanceId}"`); nunca mais de um `_` na div raiz (a SuperWidget faz split por ele); proibido em `data-*` e `class` → ver `conventions.md`.
 - `.instance()` chamado **sem** `instanceId` (injetado pelo framework; no JS use `this.instanceId`) → ver `conventions.md`.
 - Bindings declarativos: chave sem o prefixo `data-`; `local` para elementos dentro da raiz, `global` para elementos fora (modais) → ver `conventions.md`.
 - Texto visível via i18n; nunca strings fixas nem acesso a `i18n` como objeto JS → ver `conventions.md`.
@@ -123,8 +123,7 @@ Somente o mínimo para orientar a geração; o detalhe está no contexto:
 1. Definir o nome do widget (PascalCase) a partir da entrada e derivar a classe, o `id` raiz e o `<code>` (minúsculo) usado nos arquivos.
 2. Criar a estrutura de pastas oficial (ver "Estrutura de Saída") e o descritor **`application.info`** com os campos completos: `application.type=widget`, `application.renderer=freemarker`, `view.file=view.ftl`, `edit.file=edit.ftl`, `application.version=${build.version}-${build.revision}`, os recursos CSS/JS e os dados do desenvolvedor (ver a tabela completa em `architecture.md`).
 3. Criar a **view de edição `edit.ftl`** (em `src/main/resources/`, irmã da `view.ftl`); pode ser vazia, mas é obrigatória e referenciada por `edit.file=edit.ftl`.
-4. Criar a **view `view.ftl`** (em `src/main/resources/`) com um elemento raiz contendo `class="fluig-style-guide ..."`, `id="<Nome>_${instanceId}"` e `data-params="<Nome>.instance({})"`.
-5. Marcar os elementos interativos com atributos `data-*` (ex.: `data-save`) cujas chaves serão usadas nos bindings (sem o prefixo `data-`).
+4. Criar a **view `view.ftl`** (em `src/main/resources/`) com um elemento raiz contendo `class="fluig-style-guide super-widget wcm-widget-class ..."`, `id="<nomeWidget>_${instanceId}"` (camelCase com inicial minúscula, exatamente um `_`) e `data-params="<nomeWidget>.instance({})"`. As 3 classes obrigatórias fixas são: `fluig-style-guide`, `super-widget` e `wcm-widget-class`; a classe específica do widget é adicionada a seguir.5. Marcar os elementos interativos com atributos `data-*` (ex.: `data-save`) cujas chaves serão usadas nos bindings (sem o prefixo `data-`).
 6. Criar os arquivos **`.properties` de i18n** (base + `pt_BR`/`en_US`/`es`) com as chaves usadas e aplicar i18n em todo texto visível via `${i18n.getTranslation('chave')}`.
 7. Criar o **arquivo JS** (`webapp/resources/js/<code>.js`) com `var <Nome> = SuperWidget.extend({ ... })` (a variável raiz usa `var` — exceção controlada; ver `conventions.md`), declarando `init()` (preparar estado, carregar dados, vincular comportamento) e `bindings: { local: { ... }, global: { ... } }`.
 8. Implementar os métodos referenciados pelos bindings; dentro do JS, usar `this.instanceId` quando necessário.
@@ -156,8 +155,8 @@ Use `examples/widget/` como referência mínima (view `.ftl` + arquivo `*.widget
 - [ ] Arquivos **`.properties` de i18n** (base + `pt_BR`/`en_US`/`es`) com as mesmas chaves usadas na view/JS.
 - [ ] Presença da pasta `WEB-INF` (com `web.xml` + `jboss-web.xml`) e `context-root` = `/<application.code>` → ver `architecture.md`.
 - [ ] `pom.xml` presente quando o projeto usa Maven ou sob pedido (coordenadas inspecionadas, nunca inventadas).
-- [ ] Elemento raiz da view contém a classe `fluig-style-guide`.
-- [ ] `instanceId` aparece **apenas** em atributos `id`, com separador `_`.
+- [ ] Elemento raiz da view contém as **3 classes obrigatórias fixas**: `fluig-style-guide`, `super-widget` e `wcm-widget-class`, além da classe específica do widget.
+- [ ] `id` da **div raiz** usa camelCase com inicial minúscula + exatamente um `_` (ex.: `myWidget_${instanceId}`). Nunca mais de um `_` na div raiz. Demais `id`s internos seguem o padrão do artefato.
 - [ ] `.instance()` é chamado sem `instanceId`.
 - [ ] Bindings usam a chave sem o prefixo `data-` (escopo local/global correto).
 - [ ] Todo texto visível usa i18n — sem strings fixas.

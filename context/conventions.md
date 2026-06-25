@@ -46,11 +46,11 @@ Regras críticas e específicas do padrão de widget:
 
 | Regra | Diretriz |
 |-------|----------|
-| Classe raiz | O elemento raiz **deve** conter a classe `fluig-style-guide` (ativa os estilos/componentes do Style Guide no escopo do widget) |
-| `instanceId` | Usar **exclusivamente** em atributos `id`, com separador `_` (underscore). Ex.: `id="MyWidget_${instanceId}"` |
+| Classes raiz obrigatórias | O elemento raiz **deve** conter **exatamente estas 3 classes fixas** (além da classe específica do widget): `fluig-style-guide` (ativa os estilos/componentes do Style Guide), `super-widget` (identifica o componente como SuperWidget) e `wcm-widget-class` (classe fixa da plataforma). Ex.: `class="fluig-style-guide super-widget wcm-widget-class weather-widget"` |
+| `instanceId` | Usar **exclusivamente** em atributos `id`, com **exatamente um** `_` (underscore) como separador. **Na `div` raiz do widget**, a parte antes do `_` deve ser **camelCase com inicial minúscula**; nunca use mais de um `_` na div raiz pois a SuperWidget faz split por ele. Ex.: `id="myWidget_${instanceId}"` |
 | `instanceId` proibido em | Atributos `data-*` e `class` (devem ser estáticos) |
 | `.instance()` | Chamar **sem** o `instanceId` — ele é injetado automaticamente pelo framework. Dentro do JS, use `this.instanceId` |
-| Separador | Sempre `_`, nunca `-`, antes do `instanceId` |
+| Separador | Exatamente **um** `_`, nunca `-` e nunca mais de um `_`, antes do `instanceId` (especialmente na div raiz) |
 
 Bindings declarativos associam eventos a métodos. A chave do binding é o valor do
 atributo `data-*` **sem** o prefixo `data-` (o framework adiciona `data-`
@@ -62,9 +62,11 @@ automaticamente).
 | Global | `bindings.global` | Elementos **fora** do escopo (modais, dropdowns renderizados no `body`) |
 
 ```html
-<!-- ✅ raiz com fluig-style-guide; instanceId só no id, com _ -->
-<div id="MyWidget_${instanceId}" class="fluig-style-guide wcm-widget-class"
-     data-params="MyWidget.instance({})">
+<!-- ✅ raiz com as 3 classes obrigatórias + classe do widget; instanceId só no id, com _ -->
+<!-- id: camelCase com inicial minúscula + exatamente um _ -->
+<div id="myWidget_${instanceId}"
+     class="fluig-style-guide super-widget wcm-widget-class my-widget"
+     data-params="myWidget.instance({})">
   <button data-save-filter>...</button>
 </div>
 ```

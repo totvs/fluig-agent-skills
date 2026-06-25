@@ -1,11 +1,12 @@
 <#-- Exemplo mínimo de referência — View de Widget Fluig (FreeMarker) -->
-<#-- Demonstra: raiz fluig-style-guide, instanceId só no id (separador _), -->
-<#-- instance() sem instanceId, data-* para bindings e i18n para texto visível. -->
+<#-- Demonstra: raiz com 3 classes fixas + classe do widget, instanceId só no id  -->
+<#-- (camelCase inicial minúscula + exatamente um _), instance() sem instanceId,  -->
+<#-- data-* para bindings e i18n para texto visível.                              -->
 <#-- Não é um projeto completo. Ver context/conventions.md e context/style-guide.md. -->
 
-<div id="Notifications_${instanceId}"
-     class="fluig-style-guide notifications-widget"
-     data-params="Notifications.instance({})">
+<div id="notifications_${instanceId}"
+     class="fluig-style-guide super-widget wcm-widget-class notifications-widget"
+     data-params="notifications.instance({})">
 
   <div class="row">
     <div class="col-xs-12">
