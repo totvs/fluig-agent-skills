@@ -31,17 +31,19 @@ Substituir, com responsabilidade única, **CSS customizado e comportamentos recr
 
 Leia antes de executar — não reproduza o conteúdo aqui:
 
-- [style-guide.md](../../context/style-guide.md) — **categorias do Style Guide** (CSS, Components, Forms, JavaScript plugins, Chart, Miscellaneous) e **famílias de classes helper `fs-*`** (espaçamento, display, flexbox, texto, tamanho, float, background, borda, cursor e alinhamento); além da API JavaScript pública (`FLUIGC`), sistema de grid (Bootstrap 3.4.1), ícones, componentes/classes utilitárias, helpers de comportamento (`FLUIGC.utilities`) e a regra de tema via `var(--fs-color-*)`.
+- [style-guide.md](../../context/style-guide.md) — **categorias do Style Guide** (CSS, Components, Forms, JavaScript plugins, Chart, Miscellaneous) e **classes helper `fs-*`** (scrollbar, posicionamento, display, flexbox com gap, tamanho, espaçamento responsivo com breakpoints, tipografia, cursor, background, cor de texto, formulário e utilitários gerais); além da API JavaScript pública (`FLUIGC`), sistema de grid (Bootstrap 3.4.1), ícones, helpers de comportamento (`FLUIGC.utilities`) e a regra de tema via `var(--fs-color-*)`.
+- Referência completa das **classes helper `fs-*`**: `references/helpers-and-variables-css/helper-classes.md`.
 
 ## Regras Aplicáveis (Resumo Executivo)
 
 Somente o mínimo para orientar a tarefa; o catálogo completo está no contexto:
 
 - **Reutilizar componentes/classes do Style Guide** (botões, cards, alertas, tabelas, formulários, tipografia) antes de escrever CSS próprio → ver `style-guide.md`.
+- ⚠️ **Proibido inventar classes helpers ou variáveis CSS.** Usar **somente** as classes documentadas em `references/helpers-and-variables-css/helper-classes.md` e as variáveis documentadas em `references/helpers-and-variables-css/css-variables.md`. Se não estiver nessas referências, não existe no Style Guide.
 - Usar o **grid responsivo** (`.container`/`.row`/`.col-*`) em vez de posicionamento/medidas fixas → ver `style-guide.md`.
 - Usar a **API pública `FLUIGC.*`** (ex.: `modal`, `toast`, `datatable`, `calendar`, `select`, `loading`) em vez de recriar comportamentos → ver `style-guide.md`.
 - Usar **ícones do Style Guide** (`flat`/`animalia`, `FLUIGC.icons()`) em vez de imagens próprias → ver `style-guide.md`.
-- Aproveitar **classes utilitárias** (espaçamento, alinhamento, visibilidade responsiva) e as **famílias de classes helper `fs-*`** do Style Guide, além de `FLUIGC.utilities` (ex.: `randomUUID`, `parseBoolean`) → ver `style-guide.md` (categorias e famílias `fs-*`).
+- Aproveitar **classes utilitárias** (espaçamento, alinhamento, visibilidade responsiva) e as **classes helper `fs-*`** do Style Guide — scrollbar, posicionamento, display, flexbox (alinhamento, justify, direção, gap), tamanho, espaçamento responsivo com breakpoints (`fs-mt-24`, `sm:fs-mt-16`), tipografia, cursor, background, cor de texto e utilitários gerais; referência completa em `references/helpers-and-variables-css/helper-classes.md` → ver `style-guide.md`.
 - Manter cores de tema via `var(--fs-color-*)` (sem hexadecimais fixos) ao ajustar estilos remanescentes → ver `style-guide.md`.
 - Garantir a classe `fluig-style-guide` na raiz para que os estilos/componentes se apliquem no escopo do widget → ver `style-guide.md`.
 

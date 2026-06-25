@@ -31,13 +31,15 @@ Adaptar, com responsabilidade única, o **CSS de uma customização ao modo escu
 
 Leia antes de executar — não reproduza o conteúdo aqui:
 
-- [style-guide.md](../../context/style-guide.md) — seção **Theming e dark mode (variáveis CSS)**: regra obrigatória de usar `var(--fs-color-*)`, proibição de hexadecimais fixos e de variáveis SCSS para cores de tema, famílias de tokens confirmadas (marca, ação, neutros, feedback), tokens de tipografia/sombra e a **tabela de mapeamento de cores** (uso comum → `var(--fs-color-*)` e hexadecimal → `var(--fs-color-*)`) usada para converter cores fixas.
+- [style-guide.md](../../context/style-guide.md) — seção **Theming e dark mode (variáveis CSS)**: regra obrigatória de usar `var(--fs-color-*)`, proibição de hexadecimais fixos e de variáveis SCSS para cores de tema, tabelas completas de todas as famílias de tokens (marca, ação, neutros, feedback com tons `lightest`→`darkest`, sombras `--fs-shadow-*`) e a **tabela de mapeamento de cores** (uso comum → `var(--fs-color-*)` e hexadecimal → `var(--fs-color-*)`) usada para converter cores fixas.
+- Referência completa das **variáveis CSS**: `references/helpers-and-variables-css/css-variables.md`.
 
 ## Regras Aplicáveis (Resumo Executivo)
 
 Somente o mínimo para orientar a tarefa; o detalhe e o catálogo de tokens estão no contexto:
 
 - Para **qualquer cor de tema**, usar variáveis CSS no formato `var(--fs-color-*)` → ver `style-guide.md`.
+- ⚠️ **Proibido inventar variáveis CSS.** Usar **somente** as variáveis documentadas em `references/helpers-and-variables-css/css-variables.md`. Se uma variável não estiver nessa referência, ela não existe no Style Guide — nesse caso, use um valor CSS convencional ou CSS próprio escopado.
 - **Hexadecimais fixos e variáveis SCSS (`$...`) para cores de tema são proibidos** — não acompanham a troca de tema e quebram o dark mode → ver `style-guide.md`.
 - Ao converter cores fixas, consultar a **tabela de mapeamento de cores** (uso comum → variável e hexadecimal → variável) que vive em `style-guide.md` → ver `style-guide.md`.
 - Escolher a **família de token** conforme o papel da cor: marca (`--fs-color-brand-*`), ação (`--fs-color-action-*`), neutros (`--fs-color-neutral-*`), feedback (`--fs-color-positive/negative/warning/info-*`) → ver `style-guide.md`.

@@ -95,27 +95,45 @@ seguir.
 ## Classes helper `fs-*`
 
 As classes helper `fs-*` são utilitárias **públicas** do Fluig Style Guide,
-prontas para aplicar estilos comuns (espaçamento, display, flexbox, texto,
-tamanho, float, background, borda, cursor e alinhamento) sem escrever CSS
-próprio. **Priorize-as antes de criar CSS customizado**: por serem do Style
-Guide, garantem consistência visual e adaptação automática ao tema (inclusive
-dark mode).
+prontas para aplicar estilos comuns sem escrever CSS próprio. **Priorize-as antes
+de criar CSS customizado**: por serem do Style Guide, garantem consistência visual
+e adaptação automática ao tema (inclusive dark mode).
 
-Esta enumeração é a **fonte única de verdade** das famílias `fs-*` no pacote; as
-skills (ex.: `style-guide-helpers`) referenciam esta seção em vez de reproduzir a
-lista.
+A referência completa e oficial está em
+`references/helpers-and-variables-css/helper-classes.md`. As categorias
+disponíveis são:
 
-| Prefixo/Família | Categoria | Exemplos |
-|-----------------|-----------|----------|
-| `fs-margin-*`, `fs-padding-*` | Espaçamento | `fs-margin-top-md`, `fs-no-padding` |
-| `fs-display-*` | Display | `fs-display-flex`, `fs-display-none` |
-| `fs-flex-*` | Flexbox | `fs-flex-row`, `fs-justify-center` |
-| `fs-text-*` | Alinhamento e tamanho de texto | `fs-text-center`, `fs-text-lg` |
-| `fs-width-*`, `fs-height-*` | Tamanho | `fs-full-width`, `fs-width-100` |
-| `fs-float-*`, `fs-clear-*` | Float e clear | `fs-float-left`, `fs-clearfix` |
-| `fs-bg-*`, `fs-border-*` | Background e borda | `fs-bg-transparent`, `fs-no-border` |
-| `fs-cursor-*` | Cursor | `fs-cursor-pointer` |
-| `fs-vertical-*` | Alinhamento vertical | `fs-vertical-middle` |
+| Categoria | Classes / Padrão | Exemplos |
+|-----------|-----------------|---------|
+| **Scrollbar** | `fs-scrollbar`, `fs-scrollbar-thin` | `fs-scrollbar` |
+| **Posicionamento** | `fs-float-*`, `fs-clear-*`, `fs-overflow-*`, `fs-position-*`, `fs-clearfix` | `fs-float-left`, `fs-overflow-hidden`, `fs-position-relative` |
+| **Display** | `fs-display-*` | `fs-display-flex`, `fs-display-none`, `fs-display-grid` |
+| **Flexbox — alinhamento** | `fs-align-items-*`, `fs-align-self-*` | `fs-align-items-center`, `fs-align-self-flex-end` |
+| **Flexbox — justify** | `fs-justify-content-*` | `fs-justify-content-center`, `fs-justify-content-space-between` |
+| **Flexbox — direção/wrap** | `fs-flex-direction-*`, `fs-flex-wrap-*`, `fs-flex-1` | `fs-flex-direction-column`, `fs-flex-wrap-wrap` |
+| **Flexbox — gap** | `fs-{xs\|sm\|md\|lg\|xl}-gap[-horizontal\|-vertical]` | `fs-md-gap`, `fs-sm-gap-horizontal` |
+| **Tamanho — largura** | `fs-width-*`, `fs-min-width-*`, `fs-max-width-*`, `fs-full-width`, `fs-half-width`, `fs-one-third-width`, `fs-one-fourth-width`, `fs-one-fifth-width`, `fs-one-sixth-width`, `fs-max-full-width`, `fs-width-inherit`, `fs-width-auto` | `fs-full-width`, `fs-width-200` |
+| **Tamanho — altura** | `fs-height-*`, `fs-min-height-*`, `fs-max-height-*`, `fs-height-auto`, `fs-height-inherit`, `fs-no-resize` | `fs-height-100`, `fs-min-height-50` |
+| **Espaçamento** | `fs-{m\|mt\|mb\|ml\|mr\|mx\|my}-{0\|4\|8\|16\|24\|32\|40\|48\|56\|64\|auto}` e variantes com breakpoint `{xs\|sm\|md\|lg}:fs-*` | `fs-mt-24`, `sm:fs-mt-16`, `xs:fs-mb-8` |
+| **Padding** | `fs-{p\|pt\|pb\|pl\|pr\|px\|py}-{valor}` com variantes de breakpoint | `fs-pb-16`, `sm:fs-pb-8` |
+| **Tipografia — alinhamento** | `fs-text-left`, `fs-text-right`, `fs-text-center`, `fs-text-justify`, `fs-text-center-all` | `fs-text-center` |
+| **Tipografia — alinhamento vertical** | `fs-v-align-top`, `fs-v-align-middle`, `fs-v-align-bottom` | `fs-v-align-middle` |
+| **Tipografia — tamanho** | `fs-text-xs` (10px), `fs-text-sm` (12px), `fs-text-md` (14px), `fs-text-lg` (16px), `fs-text-xl` (18px), `fs-text-xxl` (24px), `fs-text-xxxl` (30px) | `fs-text-sm`, `fs-text-lg` |
+| **Tipografia — estilo** | `fs-font-bold`, `fs-no-bold`, `fs-font-italic`, `fs-nowrap`, `fs-ellipsis`, `fs-text-uppercase`, `fs-text-lowercase`, `fs-text-capitalize`, `fs-text-underline`, `fs-no-text-underline`, `fs-word-break`, `fs-word-break-all`, `fs-no-word-break`, `fs-white-space-normal`, `fs-small-letter-spacing`, `fs-list-style-disc`, `fs-no-list-style` | `fs-ellipsis`, `fs-font-bold` |
+| **Cursor** | `fs-cursor-*` | `fs-cursor-pointer`, `fs-cursor-not-allowed`, `fs-cursor-grab` |
+| **Background** | `fs-bg-white`, `fs-bg-black`, `fs-bg-gray`, `fs-bg-danger`, `fs-bg-warning`, `fs-bg-info`, `fs-bg-success` | `fs-bg-white` |
+| **Cor de texto** | `fs-color-white`, `fs-color-black`, `fs-color-gray`, `fs-color-danger`, `fs-color-warning`, `fs-color-info`, `fs-color-success` | `fs-color-danger` |
+| **Formulário** | `fs-no-style-input`, `fs-no-spin` | `fs-no-spin` |
+| **Utilitários gerais** | `fs-break-text`, `fs-text-access`, `fs-pointer-events-none` | `fs-pointer-events-none` |
+| **Responsivos** | Prefixo `fs-{xs\|sm\|md\|lg}-*` para float, display, width, border, font-size, margin, padding, flex e alinhamento | `md:fs-half-width`, `lg:fs-one-third-width` |
+
+> **Padrão de margin/padding responsivo:**
+> ```html
+> <!-- breakpoint:fs-{propriedade}-{valor} -->
+> <div class="fs-mt-24 sm:fs-mt-16 xs:fs-mt-8 sm:fs-pb-8">...</div>
+> ```
+> Breakpoints: `xs` (<768px) · `sm` (≥768px) · `md` (≥992px) · `lg` (≥1200px)
+
 
 ### Quando criar CSS customizado
 
@@ -130,6 +148,12 @@ necessidade. Quando o CSS próprio for de fato necessário, mantenha a regra de 
 - ✅ Quando um componente externo **não permitir** alterar suas classes.
 - ❌ **Nunca** para sobrescrever estilos de componentes existentes do Style Guide.
 - ❌ **Nunca** quando já existir uma classe helper equivalente.
+
+> ⚠️ **Proibido inventar classes helpers ou variáveis CSS.**
+> Use **somente** as classes listadas em `references/helpers-and-variables-css/helper-classes.md`
+> e as variáveis listadas em `references/helpers-and-variables-css/css-variables.md`.
+> Se uma classe ou variável não estiver nessas referências, ela **não existe** no
+> Style Guide — nesse caso, use CSS próprio escopado ou confirme com o desenvolvedor.
 
 ## Sistema de grid
 
@@ -163,10 +187,12 @@ visual e adaptação automática ao tema.
   próprio.
 - **Classes utilitárias** do Bootstrap (espaçamento, alinhamento, tipografia,
   visibilidade responsiva) estão disponíveis no escopo `fluig-style-guide`.
-- **Classes helper `fs-*`** do próprio Style Guide cobrem espaçamento, display,
-  flexbox, texto, tamanho, float, background, borda, cursor e alinhamento — ver a
-  subseção [Classes helper `fs-*`](#classes-helper-fs-) acima. Prefira-as a CSS
-  customizado.
+- **Classes helper `fs-*`** do próprio Style Guide cobrem scrollbar, posicionamento,
+  display, flexbox (alinhamento, justify, direção, gap), tamanho, espaçamento
+  responsivo, tipografia, cursor, background, cor de texto, formulário e utilitários
+  gerais — ver a subseção [Classes helper `fs-*`](#classes-helper-fs-) acima e a
+  referência completa em `references/helpers-and-variables-css/helper-classes.md`.
+  Prefira-as a CSS customizado.
 - **Helpers de comportamento** via `FLUIGC.utilities` (ex.: `randomUUID()`,
   `parseBoolean(value)`, `ctrlIsPressed(ev)`).
 
@@ -176,6 +202,9 @@ O Style Guide define seu tema por **CSS custom properties** declaradas em
 `:root`. Há mapas de cores para **modo claro e modo escuro**, então usar as
 variáveis garante que o componente se adapte automaticamente ao tema ativo
 (inclusive dark mode), sem código adicional.
+
+A referência completa e oficial de todas as variáveis está em
+`references/helpers-and-variables-css/css-variables.md`.
 
 **Regra obrigatória:** para qualquer cor de tema, **use variáveis CSS no formato
 `var(--fs-color-*)`**. São **proibidos** para cores de tema:
@@ -187,22 +216,66 @@ variáveis garante que o componente se adapte automaticamente ao tema ativo
 - ✅ Sempre **variáveis CSS** `var(--fs-color-*)`; para cores neutras, prefira as
   variáveis que se invertem entre os modos claro e escuro.
 
-Famílias de tokens de cor confirmadas (padrão `--fs-color-<família>-<tom>`):
+### Famílias de variáveis de cor
 
-| Família | Exemplos confirmados |
-|---------|----------------------|
-| Marca | `--fs-color-brand-01-light`, `--fs-color-brand-01-base`, `--fs-color-brand-01-darkest` |
-| Ação | `--fs-color-action-default`, `--fs-color-action-hover`, `--fs-color-action-pressed`, `--fs-color-action-disabled`, `--fs-color-action-focus` |
-| Neutros | `--fs-color-neutral-light-00`, `--fs-color-neutral-light-05`, `--fs-color-neutral-mid-40`, `--fs-color-neutral-dark-90`, `--fs-color-neutral-dark-95` |
-| Feedback | `--fs-color-positive-*`, `--fs-color-negative-*`, `--fs-color-warning-*`, `--fs-color-info-*` |
+Padrão de nome: `--fs-color-<família>-<tom>`
 
-Tokens de tipografia e sombra também são expostos como variáveis, por exemplo:
+**Marca** — invertidas entre Light e Dark:
 
-| Token | Uso |
-|-------|-----|
-| `--fs-font-family` | Família tipográfica padrão (`'Lato', Arial, sans-serif`) |
-| `--fs-font-size` / `--fs-font-color` | Tamanho e cor de fonte padrão |
-| `--fs-shadow-sm` / `--fs-shadow-md` | Sombras padronizadas |
+| Variável | Light | Dark |
+|----------|-------|------|
+| `--fs-color-brand-01-lightest` | `#e3eefb` | `#051f31` |
+| `--fs-color-brand-01-lighter` | `#afd3fa` | `#004064` |
+| `--fs-color-brand-01-light` | `#3dadfa` | `#00659a` |
+| `--fs-color-brand-01-base` | `#0079b8` | `#0079b8` |
+| `--fs-color-brand-01-dark` | `#00659a` | `#3dadfa` |
+| `--fs-color-brand-01-darker` | `#004064` | `#afd3fa` |
+| `--fs-color-brand-01-darkest` | `#051f31` | `#e3eefb` |
+
+**Ação** — apontam para variáveis de marca e herdam inversão automática:
+
+| Variável | Light | Dark |
+|----------|-------|------|
+| `--fs-color-action-default` | `brand-01-base` | `brand-01-dark` |
+| `--fs-color-action-hover` | `brand-01-dark` | `brand-01-darker` |
+| `--fs-color-action-pressed` | `brand-01-darker` | `brand-01-darkest` |
+| `--fs-color-action-disabled` | `neutral-mid-40` | `neutral-mid-40` |
+| `--fs-color-action-focus` | `brand-01-darkest` | `brand-01-darkest` |
+
+**Neutras** — invertidas automaticamente entre Light e Dark:
+
+| Variável | Light | Dark |
+|----------|-------|------|
+| `--fs-color-neutral-light-00` | `#ffffff` | `#1c1c1c` |
+| `--fs-color-neutral-light-05` | `#eeeeee` | `#202020` |
+| `--fs-color-neutral-light-10` | `#d9d9d9` | `#2b2b2b` |
+| `--fs-color-neutral-light-20` | `#c1c1c1` | `#3b3b3b` |
+| `--fs-color-neutral-light-30` | `#a1a1a1` | `#5a5a5a` |
+| `--fs-color-neutral-mid-40` | `#7c7c7c` | `#7c7c7c` |
+| `--fs-color-neutral-mid-60` | `#5a5a5a` | `#a1a1a1` |
+| `--fs-color-neutral-dark-70` | `#3b3b3b` | `#c1c1c1` |
+| `--fs-color-neutral-dark-80` | `#2b2b2b` | `#d9d9d9` |
+| `--fs-color-neutral-dark-90` | `#202020` | `#eeeeee` |
+| `--fs-color-neutral-dark-95` | `#1c1c1c` | `#fbfbfb` |
+
+**Feedback** — cada família tem tons `lightest → darkest` (também invertidos):
+
+| Família | Variáveis disponíveis |
+|---------|-----------------------|
+| Positivo | `--fs-color-positive-lightest` … `--fs-color-positive-darkest` |
+| Negativo | `--fs-color-negative-lightest` … `--fs-color-negative-darkest` |
+| Aviso | `--fs-color-warning-lightest` … `--fs-color-warning-darkest` |
+| Informação | `--fs-color-info-lightest` … `--fs-color-info-darkest` |
+
+**Sombras** — use em vez de valores `box-shadow` fixos:
+
+| Variável | Intensidade |
+|----------|-------------|
+| `--fs-shadow-none` | Sem sombra |
+| `--fs-shadow-sm` | Leve |
+| `--fs-shadow-md` | Padrão |
+| `--fs-shadow-lg` | Forte |
+| `--fs-shadow-xl` | Extra forte |
 
 ### Mapeamento de uso comum → variável CSS
 
@@ -218,6 +291,13 @@ Para cada uso comum de cor, prefira a variável CSS correspondente:
 | Background cinza claro | `var(--fs-color-neutral-light-05)` ou `var(--fs-color-neutral-light-10)` |
 | Background cinza com destaque | `var(--fs-color-neutral-light-20)` |
 | Borda padrão | `var(--fs-color-neutral-light-20)` ou `var(--fs-color-neutral-light-30)` |
+| Sombra padrão | `var(--fs-shadow-md)` |
+| Ação interativa | `var(--fs-color-action-default)` |
+| Ação hover | `var(--fs-color-action-hover)` |
+| Feedback positivo | `var(--fs-color-positive-base)` |
+| Feedback negativo | `var(--fs-color-negative-base)` |
+| Feedback aviso | `var(--fs-color-warning-base)` |
+| Feedback informação | `var(--fs-color-info-base)` |
 
 ### Substituição de hexadecimais comuns → variável CSS
 
@@ -227,14 +307,13 @@ pela variável CSS equivalente (cor neutra que se adapta ao tema ativo):
 | Hex antigo | Variável CSS | Contexto |
 |------------|--------------|----------|
 | `#ffffff` | `var(--fs-color-neutral-light-00)` | Background branco |
-| `#f5f5f5` | `var(--fs-color-neutral-light-05)` | Background cinza muito claro |
 | `#eeeeee` | `var(--fs-color-neutral-light-05)` | Background cinza claro |
-| `#ddd` | `var(--fs-color-neutral-light-10)` | Background cinza |
-| `#cccccc` | `var(--fs-color-neutral-light-20)` | Borda ou cinza médio |
-| `#a6a6a6` | `var(--fs-color-neutral-light-30)` | Cinza escuro |
-| `#000000` | `var(--fs-color-neutral-dark-95)` | Texto preto |
-| `#333333` | `var(--fs-color-neutral-dark-70)` | Texto cinza escuro |
-| `#58595b` | `var(--fs-color-neutral-mid-60)` | Cinza médio |
+| `#d9d9d9` | `var(--fs-color-neutral-light-10)` | Background cinza |
+| `#c1c1c1` | `var(--fs-color-neutral-light-20)` | Borda ou cinza médio |
+| `#a1a1a1` | `var(--fs-color-neutral-light-30)` | Cinza escuro |
+| `#1c1c1c` | `var(--fs-color-neutral-dark-95)` | Texto preto |
+| `#3b3b3b` | `var(--fs-color-neutral-dark-70)` | Texto cinza escuro |
+| `#5a5a5a` | `var(--fs-color-neutral-mid-60)` | Cinza médio |
 
 > **Iconfonts e ilustrações:** os ícones (icon fonts) **herdam a cor do texto**
 > automaticamente — não defina cores manualmente neles. Para ilustrações que
@@ -246,6 +325,7 @@ pela variável CSS equivalente (cor neutra que se adapta ao tema ativo):
 .my-widget__header {
   color: var(--fs-color-neutral-dark-90);
   background-color: var(--fs-color-neutral-light-00);
+  box-shadow: var(--fs-shadow-md);
 }
 
 /* ❌ hexadecimal fixo — não acompanha o tema, quebra o dark mode */
@@ -263,3 +343,5 @@ pela variável CSS equivalente (cor neutra que se adapta ao tema ativo):
   raiz do widget: [conventions.md](conventions.md).
 - Para versões das bibliotecas client-side (jQuery, Bootstrap, Kendo UI):
   [technologies.md](technologies.md).
+- Referência completa de **variáveis CSS**: `references/helpers-and-variables-css/css-variables.md`.
+- Referência completa de **classes helper `fs-*`**: `references/helpers-and-variables-css/helper-classes.md`.
