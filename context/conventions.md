@@ -276,6 +276,112 @@ componentes do Style Guide) e em um elemento `<form>` nomeado.
 > Associe cada `label` ao seu campo via `for`/`id` para acessibilidade, mesmo que
 > não seja obrigatório.
 
+### Internacionalização (i18n) em formulários
+
+> **Mecanismo exclusivo de formulários** — completamente diferente do i18n de
+> widgets/layouts (`${i18n.getTranslation(...)}`). **Nunca misture os dois padrões.**
+
+#### Sintaxe no HTML
+
+Todo texto exibido ao usuário no HTML do formulário deve usar `i18n.translate("chave")`.
+**Nunca** use texto fixo em elementos visíveis.
+
+```html
+<!-- ✅ correto: texto via i18n.translate -->
+<label>i18n.translate("customer.name")</label>
+<input name="nm_cliente">
+
+<label>i18n.translate("customer.contact")</label>
+<input name="contato_cliente">
+
+<!-- ❌ errado: texto fixo no HTML -->
+<label>Nome do cliente</label>
+<input name="nm_cliente">
+```
+
+#### Sintaxe em eventos (JavaScript)
+
+Mensagens em handlers de eventos também devem usar `i18n.translate`. **Nunca**
+lance mensagens literais diretamente no JavaScript.
+
+```javascript
+// ✅ correto: mensagem via i18n.translate
+throw i18n.translate("validation.required.field");
+
+// ❌ errado: string literal
+throw new Error('Campo obrigatório.');
+```
+
+#### Convenção de chaves
+
+As chaves seguem **notação de ponto** (dot-notation), descritivas e consistentes:
+
+| Padrão | Uso | Exemplo |
+|--------|-----|---------|
+| `<entidade>.<campo>` | Campos do formulário | `customer.name`, `customer.contact` |
+| `validation.<contexto>` | Mensagens de validação | `validation.required.field`, `validation.invalid.date` |
+| `label.<contexto>` | Labels genéricos | `label.save`, `label.cancel` |
+
+```properties
+# Exemplos de chaves bem nomeadas
+customer.name=Nome
+customer.contact=Contato
+validation.required.field=Campo obrigat\u00F3rio
+```
+
+#### Arquivos `.properties` obrigatórios
+
+Todo formulário **deve** gerar exatamente **3 arquivos `.properties`**, nomeados
+com o código do formulário:
+
+| Arquivo | Locale |
+|---------|--------|
+| `<nomeFormulario>_pt_BR.properties` | Português (Brasil) |
+| `<nomeFormulario>_en_US.properties` | Inglês (EUA) |
+| `<nomeFormulario>_es.properties` | Espanhol |
+
+> Diferentemente de widgets (que têm um arquivo base sem sufixo de locale), os
+> formulários usam **apenas os 3 arquivos com sufixo de locale** listados acima.
+
+Todas as chaves usadas no HTML e nos eventos **devem existir** nos 3 arquivos.
+
+#### Codificação dos arquivos `.properties` de formulários
+
+Todos os 3 arquivos seguem o **padrão Java Properties**: **proibido** caractere
+acentuado ou não-ASCII diretamente — todo caractere fora do ASCII **deve** ser
+convertido para `\uXXXX`.
+
+```properties
+# ✅ correto — escapes \uXXXX obrigatórios em todos os arquivos de locale
+customer.name=Nome
+customer.description=Descri\u00E7\u00E3o
+validation.required.field=Campo obrigat\u00F3rio
+city=S\u00E3o Paulo
+
+# ❌ errado — caracteres acentuados diretos
+customer.description=Descrição
+validation.required.field=Campo obrigatório
+```
+
+Referência de escapes comuns (válida para os 3 arquivos):
+
+| Caractere | Escape |
+|-----------|--------|
+| ã | `\u00E3` |
+| Ã | `\u00C3` |
+| ç | `\u00E7` |
+| Ç | `\u00C7` |
+| õ | `\u00F5` |
+| Õ | `\u00D5` |
+| á | `\u00E1` |
+| é | `\u00E9` |
+| í | `\u00ED` |
+| ó | `\u00F3` |
+| ú | `\u00FA` |
+| â | `\u00E2` |
+| ê | `\u00EA` |
+| ô | `\u00F4` |
+
 ## Comunicação entre artefatos (eventos)
 
 Artefatos de cliente (widgets e Web Components) comunicam-se por **eventos**,
@@ -328,9 +434,9 @@ WCMAPI.addListener(this, 'document-selected', (evt, data) => {
 }, 'document-viewer');
 ```
 
-## Internacionalização (i18n)
+## Internacionalização (i18n) — Widgets e Layouts
 
-> **Escopo:** as convenções de i18n desta seção aplicam-se **exclusivamente a Widgets e Layouts**. Formulários eletrônicos possuem um padrão de i18n diferente que será documentado separadamente. Ao gerar ou editar um formulário, use os textos no idioma solicitado pelo desenvolvedor ou, por padrão, em **Português (Brasil)** — sem aplicar as convenções abaixo.
+> **Escopo:** as convenções desta seção aplicam-se **exclusivamente a Widgets e Layouts**. Formulários eletrônicos possuem um mecanismo de i18n próprio, descrito na seção [Internacionalização (i18n) — Formulários](#internacionalização-i18n--formulários) abaixo. **Não aplique as regras desta seção em formulários.**
 
 Todo texto visível ao usuário em widgets e layouts **deve** vir de i18n — nunca usar strings fixas.
 A tradução é resolvida server-side pelo FreeMarker antes de chegar ao navegador.

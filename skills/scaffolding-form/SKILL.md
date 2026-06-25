@@ -16,64 +16,73 @@ Produzir, com responsabilidade única, o **esqueleto de um Form (formulário ele
 
 - Ao criar um **novo formulário eletrônico** do Fluig a partir do zero.
 - Quando o desenvolvedor fornece um nome/propósito e a lista de campos e quer um ponto de partida correto (campos + view + eventos) seguindo as convenções oficiais.
-- Quando é preciso garantir, desde o início, validação/sanitização da entrada do usuário, i18n nos textos visíveis e código em ES6+.
+- Quando é preciso garantir, desde o início, i18n nos textos visíveis, validação/sanitização da entrada do usuário e código em ES6+.
 
 ## Entradas Esperadas
 
 | Entrada | Descrição | Obrigatória |
 |---------|-----------|-------------|
-| Nome do formulário | Identificador em Inglês do formulário (ex.: `VacationRequest`) | sim |
+| Nome do formulário | Identificador do formulário — usado como prefixo dos arquivos `.properties` (ex.: `vacationRequest`) | sim |
 | Campos | Lista de campos do formulário (nome, tipo e se é obrigatório) | sim |
 | Regras de validação | Regras de preenchimento/consistência por campo ou para o formulário | não |
-| Chaves i18n | Chaves de tradução para rótulos e mensagens visíveis | não |
 
 ## Contexto de Referência (Fonte de Verdade)
 
 Leia antes de executar — não reproduza o conteúdo aqui:
 
 - [architecture.md](../../context/architecture.md) — modelo conceitual do **Form** e seus **pontos de extensão públicos**: a **view/markup** do formulário, os handlers que reagem aos **eventos de ciclo de vida do formulário** (ex.: carga e validação) e aos **eventos de campos** (validação e reação a mudanças). Veja também a seção "Estrutura de um Projeto Fluig Studio": o form fica em `forms/` e seus eventos em `forms/events/`.
-- [conventions.md](../../context/conventions.md) — **Convenções de Form** (contêiner `fluig-style-guide`, `<form>` nomeado, ordem de scripts/estilos no `<head>`, scripts inline antes de `</body>`, atributo `name` obrigatório nos campos), JavaScript em **ES6+** e **segurança** (validar/sanitizar a entrada do usuário com `WCMAPI.validateXSS`/`DOMPurify.sanitize`). **Atenção:** o padrão de i18n descrito em `conventions.md` aplica-se apenas a widgets e layouts — em formulários, use o idioma solicitado pelo desenvolvedor ou Português (Brasil) por padrão.
+- [conventions.md](../../context/conventions.md) — **Convenções de Form**: contêiner `fluig-style-guide`, `<form>` nomeado, ordem de scripts/estilos no `<head>`, scripts inline antes de `</body>`, atributo `name` obrigatório nos campos, **i18n de formulários** (`i18n.translate("chave")` no HTML e em eventos, 3 arquivos `.properties` por locale, codificação `\uXXXX`), JavaScript em **ES6+** e **segurança** (`WCMAPI.validateXSS`/`DOMPurify.sanitize`).
+
+> ⚠️ **Atenção:** o i18n de formulários usa `i18n.translate("chave")` — mecanismo
+> **completamente diferente** do i18n de widgets/layouts (`${i18n.getTranslation(...)}`).
+> Nunca misture os dois padrões.
 
 ## Regras Aplicáveis (Resumo Executivo)
 
 Somente o mínimo para orientar a geração; o detalhe está no contexto:
 
-- A **view/markup** do formulário envolve os campos em um contêiner `fluig-style-guide` e em um `<form>` nomeado; CSS do Style Guide e `<script>` de bibliotecas ficam no `<head>` (funcionamento interno do Fluig), e scripts inline ficam antes de `</body>` → ver `conventions.md` (Convenções de Form).
-- **Todo campo do formulário tem o atributo `name`** (obrigatório para o Fluig gravar/ler o valor); `id`, `for`, `placeholder` e afins são recomendados por semântica/acessibilidade, mas não obrigatórios → ver `conventions.md`.
-- O desenvolvedor implementa **handlers nos eventos públicos do formulário** — eventos de ciclo de vida (ex.: carga e validação) e eventos de campos — onde injeta as regras de validação e preenchimento → ver `architecture.md`.
-- Use **somente** pontos de extensão públicos e oficiais do formulário; quando o nome exato de um evento não for confirmado como público, descreva o comportamento de forma genérica em vez de inventar nomes → ver `architecture.md`.
-- JavaScript dos handlers em **ES6+** (`const`/`let`, arrow functions, template literals); evitar `var` → ver `conventions.md`.
-- **i18n em formulários:** formulários **não** seguem o padrão de i18n de widgets/layouts (`${i18n.getTranslation('chave')}`). Use os textos no idioma solicitado pelo desenvolvedor ou, por padrão, em **Português (Brasil)**. O padrão de i18n para formulários será documentado separadamente → ver `conventions.md`.
-- **Validar e sanitizar** toda entrada do usuário antes de uso/persistência (`WCMAPI.validateXSS`, `DOMPurify.sanitize`); tratar a entrada como não confiável → ver `conventions.md`.
+- A **view/markup** envolve os campos em `fluig-style-guide` + `<form>` nomeado; CSS/libs no `<head>`, scripts inline antes de `</body>` → ver `conventions.md`.
+- **Todo campo tem o atributo `name`** (obrigatório para o Fluig gravar/ler o valor); `id`, `for`, `placeholder` são recomendados por semântica/acessibilidade → ver `conventions.md`.
+- O desenvolvedor implementa **handlers nos eventos públicos do formulário** (ciclo de vida e campos) → ver `architecture.md`.
+- **i18n — HTML:** todo texto exibido ao usuário usa `i18n.translate("chave")`. **Nunca** gerar texto fixo em elementos visíveis → ver `conventions.md`.
+- **i18n — Eventos JS:** mensagens lançadas em handlers também usam `i18n.translate("chave")`; **nunca** strings literais → ver `conventions.md`.
+- **i18n — Arquivos:** gerar **obrigatoriamente** os 3 arquivos `.properties` (`_pt_BR`, `_en_US`, `_es`). Todas as chaves do HTML e dos eventos devem estar presentes nos 3 arquivos → ver `conventions.md`.
+- **i18n — Codificação:** todos os 3 arquivos `.properties` seguem padrão Java Properties; **nenhum** caractere não-ASCII diretamente — usar `\uXXXX` → ver `conventions.md`.
+- **Chaves descritivas** em dot-notation: `customer.name`, `validation.required.field` → ver `conventions.md`.
+- JavaScript em **ES6+** (`const`/`let`, arrow functions); evitar `var` → ver `conventions.md`.
+- **Validar e sanitizar** toda entrada do usuário (`WCMAPI.validateXSS`/`DOMPurify.sanitize`) → ver `conventions.md`.
 
 ## Procedimento
 
-1. Definir o nome do formulário (em Inglês) e os **campos** a partir da entrada (nome, tipo e obrigatoriedade de cada campo).
-2. Criar a pasta do formulário e a **view/markup**: documento HTML com o contêiner `fluig-style-guide` e o `<form name="form" role="form">`, com CSS do Style Guide e `<script>` de bibliotecas no `<head>` e os campos definidos. Cada campo recebe `name` (obrigatório) e, por boa prática, `id`/`for`/`placeholder`; rótulos via i18n.
-3. Criar o **arquivo de eventos** e implementar os **handlers dos eventos públicos** do formulário: ciclo de vida (ex.: carga e validação do formulário) e eventos de campos (validação e regras de preenchimento). Scripts inline, quando houver, ficam antes de `</body>`.
-4. Usar os textos no **idioma solicitado pelo desenvolvedor** ou, por padrão, em **Português (Brasil)**. O padrão de i18n de widgets/layouts (`${i18n.getTranslation(...)}`) **não se aplica** a formulários.
-5. **Sanitizar/validar** a entrada do usuário nos handlers antes de usá-la ou persisti-la (`WCMAPI.validateXSS`/`DOMPurify.sanitize`).
+1. Definir o nome do formulário e derivar o **prefixo dos arquivos** `.properties` (ex.: formulário `VacationRequest` → arquivos `vacationRequest_pt_BR.properties`, etc.).
+2. Levantar todas as **chaves de i18n** necessárias — uma por rótulo, placeholder e mensagem de validação visível — seguindo a convenção dot-notation.
+3. Criar a **view/markup** (`form.html`): contêiner `fluig-style-guide` + `<form name="form" role="form">`, CSS/libs no `<head>`. Para cada campo: `name` obrigatório, `id`/`for`/`placeholder` recomendados, e **rótulos via `i18n.translate("chave")`** — nunca texto fixo.
+4. Criar o **arquivo de eventos** com os handlers dos eventos públicos (ciclo de vida e campos). Mensagens de validação via `i18n.translate("chave")`; sanitizar a entrada com `WCMAPI.validateXSS`/`DOMPurify.sanitize`.
+5. Criar os **3 arquivos `.properties`** (`_pt_BR`, `_en_US`, `_es`) com todas as chaves levantadas no passo 2. Em todos os arquivos: **nenhum** caractere não-ASCII diretamente — usar `\uXXXX`.
 6. Validar o resultado com o checklist abaixo antes de entregar.
 
 ## Saída Esperada
 
 Esqueleto de formulário pronto para evoluir, contendo:
 
-- A **view/markup** do formulário: contêiner `fluig-style-guide` e `<form>` nomeado, com CSS/scripts de biblioteca no `<head>`, scripts inline antes de `</body>` e cada campo com `name` (e `id`/`for`/`placeholder` quando aplicável); rótulos via i18n.
-- O **arquivo de eventos** com os handlers de ciclo de vida e de campos implementando validação e regras de preenchimento, em ES6+.
-- Entrada do usuário validada/sanitizada nos handlers.
+- A **view/markup** com contêiner `fluig-style-guide`, `<form>` nomeado, cada campo com `name` (e `id`/`for`/`placeholder` quando aplicável) e todos os rótulos via `i18n.translate("chave")`.
+- O **arquivo de eventos** com handlers de ciclo de vida e de campos, mensagens via `i18n.translate`, entrada sanitizada, em ES6+.
+- Os **3 arquivos `.properties`** (`_pt_BR`, `_en_US`, `_es`) com todas as chaves, sem caracteres não-ASCII diretos (usar `\uXXXX`).
 
 Tudo em conformidade com `context/architecture.md` e `context/conventions.md`.
 
 ## Exemplo de Uso
 
-Use `examples/form/` como referência mínima (arquivo de eventos do formulário) que demonstra handlers de evento, validação de campo e i18n. Trate-o como trecho de referência, não como projeto completo.
+Use `examples/form/` como referência mínima que demonstra `i18n.translate` no HTML, handlers de evento com `i18n.translate` em mensagens, sanitização e os 3 arquivos `.properties`. Trate-o como trecho de referência, não como projeto completo.
 
 ## Checklist de Validação
 
 - [ ] A **view** envolve os campos em `fluig-style-guide` + `<form>` nomeado; CSS/scripts de biblioteca no `<head>` e scripts inline antes de `</body>`.
-- [ ] **Todo campo tem o atributo `name`**; `id`/`for`/`placeholder` aplicados quando fizerem sentido (semântica/acessibilidade).
-- [ ] Os **handlers** estão implementados nos eventos públicos do formulário (ciclo de vida e campos).
-- [ ] Textos visíveis no idioma solicitado pelo desenvolvedor ou em **Português (Brasil)** por padrão (o padrão de i18n de widgets/layouts não se aplica a formulários).
+- [ ] **Todo campo tem o atributo `name`**; `id`/`for`/`placeholder` aplicados quando fizerem sentido.
+- [ ] **Todo texto visível** no HTML usa `i18n.translate("chave")` — nenhum texto fixo em rótulos, placeholders ou mensagens.
+- [ ] **Mensagens em handlers** usam `i18n.translate("chave")` — nenhuma string literal lançada diretamente.
+- [ ] Os **3 arquivos `.properties`** foram gerados (`_pt_BR`, `_en_US`, `_es`).
+- [ ] Todas as **chaves do HTML e dos eventos** existem nos 3 arquivos `.properties`.
+- [ ] Nenhum arquivo `.properties` contém caracteres não-ASCII diretos — todos convertidos para `\uXXXX`.
 - [ ] A entrada do usuário é validada/sanitizada (`WCMAPI.validateXSS`/`DOMPurify.sanitize`).
 - [ ] JavaScript em ES6+ (sem `var`; `const`/`let`, arrow functions, template literals).
