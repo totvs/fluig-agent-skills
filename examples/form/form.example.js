@@ -3,14 +3,45 @@
 // com i18n.translate("chave") para mensagens visíveis e sanitização da entrada.
 //
 // ATENÇÃO — i18n de formulários:
-//   ✅ Use: i18n.translate("chave")
+//   ✅ Use: i18n.translate("chave")   ← chave SEMPRE entre aspas duplas
 //   ❌ Não use: ${i18n.getTranslation('chave')} (esse é o padrão de widgets/layouts)
+//
+// Padrões de uso em .js:
+//   Variável:        var label = 'i18n.translate("chave")';
+//   throw/validação: throw i18n.translate("chave");
+//   Template literal: placeholder="i18n.translate("chave")"
 //
 // Ver context/conventions.md (seção "i18n — Formulários") e context/architecture.md.
 //
 // Os nomes dos handlers abaixo são representativos dos pontos de extensão
 // públicos do formulário (ciclo de vida e campos). Confirme os nomes exatos
 // dos eventos na documentação oficial do Fluig antes de usar em produção.
+
+// Exemplo: i18n.translate em variável — aspas simples por fora, duplas na chave.
+var removeLabel = 'i18n.translate("label.remove")';
+
+// Exemplo: i18n.translate em template literal — aspas duplas na chave.
+function addEvidenceRow(count) {
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td>
+      <input type="text" class="form-control"
+             id="evidenceDesc_${count}"
+             name="evidenceDesc_${count}"
+             placeholder="i18n.translate("incident.evidence.description.placeholder")"
+             maxlength="300">
+    </td>
+    <td>
+      <input type="text" class="form-control"
+             id="evidenceLink_${count}"
+             name="evidenceLink_${count}"
+             placeholder="i18n.translate("incident.evidence.link.placeholder")"
+             maxlength="500">
+    </td>
+    <td class="text-center"></td>
+  `;
+  return tr;
+}
 
 // Handler de ciclo de vida: executado ao carregar o formulário.
 function onLoad(form) {
@@ -26,7 +57,7 @@ function beforeSave(form) {
   const safeName = DOMPurify.sanitize(rawName, { USE_PROFILES: { html: false } });
   form.setValue('requesterName', safeName);
 
-  // Mensagens de validação via i18n.translate — nunca strings literais.
+  // Mensagens de validação via i18n.translate — chave entre aspas duplas, nunca string literal.
   if (!safeName.trim()) {
     throw i18n.translate("validation.required.field");
   }

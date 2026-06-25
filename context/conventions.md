@@ -299,18 +299,48 @@ Todo texto exibido ao usuário no HTML do formulário deve usar `i18n.translate(
 <input name="nm_cliente">
 ```
 
-#### Sintaxe em eventos (JavaScript)
+#### Sintaxe em eventos e arquivos JavaScript
 
-Mensagens em handlers de eventos também devem usar `i18n.translate`. **Nunca**
-lance mensagens literais diretamente no JavaScript.
+Em arquivos `.js`, `i18n.translate` deve sempre ter a chave entre **aspas duplas**.
+O comportamento varia conforme o contexto:
+
+**Declarando em variável** — envolva com aspas simples por fora:
 
 ```javascript
-// ✅ correto: mensagem via i18n.translate
+// ✅ correto: aspas simples por fora, aspas duplas na chave
+var title = 'i18n.translate("label.remove")';
+```
+
+**Lançando em validação** — diretamente com aspas duplas na chave:
+
+```javascript
+// ✅ correto
 throw i18n.translate("validation.required.field");
 
 // ❌ errado: string literal
 throw new Error('Campo obrigatório.');
 ```
+
+**Dentro de template literal** — use aspas duplas na chave normalmente (não conflita com backticks):
+
+```javascript
+// ✅ correto: aspas duplas na chave dentro do template literal
+tr.innerHTML = `
+  <td>
+    <input type="text" class="form-control"
+           id="evidenceDesc_${count}"
+           name="evidenceDesc_${count}"
+           placeholder="i18n.translate("incident.evidence.description.placeholder")"
+           maxlength="300">
+  </td>
+  <td class="text-center"></td>
+`;
+
+// ❌ errado: aspas simples na chave dentro de template literal
+tr.innerHTML = `<input placeholder="i18n.translate('incident.evidence.description.placeholder')">`;
+```
+
+> **Regra resumida:** a chave de `i18n.translate` em `.js` é **sempre com aspas duplas** — independentemente do contexto (variável, `throw` ou template literal).
 
 #### Convenção de chaves
 
@@ -329,10 +359,19 @@ customer.contact=Contato
 validation.required.field=Campo obrigat\u00F3rio
 ```
 
-#### Arquivos `.properties` obrigatórios
+#### Arquivos `.properties` obrigatórios e nome do arquivo HTML
 
-Todo formulário **deve** gerar exatamente **3 arquivos `.properties`**, nomeados
-com o código do formulário:
+O nome do arquivo HTML do formulário **deve ser exatamente igual** ao prefixo
+dos arquivos `.properties`. Todos derivam do mesmo identificador (camelCase):
+
+```text
+registroIncidenteTI.html
+registroIncidenteTI_pt_BR.properties
+registroIncidenteTI_en_US.properties
+registroIncidenteTI_es.properties
+```
+
+Todo formulário **deve** gerar exatamente **3 arquivos `.properties`**:
 
 | Arquivo | Locale |
 |---------|--------|

@@ -22,7 +22,7 @@ Produzir, com responsabilidade única, o **esqueleto de um Form (formulário ele
 
 | Entrada | Descrição | Obrigatória |
 |---------|-----------|-------------|
-| Nome do formulário | Identificador do formulário — usado como prefixo dos arquivos `.properties` (ex.: `vacationRequest`) | sim |
+| Nome do formulário | Identificador camelCase do formulário — usado como nome do arquivo HTML **e** como prefixo dos arquivos `.properties` (ex.: `registroIncidenteTI`) | sim |
 | Campos | Lista de campos do formulário (nome, tipo e se é obrigatório) | sim |
 | Regras de validação | Regras de preenchimento/consistência por campo ou para o formulário | não |
 
@@ -45,7 +45,7 @@ Somente o mínimo para orientar a geração; o detalhe está no contexto:
 - **Todo campo tem o atributo `name`** (obrigatório para o Fluig gravar/ler o valor); `id`, `for`, `placeholder` são recomendados por semântica/acessibilidade → ver `conventions.md`.
 - O desenvolvedor implementa **handlers nos eventos públicos do formulário** (ciclo de vida e campos) → ver `architecture.md`.
 - **i18n — HTML:** todo texto exibido ao usuário usa `i18n.translate("chave")`. **Nunca** gerar texto fixo em elementos visíveis → ver `conventions.md`.
-- **i18n — Eventos JS:** mensagens lançadas em handlers também usam `i18n.translate("chave")`; **nunca** strings literais → ver `conventions.md`.
+- **i18n — Eventos JS:** mensagens em handlers usam `i18n.translate("chave")` — chave **sempre entre aspas duplas**. Em variável: `var t = 'i18n.translate("chave")'`; em template literal: `placeholder="i18n.translate("chave")"`. **Nunca** strings literais → ver `conventions.md`.
 - **i18n — Arquivos:** gerar **obrigatoriamente** os 3 arquivos `.properties` (`_pt_BR`, `_en_US`, `_es`). Todas as chaves do HTML e dos eventos devem estar presentes nos 3 arquivos → ver `conventions.md`.
 - **i18n — Codificação:** todos os 3 arquivos `.properties` seguem padrão Java Properties; **nenhum** caractere não-ASCII diretamente — usar `\uXXXX` → ver `conventions.md`.
 - **Chaves descritivas** em dot-notation: `customer.name`, `validation.required.field` → ver `conventions.md`.
@@ -54,9 +54,15 @@ Somente o mínimo para orientar a geração; o detalhe está no contexto:
 
 ## Procedimento
 
-1. Definir o nome do formulário e derivar o **prefixo dos arquivos** `.properties` (ex.: formulário `VacationRequest` → arquivos `vacationRequest_pt_BR.properties`, etc.).
+1. Definir o **nome do formulário** em camelCase (ex.: `registroIncidenteTI`) — ele será usado como nome do arquivo HTML **e** como prefixo dos 3 arquivos `.properties`. O nome do `.html` e o prefixo dos `.properties` devem ser **exatamente iguais**:
+   ```
+   registroIncidenteTI.html
+   registroIncidenteTI_pt_BR.properties
+   registroIncidenteTI_en_US.properties
+   registroIncidenteTI_es.properties
+   ```
 2. Levantar todas as **chaves de i18n** necessárias — uma por rótulo, placeholder e mensagem de validação visível — seguindo a convenção dot-notation.
-3. Criar a **view/markup** (`form.html`): contêiner `fluig-style-guide` + `<form name="form" role="form">`, CSS/libs no `<head>`. Para cada campo: `name` obrigatório, `id`/`for`/`placeholder` recomendados, e **rótulos via `i18n.translate("chave")`** — nunca texto fixo.
+3. Criar a **view/markup** (`<nomeFormulario>.html`) — o nome do arquivo HTML deve ser **idêntico** ao prefixo dos `.properties`.
 4. Criar o **arquivo de eventos** com os handlers dos eventos públicos (ciclo de vida e campos). Mensagens de validação via `i18n.translate("chave")`; sanitizar a entrada com `WCMAPI.validateXSS`/`DOMPurify.sanitize`.
 5. Criar os **3 arquivos `.properties`** (`_pt_BR`, `_en_US`, `_es`) com todas as chaves levantadas no passo 2. Em todos os arquivos: **nenhum** caractere não-ASCII diretamente — usar `\uXXXX`.
 6. Validar o resultado com o checklist abaixo antes de entregar.
@@ -81,6 +87,7 @@ Use `examples/form/` como referência mínima que demonstra `i18n.translate` no 
 - [ ] **Todo campo tem o atributo `name`**; `id`/`for`/`placeholder` aplicados quando fizerem sentido.
 - [ ] **Todo texto visível** no HTML usa `i18n.translate("chave")` — nenhum texto fixo em rótulos, placeholders ou mensagens.
 - [ ] **Mensagens em handlers** usam `i18n.translate("chave")` — nenhuma string literal lançada diretamente.
+- [ ] O **nome do arquivo HTML** é idêntico ao prefixo dos `.properties` (ex.: `registroIncidenteTI.html` + `registroIncidenteTI_pt_BR.properties`, etc.).
 - [ ] Os **3 arquivos `.properties`** foram gerados (`_pt_BR`, `_en_US`, `_es`).
 - [ ] Todas as **chaves do HTML e dos eventos** existem nos 3 arquivos `.properties`.
 - [ ] Nenhum arquivo `.properties` contém caracteres não-ASCII diretos — todos convertidos para `\uXXXX`.
