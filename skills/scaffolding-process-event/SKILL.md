@@ -31,7 +31,7 @@ Produzir, com responsabilidade única, o **esqueleto de handlers de eventos de p
 Leia antes de executar — não reproduza o conteúdo aqui:
 
 - [architecture.md](../../context/architecture.md) — modelo conceitual do **Evento de processo (BPM)**: funções server-side disparadas pela plataforma em **pontos definidos do ciclo de vida** do processo/workflow; o desenvolvedor implementa **handlers nos pontos de extensão públicos** para injetar regra de negócio sem alterar o motor. Veja também a seção "Estrutura de um Projeto Fluig Studio": os scripts de evento ficam em `workflow/scripts/` (diagramas em `workflow/diagrams/`, literais em `workflow/literals/`).
-- [technologies.md](../../context/technologies.md) — **runtime público de scripting server-side**: eventos de processo são escritos em **JavaScript (ECMAScript) executado no servidor**, interagindo apenas com a API pública de seu contexto (sem acesso a componentes internos do servidor).
+- [technologies.md](../../context/technologies.md) — **runtime público de scripting server-side**: eventos de processo são escritos em **JavaScript executado no servidor sobre o motor Mozilla Rhino** (base **ES5**, com suporte apenas parcial a ES6+), interagindo apenas com a API pública de seu contexto (sem acesso a componentes internos do servidor). Veja a seção "Runtime Rhino: sintaxe rígida (não é ES6+)" para as restrições de sintaxe e a seção de **interoperabilidade com Java**.
 
 ## Regras Aplicáveis (Resumo Executivo)
 
@@ -40,7 +40,7 @@ Somente o mínimo para orientar a geração; o detalhe está no contexto:
 - Implemente as **funções de evento** nos **pontos públicos do ciclo de vida** do processo que a plataforma invoca — funções de evento nomeadas associadas a momentos do fluxo → ver `architecture.md`.
 - Use **SOMENTE a API pública de eventos de processo**: manipule os dados do processo pelo helper público `hAPI` (ex.: `hAPI.getCardValue(...)`, `hAPI.setCardValue(...)`, `hAPI.transferTask(...)`) → ver `architecture.md`.
 - **Injete a regra de negócio dentro da função de evento**, sem alterar o motor de processos → ver `architecture.md`.
-- Código **server-side em JavaScript (ES6+)** no runtime público de scripting; **sem acesso a componentes internos** do servidor → ver `technologies.md`.
+- Código **server-side no motor Rhino** (base **ES5**, **não** ES6+): use `var` e `function` tradicionais, concatene strings com `+` e **evite** arrow functions, template literals, `let`/`const`, destructuring, classes ES6 e `Promise`/`async`/`await`; **sem acesso a componentes internos** do servidor. Quando útil, é possível usar **interop com Java** (`Packages.*`, `importPackage`/`importClass`) → ver `technologies.md`.
 - Se o nome exato de uma função de evento/método não puder ser confirmado como público, descreva o comportamento de forma genérica (uma função de evento que a plataforma invoca em um ponto definido do ciclo de vida) em vez de inventar → ver `architecture.md`.
 
 ## Procedimento
@@ -56,7 +56,7 @@ Esqueleto de evento de processo pronto para evoluir, contendo:
 
 - O **arquivo JavaScript** server-side com a(s) **função(ões) de evento públicas** correspondente(s) ao(s) ponto(s) do ciclo de vida escolhido(s).
 - A **regra de negócio** injetada dentro da função, manipulando os dados do processo via API pública (`hAPI`), sem acesso a componentes internos.
-- Código server-side em **JavaScript (ES6+)** no runtime público de scripting.
+- Código server-side compatível com o **motor Rhino** (base **ES5**, não ES6+), podendo usar interop com Java quando necessário.
 
 Tudo em conformidade com `context/architecture.md` e `context/technologies.md`.
 
@@ -68,4 +68,4 @@ Use `examples/process-event/` como referência mínima (arquivo JavaScript do ev
 
 - [ ] A **função de evento** está implementada no **ponto correto** do ciclo de vida do processo.
 - [ ] A regra de negócio usa **somente a API pública** de eventos de processo (`hAPI`), sem acesso a componentes internos.
-- [ ] Código server-side em **JavaScript (ES6+)** no runtime público de scripting.
+- [ ] Código server-side compatível com o **motor Rhino** (base **ES5**): `var`/`function` tradicionais, sem arrow functions, template literals, `let`/`const` ou outros recursos ES6+ não suportados.

@@ -28,7 +28,7 @@ Dois ambientes de execução são visíveis ao código de customização:
 | Ambiente | Artefatos | O que o dev escreve |
 |----------|-----------|---------------------|
 | Cliente (navegador) | Widget, Custom Element, Layout (view), Form (view) | JavaScript ES6+ e templates FreeMarker (`.ftl`) |
-| Servidor (runtime de scripting) | Dataset, Evento de processo (BPM) | Funções JavaScript invocadas pela plataforma em pontos definidos |
+| Servidor (runtime de scripting Rhino) | Dataset, Evento de processo (BPM) | Funções JavaScript (base ES5, motor Rhino) invocadas pela plataforma em pontos definidos; admite interop com Java |
 
 ## Estrutura de um Projeto Fluig Studio
 
@@ -533,8 +533,10 @@ Pontos de extensão e contexto de execução visíveis ao código:
 - **Funções nomeadas**: o desenvolvedor implementa funções JavaScript que a
   plataforma invoca em pontos definidos para resolver/consultar o dataset.
 - **Execução server-side**: o código roda no runtime público de scripting do
-  servidor (ver [technologies.md](technologies.md)) e interage **somente** com a
-  API pública de Dataset — sem acesso a componentes internos do servidor.
+  servidor (motor **Rhino**, base **ES5** — ver [technologies.md](technologies.md))
+  e interage **somente** com a API pública de Dataset — sem acesso a componentes
+  internos do servidor. A sintaxe segue o padrão rígido do Rhino (não é ES6+) e
+  admite interop com Java.
 - **Consumo**: o resultado é consumido por widgets/forms na camada cliente.
 
 ## Evento de processo (BPM)
@@ -548,9 +550,10 @@ Pontos de extensão e contexto de execução visíveis ao código:
 - **Handlers em pontos de extensão**: o desenvolvedor implementa funções
   associadas a momentos do fluxo (ex.: transições e etapas do processo), que a
   plataforma invoca automaticamente.
-- **Execução server-side**: roda no runtime público de scripting do servidor (ver
-  [technologies.md](technologies.md)), usando apenas a API pública de eventos de
-  processo.
+- **Execução server-side**: roda no runtime público de scripting do servidor
+  (motor **Rhino**, base **ES5** — ver [technologies.md](technologies.md)), usando
+  apenas a API pública de eventos de processo. A sintaxe segue o padrão rígido do
+  Rhino (não é ES6+) e admite interop com Java.
 
 ## Como os artefatos se integram
 

@@ -33,7 +33,7 @@ Produzir, com responsabilidade única, o **esqueleto de um Dataset customizado**
 Leia antes de executar — não reproduza o conteúdo aqui:
 
 - [architecture.md](../../context/architecture.md) — modelo conceitual do **Dataset**: customização **server-side** que expõe/consulta dados por meio da **API pública de Dataset**; o desenvolvedor implementa **funções nomeadas** que a plataforma invoca em pontos definidos para resolver o dataset; o resultado é **consumido por widgets/forms**. Veja também a seção "Estrutura de um Projeto Fluig Studio": o dataset fica na pasta `datasets/`.
-- [technologies.md](../../context/technologies.md) — **runtime público de scripting server-side**: datasets são escritos em **JavaScript (ECMAScript) executado no servidor**, interagindo apenas com a API pública de seu contexto (sem acesso a componentes internos do servidor).
+- [technologies.md](../../context/technologies.md) — **runtime público de scripting server-side**: datasets são escritos em **JavaScript executado no servidor sobre o motor Mozilla Rhino** (base **ES5**, com suporte apenas parcial a ES6+), interagindo apenas com a API pública de seu contexto (sem acesso a componentes internos do servidor). Veja a seção "Runtime Rhino: sintaxe rígida (não é ES6+)" para as restrições de sintaxe e a seção de **interoperabilidade com Java**.
 
 ## Regras Aplicáveis (Resumo Executivo)
 
@@ -43,7 +43,7 @@ Somente o mínimo para orientar a geração; o detalhe está no contexto:
 - Use **SOMENTE a API pública de Dataset**: construa o resultado com `DatasetBuilder.newDataset()` e adicione colunas/linhas com `addColumn(...)`/`addRow(...)`; para consultar outro dataset, use `DatasetFactory.getDataset(...)` → ver `architecture.md`.
 - **Retorne o conjunto de dados** no formato esperado (o objeto de dataset construído pelo `DatasetBuilder`) → ver `architecture.md`.
 - Aplique **filtros/constraints** via API pública — `DatasetFactory.createConstraint(field, initialValue, finalValue, ConstraintType.MUST | SHOULD | MUST_NOT)` — e respeite os parâmetros `constraints` e `sortFields` recebidos pela função → ver `architecture.md`.
-- Código **server-side em JavaScript (ES6+)** no runtime público de scripting; **sem acesso a componentes internos** do servidor → ver `technologies.md`.
+- Código **server-side no motor Rhino** (base **ES5**, **não** ES6+): use `var` e `function` tradicionais, concatene strings com `+` e **evite** arrow functions, template literals, `let`/`const`, destructuring, classes ES6 e `Promise`/`async`/`await`; **sem acesso a componentes internos** do servidor. Quando útil, é possível usar **interop com Java** (`Packages.*`, `importPackage`/`importClass`) → ver `technologies.md`.
 - Se o nome exato de uma função/método não puder ser confirmado como público, descreva o comportamento de forma genérica (uma função nomeada que a plataforma invoca para resolver o dataset, retornando o conjunto via API pública) em vez de inventar → ver `architecture.md`.
 
 ## Procedimento
@@ -74,4 +74,4 @@ Use `examples/dataset/` como referência mínima (arquivo JavaScript do dataset)
 - [ ] A(s) **função(ões) pública(s)** que a plataforma invoca estão implementadas (ex.: `createDataset(fields, constraints, sortFields)`).
 - [ ] O conjunto de dados é construído e retornado usando **somente a API pública de Dataset** (`DatasetBuilder`, `DatasetFactory`), sem acesso a componentes internos.
 - [ ] Os **campos** (colunas), **filtros/constraints** e a **ordenação** estão corretos e usam a API pública (`createConstraint`/`ConstraintType`, `sortFields`).
-- [ ] Código server-side em **JavaScript (ES6+)** no runtime público de scripting.
+- [ ] Código server-side compatível com o **motor Rhino** (base **ES5**): `var`/`function` tradicionais, sem arrow functions, template literals, `let`/`const` ou outros recursos ES6+ não suportados.

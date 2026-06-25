@@ -4,7 +4,7 @@
 > Reflete as APIs e convenções de `context/`.
 
 ## Arquivos
-- `dataset.example.js` — Dataset customizado server-side: função pública `createDataset(fields, constraints, sortFields)` que constrói o resultado com `DatasetBuilder.newDataset()`, declara colunas com `addColumn(...)`, popula registros com `addRow(...)`, consulta outro dataset com `DatasetFactory.getDataset(...)` e aplica filtros com `DatasetFactory.createConstraint(...)` / `ConstraintType.*`. Em ES6+.
+- `dataset.example.js` — Dataset customizado server-side: função pública `createDataset(fields, constraints, sortFields)` que constrói o resultado com `DatasetBuilder.newDataset()`, declara colunas com `addColumn(...)`, popula registros com `addRow(...)`, consulta outro dataset com `DatasetFactory.getDataset(...)` e aplica filtros com `DatasetFactory.createConstraint(...)` / `ConstraintType.*`. Em sintaxe compatível com o motor Rhino (base ES5).
 
 ## Pontos-chave demonstrados
 - Função pública nomeada `createDataset(fields, constraints, sortFields)` como ponto de entrada que a plataforma invoca.
@@ -13,6 +13,7 @@
 - Filtros/constraints com `DatasetFactory.createConstraint(field, initialValue, finalValue, ConstraintType.MUST | SHOULD | MUST_NOT)`.
 - Respeito aos parâmetros `constraints` e `sortFields` recebidos pela função.
 - Retorno do objeto de dataset construído, sem acesso a componentes internos do servidor.
-- JavaScript server-side em ES6+ (`const`/`let`, arrow functions, template literals).
+- JavaScript server-side no **motor Rhino** (base **ES5**): `var`/`function` tradicionais, concatenação com `+`, sem arrow functions, template literals ou `let`/`const`.
+- Interoperabilidade com **Java** via `Packages.*` (recurso do Rhino), quando útil ao domínio.
 
 > Fonte de verdade: `context/architecture.md` e `context/technologies.md`.

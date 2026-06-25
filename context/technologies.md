@@ -51,13 +51,49 @@ escaping em FreeMarker estão em [conventions.md](conventions.md).
 ## Scripting server-side de customização
 
 A customização de **datasets** e **eventos de processo (BPM)** é escrita em
-**JavaScript (ECMAScript) executado no servidor**. Esse é o runtime público de
-scripting de customização: o desenvolvedor escreve funções que a plataforma
-invoca em pontos de extensão definidos, usando as APIs públicas expostas para
-cada contexto (API pública de Dataset; API pública de eventos de processo).
+**JavaScript executado no servidor sobre o motor Mozilla Rhino**. Esse é o
+runtime público de scripting de customização: o desenvolvedor escreve funções
+que a plataforma invoca em pontos de extensão definidos, usando as APIs públicas
+expostas para cada contexto (API pública de Dataset; API pública de eventos de
+processo).
 
 O código de scripting interage somente com essas APIs públicas — não há acesso a
 componentes internos de servidor a partir do código de customização.
+
+### Runtime Rhino: sintaxe rígida (não é ES6+)
+
+> **Importante:** ao contrário do frontend (ES6+), o scripting server-side roda
+> sobre o **Rhino**, um motor JavaScript escrito em Java. A base é **ECMAScript 5
+> (ES5)** com suporte apenas **parcial** a recursos de ES6+. Trate o ambiente
+> como **ES5** por padrão e **não** assuma que sintaxe moderna está disponível.
+
+Diretrizes práticas para datasets e eventos de processo:
+
+- **Declarações:** use `var`. Não dependa de `let`/`const` (escopo de bloco não é
+  garantido no runtime).
+- **Funções:** use `function` tradicional. Evite **arrow functions** (`=>`).
+- **Strings:** concatene com `+`. Evite **template literals** (backticks/`${...}`).
+- Evite também **destructuring**, **spread/rest**, **default parameters**,
+  classes ES6, `for...of`, `Promise`/`async`/`await` e módulos `import`/`export`
+  — recursos que não são confiáveis no Rhino.
+- Prefira laços clássicos (`for`/`while`) e funções nomeadas.
+
+### Interoperabilidade com Java (Rhino)
+
+Por rodar sobre a JVM, o Rhino permite **acessar classes Java a partir do
+JavaScript** — um recurso do motor, fora do padrão ECMAScript. É comum em
+datasets e eventos de processo para tarefas como datas, coleções e formatação.
+Os mecanismos públicos do Rhino para isso são:
+
+- A variável global **`Packages`** (ex.: `Packages.java.util.Date`,
+  `Packages.java.text.SimpleDateFormat`).
+- **`importPackage(...)`** e **`importClass(...)`** para encurtar referências.
+- Pacotes sob `java.*` podem ser acessados diretamente (ex.: `java.util.ArrayList`).
+
+> Use a interop com Java apenas quando necessário e prefira sempre a **API pública
+> do Fluig** (`DatasetBuilder`/`DatasetFactory`, `hAPI`) para o domínio do
+> artefato. A interop não dá acesso a componentes internos do servidor: restringe-se
+> às classes Java padrão da plataforma de execução.
 
 ## Build e empacotamento público de artefatos WCM
 
@@ -85,7 +121,7 @@ documentação oficial do Fluig.
 | Mustache | 4.2.0 | Templating client-side (widgets legados) |
 | Fluig Style Guide (`@fluig/lib-styleguide`) | 2.0.0 | Design system e API `FLUIGC` |
 | FreeMarker (`.ftl`) | — | View server-side e i18n |
-| JavaScript server-side | ECMAScript | Scripting de datasets e eventos de processo |
+| JavaScript server-side (motor Mozilla Rhino) | ECMAScript 5 (ES6+ parcial) | Scripting de datasets e eventos de processo; permite interop com Java |
 
 ## Referências Cruzadas
 

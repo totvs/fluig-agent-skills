@@ -1,7 +1,10 @@
 // Exemplo mínimo de referência — Evento de Processo BPM Fluig (server-side)
 // Demonstra: handlers em pontos do ciclo de vida do processo (entrada de etapa,
-// conclusão de tarefa) que injetam regra de negócio via API pública hAPI, em ES6+.
-// Não é um projeto completo. Ver context/architecture.md e context/technologies.md.
+// conclusão de tarefa) que injetam regra de negócio via API pública hAPI.
+// O código roda no motor Rhino (base ES5): usa var/function tradicionais, sem
+// arrow functions nem template literals. Ver context/technologies.md (seção
+// "Runtime Rhino: sintaxe rígida") e context/architecture.md.
+// Não é um projeto completo.
 //
 // Os nomes dos handlers abaixo são representativos dos pontos de extensão
 // públicos do ciclo de vida do processo. Confirme os nomes exatos dos eventos
@@ -10,8 +13,8 @@
 // Handler de ciclo de vida: executado antes de entrar em uma etapa do processo.
 function beforeStateEntry(sequenceId) {
   // Regra de negócio: validar dados do processo antes de avançar de etapa.
-  const amount = Number(hAPI.getCardValue('amount'));
-  if (!Number.isFinite(amount) || amount <= 0) {
+  var amount = parseFloat(hAPI.getCardValue('amount'));
+  if (isNaN(amount) || amount <= 0) {
     // Interrompe a transição quando o valor informado é inválido.
     throw new Error("${i18n.getTranslation('process.error.invalidAmount')}");
   }
