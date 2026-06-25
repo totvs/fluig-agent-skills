@@ -21,7 +21,7 @@ Para entender qualquer regra, abra o arquivo indicado — ele é a fonte de verd
 ### Contexto — fonte de verdade (`context/`)
 
 - `context/architecture.md` — modelo conceitual dos artefatos (widget, layout,
-  form, dataset, evento de processo), pontos de extensão públicos, ciclo de vida
+  form, dataset), pontos de extensão públicos, ciclo de vida
   visível ao código e estrutura oficial de pastas/arquivos (inclui o projeto
   Fluig Studio).
 - `context/technologies.md` — tecnologias públicas: ES6+, bibliotecas
@@ -38,7 +38,7 @@ Selecione a skill pela `description` no frontmatter do `SKILL.md`. Quando a skil
 recebe um argumento, ele é descrito em `argument-hint`.
 
 - **Geração:** `scaffolding-widget`, `scaffolding-layout`, `scaffolding-form`,
-  `scaffolding-dataset`, `scaffolding-process-event`.
+  `scaffolding-dataset`.
 - **Modernização:** `migrate-jquery-es6`, `optimize-performance`,
   `improve-accessibility`, `validate-security`, `dark-mode`,
   `internationalization`, `style-guide-helpers`.
@@ -47,7 +47,7 @@ recebe um argumento, ele é descrito em `argument-hint`.
 
 ### Exemplos (`examples/`)
 
-`widget/`, `layout/`, `form/`, `dataset/`, `process-event/` — trechos mínimos
+`widget/`, `layout/`, `form/`, `dataset/` — trechos mínimos
 que refletem as APIs e convenções descritas em `context/`.
 
 ## Fluxo recomendado

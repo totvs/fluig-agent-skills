@@ -595,4 +595,4 @@ aparece em larguras distintas independentemente do viewport.
 
 - Para "como fazer" (gerar, modernizar e revisar código), ver as skills em `skills/`.
 - Para componentes, helpers, grid e variáveis CSS de dark mode do Style Guide: [style-guide.md](style-guide.md) (fonte única de verdade dessas regras).
-- Para versões de tecnologias públicas de customização (ES6+, libs client-side, runtime de datasets/eventos): [technologies.md](technologies.md).
+- Para versões de tecnologias públicas de customização (ES6+, libs client-side, runtime de datasets): [technologies.md](technologies.md).

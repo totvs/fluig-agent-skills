@@ -36,7 +36,7 @@ código curtos por tipo de artefato.
 Skills disponíveis, agrupadas por intenção:
 
 - **Geração:** `scaffolding-widget`, `scaffolding-layout`, `scaffolding-form`,
-  `scaffolding-dataset`, `scaffolding-process-event`.
+  `scaffolding-dataset`.
 - **Modernização:** `migrate-jquery-es6`, `optimize-performance`,
   `improve-accessibility`, `validate-security`, `dark-mode`,
   `internationalization`, `style-guide-helpers`.
@@ -59,7 +59,7 @@ Skills disponíveis, agrupadas por intenção:
 ## Fluxo de uso para um agente
 
 1. **Entenda a tarefa** do desenvolvedor (criar, modernizar ou revisar) e o tipo
-   de artefato envolvido (widget, layout, form, dataset, evento de processo).
+   de artefato envolvido (widget, layout, form, dataset).
 2. **Selecione a skill** lendo as `description` em `skills/*/SKILL.md` e escolha
    a que corresponde à tarefa.
 3. **Leia o `SKILL.md`** completo: siga as regras e forneça o `argument-hint`
@@ -73,7 +73,7 @@ Skills disponíveis, agrupadas por intenção:
 ## Limites
 
 - Use somente APIs públicas do Fluig (ex.: `SuperWidget`, `WCMAPI`, `FLUIGC`,
-  API pública de Dataset, eventos de processo BPM, `DOMPurify`,
+  API pública de Dataset, `DOMPurify`,
   `i18n.getTranslation`, Fluig Style Guide e suas variáveis CSS).
 - Refira-se apenas a caminhos **dentro do pacote** (`context/`, `skills/`,
   `examples/`). Não invente APIs, convenções ou estruturas: se algo não for

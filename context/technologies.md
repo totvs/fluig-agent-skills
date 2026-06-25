@@ -11,7 +11,7 @@
 
 Este documento descreve **o que são** as tecnologias públicas e oficiais que o
 desenvolvedor externo utiliza para customizar a plataforma Fluig (widgets,
-layouts, forms, datasets e eventos de processo). Cobre apenas o que está
+layouts, forms e datasets). Cobre apenas o que está
 **exposto publicamente** para customização — linguagens, bibliotecas
 client-side, o motor de templates de view, o runtime de scripting server-side de
 customização e o scaffolding público de artefatos.
@@ -50,12 +50,11 @@ escaping em FreeMarker estão em [conventions.md](conventions.md).
 
 ## Scripting server-side de customização
 
-A customização de **datasets** e **eventos de processo (BPM)** é escrita em
+A customização de **datasets** é escrita em
 **JavaScript executado no servidor sobre o motor Mozilla Rhino**. Esse é o
 runtime público de scripting de customização: o desenvolvedor escreve funções
-que a plataforma invoca em pontos de extensão definidos, usando as APIs públicas
-expostas para cada contexto (API pública de Dataset; API pública de eventos de
-processo).
+que a plataforma invoca em pontos de extensão definidos, usando a API pública
+exposta para esse contexto (API pública de Dataset).
 
 O código de scripting interage somente com essas APIs públicas — não há acesso a
 componentes internos de servidor a partir do código de customização.
@@ -67,7 +66,7 @@ componentes internos de servidor a partir do código de customização.
 > (ES5)** com suporte apenas **parcial** a recursos de ES6+. Trate o ambiente
 > como **ES5** por padrão e **não** assuma que sintaxe moderna está disponível.
 
-Diretrizes práticas para datasets e eventos de processo:
+Diretrizes práticas para datasets:
 
 - **Declarações:** use `var`. Não dependa de `let`/`const` (escopo de bloco não é
   garantido no runtime).
@@ -82,7 +81,7 @@ Diretrizes práticas para datasets e eventos de processo:
 
 Por rodar sobre a JVM, o Rhino permite **acessar classes Java a partir do
 JavaScript** — um recurso do motor, fora do padrão ECMAScript. É comum em
-datasets e eventos de processo para tarefas como datas, coleções e formatação.
+datasets para tarefas como datas, coleções e formatação.
 Os mecanismos públicos do Rhino para isso são:
 
 - A variável global **`Packages`** (ex.: `Packages.java.util.Date`,
@@ -140,7 +139,7 @@ documentação oficial do Fluig.
 | Mustache | 4.2.0 | Templating client-side (widgets legados) |
 | Fluig Style Guide (`@fluig/lib-styleguide`) | 2.0.0 | Design system e API `FLUIGC` |
 | FreeMarker (`.ftl`) | — | View server-side e i18n |
-| JavaScript server-side (motor Mozilla Rhino) | ECMAScript 5 (ES6+ parcial) | Scripting de datasets e eventos de processo; permite interop com Java |
+| JavaScript server-side (motor Mozilla Rhino) | ECMAScript 5 (ES6+ parcial) | Scripting de datasets; permite interop com Java |
 
 ## Referências Cruzadas
 

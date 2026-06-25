@@ -17,7 +17,7 @@ Este documento descreve **o que é** cada artefato de customização do Fluig so
 plataforma — não a construção interna do produto.
 
 A ideia central: o desenvolvedor não modifica o núcleo do Fluig. Em vez disso,
-ele produz artefatos (widgets, layouts, forms, datasets e eventos de processo)
+ele produz artefatos (widgets, layouts, forms e datasets)
 que a plataforma **carrega, renderiza e invoca** em momentos bem definidos. Cada
 artefato expõe um pequeno contrato — um método de inicialização, um conjunto de
 funções nomeadas ou hooks de evento — que o desenvolvedor implementa. A
@@ -28,7 +28,7 @@ Dois ambientes de execução são visíveis ao código de customização:
 | Ambiente | Artefatos | O que o dev escreve |
 |----------|-----------|---------------------|
 | Cliente (navegador) | Widget, Custom Element, Layout (view), Form (view) | JavaScript ES6+ e templates FreeMarker (`.ftl`) |
-| Servidor (runtime de scripting Rhino) | Dataset, Evento de processo (BPM) | Funções JavaScript (base ES5, motor Rhino) invocadas pela plataforma em pontos definidos; admite interop com Java |
+| Servidor (runtime de scripting Rhino) | Dataset | Funções JavaScript (base ES5, motor Rhino) invocadas pela plataforma em pontos definidos; admite interop com Java |
 
 ## Estrutura de um Projeto Fluig Studio
 
@@ -49,10 +49,6 @@ ProjetoFluig/
 ├── wcm/
 │   ├── layout/               # layouts WCM
 │   └── widget/               # widgets WCM
-├── workflow/
-│   ├── diagrams/             # diagramas de processo (BPM)
-│   ├── literals/             # literais/textos do processo (i18n)
-│   └── scripts/              # scripts de eventos de processo
 └── .project                  # descritor do projeto Fluig Studio
 ```
 
@@ -67,15 +63,13 @@ Mapeamento entre artefato e pasta do projeto:
 | Relatório | `reports/` |
 | Layout WCM | `wcm/layout/` |
 | Widget WCM | `wcm/widget/` |
-| Evento de processo (BPM) | `workflow/scripts/` (diagramas em `workflow/diagrams/`, literais em `workflow/literals/`) |
 
 > **Onde criar cada artefato:** ao gerar um artefato dentro de um projeto Fluig
 > Studio existente, posicione-o na pasta correspondente acima. Widgets e layouts
 > mantêm sua estrutura interna (descritor `application.info`, `view.ftl`/`layout.ftl`,
 > i18n e recursos) dentro de `wcm/widget/<nome>` e `wcm/layout/<nome>`,
-> respectivamente. Datasets, eventos globais e scripts de eventos de processo são
-> arquivos JavaScript server-side colocados em `datasets/`, `events/` e
-> `workflow/scripts/`.
+> respectivamente. Datasets e eventos globais são arquivos JavaScript server-side
+> colocados em `datasets/` e `events/`.
 
 ## Widget (SuperWidget)
 
@@ -555,22 +549,6 @@ Pontos de extensão e contexto de execução visíveis ao código:
   coluna `ERROR`), para que o consumidor receba um resultado previsível.
 - **Consumo**: o resultado é consumido por widgets/forms na camada cliente.
 
-## Evento de processo (BPM)
-
-Funções JavaScript server-side disparadas pela plataforma em **pontos definidos
-do ciclo de vida de um processo/workflow**. São pontos de extensão onde o
-desenvolvedor injeta regras de negócio sem alterar o motor de processos.
-
-Pontos de extensão e contexto de execução visíveis ao código:
-
-- **Handlers em pontos de extensão**: o desenvolvedor implementa funções
-  associadas a momentos do fluxo (ex.: transições e etapas do processo), que a
-  plataforma invoca automaticamente.
-- **Execução server-side**: roda no runtime público de scripting do servidor
-  (motor **Rhino**, base **ES5** — ver [technologies.md](technologies.md)), usando
-  apenas a API pública de eventos de processo. A sintaxe segue o padrão rígido do
-  Rhino (não é ES6+) e admite interop com Java.
-
 ## Como os artefatos se integram
 
 Todos os artefatos executam **dentro** da plataforma Fluig, que os carrega e os
@@ -581,7 +559,7 @@ aciona nos pontos de extensão acima:
   internos do Fluig **através das APIs públicas de cliente** (`FLUIGC.ajax`,
   `WCMAPI`), que cuidam da sessão/autenticação — ver
   [conventions.md](conventions.md), seção de chamadas REST.
-- **Artefatos server-side** (datasets, eventos de processo) executam no runtime
+- **Artefatos server-side** (datasets) executam no runtime
   público de scripting e interagem apenas com as APIs públicas de seu contexto.
 - A comunicação **entre artefatos cliente** ocorre por eventos globais /
   `CustomEvent` no DOM; a comunicação **cliente → dados** ocorre via datasets e
@@ -597,7 +575,7 @@ hooks de evento) e a plataforma orquestra a execução.
 
 - Para "como fazer" (gerar cada artefato, modernizar e revisar), ver as skills em
   `skills/` (ex.: `scaffolding-widget`, `scaffolding-layout`, `scaffolding-form`,
-  `scaffolding-dataset`, `scaffolding-process-event`).
+  `scaffolding-dataset`).
 - Para convenções de código, i18n, segurança e chamadas REST públicas:
   [conventions.md](conventions.md).
 - Para componentes, grid, ícones e variáveis CSS do Style Guide:

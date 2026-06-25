@@ -59,8 +59,7 @@ fluig-agent-skills/
     ├── widget/
     ├── layout/
     ├── form/
-    ├── dataset/
-    └── process-event/
+    └── dataset/
 ```
 
 ## Como usar
@@ -111,8 +110,7 @@ seu-projeto/
         ├── widget/
         ├── layout/
         ├── form/
-        ├── dataset/
-        └── process-event/
+        └── dataset/
 ```
 
 Com essa disposição os links relativos das skills resolvem corretamente:
@@ -158,7 +156,7 @@ Com essa disposição os links relativos das skills resolvem corretamente:
 
 | Arquivo | Responde |
 |---------|----------|
-| `context/architecture.md` | O modelo conceitual dos artefatos (widget, layout, form, dataset, evento de processo), seus pontos de extensão públicos, o ciclo de vida visível ao código e a estrutura oficial de pastas/arquivos (incluindo o projeto Fluig Studio). |
+| `context/architecture.md` | O modelo conceitual dos artefatos (widget, layout, form, dataset), seus pontos de extensão públicos, o ciclo de vida visível ao código e a estrutura oficial de pastas/arquivos (incluindo o projeto Fluig Studio). |
 | `context/technologies.md` | As tecnologias públicas de customização: ES6+, bibliotecas client-side (jQuery, Kendo UI, Bootstrap), Fluig Style Guide e o runtime de scripting server-side. |
 | `context/conventions.md` | Padrões de código, convenções de widget, i18n, segurança via APIs públicas e chamadas REST públicas. |
 | `context/style-guide.md` | Componentes, grid, helpers e utilitários do Fluig Style Guide, além das variáveis CSS de tema (`var(--fs-color-*)`). |
@@ -176,7 +174,6 @@ selecionada pela sua `description`.
 | `scaffolding-layout` | Gera o esqueleto de um Layout WCM com declaração de slots/regiões. |
 | `scaffolding-form` | Gera o esqueleto de um Form (campos, view e eventos). |
 | `scaffolding-dataset` | Gera o esqueleto de um Dataset via API pública de Dataset. |
-| `scaffolding-process-event` | Gera o esqueleto de eventos de processo BPM. |
 
 ### Modernização — "melhorar o que existe"
 
@@ -205,6 +202,6 @@ correspondente nos arquivos de `context/`.
 
 ## Exemplos disponíveis
 
-`examples/` contém referências mínimas para os cinco tipos de artefato:
-`widget/`, `layout/`, `form/`, `dataset/` e `process-event/`. Cada exemplo é um
+`examples/` contém referências mínimas para os quatro tipos de artefato:
+`widget/`, `layout/`, `form/` e `dataset/`. Cada exemplo é um
 trecho de código curto que reflete as APIs e convenções descritas em `context/`.
