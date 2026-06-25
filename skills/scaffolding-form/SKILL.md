@@ -32,7 +32,7 @@ Produzir, com responsabilidade única, o **esqueleto de um Form (formulário ele
 Leia antes de executar — não reproduza o conteúdo aqui:
 
 - [architecture.md](../../context/architecture.md) — modelo conceitual do **Form** e seus **pontos de extensão públicos**: a **view/markup** do formulário, os handlers que reagem aos **eventos de ciclo de vida do formulário** (ex.: carga e validação) e aos **eventos de campos** (validação e reação a mudanças). Veja também a seção "Estrutura de um Projeto Fluig Studio": o form fica em `forms/` e seus eventos em `forms/events/`.
-- [conventions.md](../../context/conventions.md) — **Convenções de Form** (contêiner `fluig-style-guide`, `<form>` nomeado, ordem de scripts/estilos no `<head>`, scripts inline antes de `</body>`, atributo `name` obrigatório nos campos), i18n (`${i18n.getTranslation('chave')}`), JavaScript em **ES6+** e **segurança** (validar/sanitizar a entrada do usuário com `WCMAPI.validateXSS`/`DOMPurify.sanitize`).
+- [conventions.md](../../context/conventions.md) — **Convenções de Form** (contêiner `fluig-style-guide`, `<form>` nomeado, ordem de scripts/estilos no `<head>`, scripts inline antes de `</body>`, atributo `name` obrigatório nos campos), JavaScript em **ES6+** e **segurança** (validar/sanitizar a entrada do usuário com `WCMAPI.validateXSS`/`DOMPurify.sanitize`). **Atenção:** o padrão de i18n descrito em `conventions.md` aplica-se apenas a widgets e layouts — em formulários, use o idioma solicitado pelo desenvolvedor ou Português (Brasil) por padrão.
 
 ## Regras Aplicáveis (Resumo Executivo)
 
@@ -43,7 +43,7 @@ Somente o mínimo para orientar a geração; o detalhe está no contexto:
 - O desenvolvedor implementa **handlers nos eventos públicos do formulário** — eventos de ciclo de vida (ex.: carga e validação) e eventos de campos — onde injeta as regras de validação e preenchimento → ver `architecture.md`.
 - Use **somente** pontos de extensão públicos e oficiais do formulário; quando o nome exato de um evento não for confirmado como público, descreva o comportamento de forma genérica em vez de inventar nomes → ver `architecture.md`.
 - JavaScript dos handlers em **ES6+** (`const`/`let`, arrow functions, template literals); evitar `var` → ver `conventions.md`.
-- Todo texto visível (rótulos, mensagens de validação) via i18n: `${i18n.getTranslation('chave')}`; nunca strings fixas → ver `conventions.md`.
+- **i18n em formulários:** formulários **não** seguem o padrão de i18n de widgets/layouts (`${i18n.getTranslation('chave')}`). Use os textos no idioma solicitado pelo desenvolvedor ou, por padrão, em **Português (Brasil)**. O padrão de i18n para formulários será documentado separadamente → ver `conventions.md`.
 - **Validar e sanitizar** toda entrada do usuário antes de uso/persistência (`WCMAPI.validateXSS`, `DOMPurify.sanitize`); tratar a entrada como não confiável → ver `conventions.md`.
 
 ## Procedimento
@@ -51,7 +51,7 @@ Somente o mínimo para orientar a geração; o detalhe está no contexto:
 1. Definir o nome do formulário (em Inglês) e os **campos** a partir da entrada (nome, tipo e obrigatoriedade de cada campo).
 2. Criar a pasta do formulário e a **view/markup**: documento HTML com o contêiner `fluig-style-guide` e o `<form name="form" role="form">`, com CSS do Style Guide e `<script>` de bibliotecas no `<head>` e os campos definidos. Cada campo recebe `name` (obrigatório) e, por boa prática, `id`/`for`/`placeholder`; rótulos via i18n.
 3. Criar o **arquivo de eventos** e implementar os **handlers dos eventos públicos** do formulário: ciclo de vida (ex.: carga e validação do formulário) e eventos de campos (validação e regras de preenchimento). Scripts inline, quando houver, ficam antes de `</body>`.
-4. Aplicar **i18n** em todo texto visível — rótulos de campos e mensagens de validação — com `${i18n.getTranslation('chave')}`.
+4. Usar os textos no **idioma solicitado pelo desenvolvedor** ou, por padrão, em **Português (Brasil)**. O padrão de i18n de widgets/layouts (`${i18n.getTranslation(...)}`) **não se aplica** a formulários.
 5. **Sanitizar/validar** a entrada do usuário nos handlers antes de usá-la ou persisti-la (`WCMAPI.validateXSS`/`DOMPurify.sanitize`).
 6. Validar o resultado com o checklist abaixo antes de entregar.
 
@@ -74,6 +74,6 @@ Use `examples/form/` como referência mínima (arquivo de eventos do formulário
 - [ ] A **view** envolve os campos em `fluig-style-guide` + `<form>` nomeado; CSS/scripts de biblioteca no `<head>` e scripts inline antes de `</body>`.
 - [ ] **Todo campo tem o atributo `name`**; `id`/`for`/`placeholder` aplicados quando fizerem sentido (semântica/acessibilidade).
 - [ ] Os **handlers** estão implementados nos eventos públicos do formulário (ciclo de vida e campos).
-- [ ] Todo texto visível usa `${i18n.getTranslation('...')}` — sem strings fixas.
+- [ ] Textos visíveis no idioma solicitado pelo desenvolvedor ou em **Português (Brasil)** por padrão (o padrão de i18n de widgets/layouts não se aplica a formulários).
 - [ ] A entrada do usuário é validada/sanitizada (`WCMAPI.validateXSS`/`DOMPurify.sanitize`).
 - [ ] JavaScript em ES6+ (sem `var`; `const`/`let`, arrow functions, template literals).

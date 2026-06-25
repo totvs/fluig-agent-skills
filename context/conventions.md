@@ -330,7 +330,9 @@ WCMAPI.addListener(this, 'document-selected', (evt, data) => {
 
 ## Internacionalização (i18n)
 
-Todo texto visível ao usuário **deve** vir de i18n — nunca usar strings fixas.
+> **Escopo:** as convenções de i18n desta seção aplicam-se **exclusivamente a Widgets e Layouts**. Formulários eletrônicos possuem um padrão de i18n diferente que será documentado separadamente. Ao gerar ou editar um formulário, use os textos no idioma solicitado pelo desenvolvedor ou, por padrão, em **Português (Brasil)** — sem aplicar as convenções abaixo.
+
+Todo texto visível ao usuário em widgets e layouts **deve** vir de i18n — nunca usar strings fixas.
 A tradução é resolvida server-side pelo FreeMarker antes de chegar ao navegador.
 
 ### Sintaxes de tradução

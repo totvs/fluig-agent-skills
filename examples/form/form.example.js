@@ -1,6 +1,7 @@
 // Exemplo mínimo de referência — Eventos de Form Fluig
 // Demonstra: handlers de ciclo de vida (carga/validação) e de campo, em ES6+,
-// com i18n para texto visível e validação/sanitização da entrada do usuário.
+// com validação/sanitização da entrada do usuário.
+// Textos visíveis em Português (Brasil) — i18n de widgets/layouts não se aplica a forms.
 // Não é um projeto completo. Ver context/architecture.md e context/conventions.md.
 //
 // Os nomes dos handlers abaixo são representativos dos pontos de extensão
@@ -22,13 +23,13 @@ function beforeSave(form) {
   form.setValue('requesterName', safeName);
 
   if (!safeName.trim()) {
-    // Mensagem visível via i18n — sem strings fixas.
-    throw new Error("${i18n.getTranslation('form.error.requesterRequired')}");
+    // Mensagem de erro em português (padrão para formulários).
+    throw new Error('O nome do solicitante é obrigatório.');
   }
 
   const days = Number(form.getValue('days'));
   if (!Number.isInteger(days) || days <= 0) {
-    throw new Error("${i18n.getTranslation('form.error.invalidDays')}");
+    throw new Error('Informe uma quantidade de dias válida.');
   }
 }
 
