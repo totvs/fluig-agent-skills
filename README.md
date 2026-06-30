@@ -36,11 +36,13 @@ fluig-agent-skills/
 │   └── style-guide.md                # componentes, grid, helpers e variáveis CSS do Style Guide
 ├── skills/                           # procedimentos especializados — "como fazer"
 │   └── <nome>/SKILL.md               # cada skill é um diretório com um SKILL.md
-└── examples/                         # referências concretas mínimas — "como se parece"
-    ├── widget/
-    ├── layout/
-    ├── form/
-    └── dataset/
+├── examples/                         # referências concretas mínimas — "como se parece"
+│   ├── widget/
+│   ├── layout/
+│   ├── form/
+│   └── dataset/
+└── docs/                             # prompts de uso por skill — "como acionar"
+    └── <nome>/README.md              # prompts de exemplo para acionar a skill
 ```
 
 ## Como usar
