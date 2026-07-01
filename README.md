@@ -55,6 +55,32 @@ Fluxo de consumo por um agente de IA:
 4. **Consulte os exemplos.** Use `examples/` como referência concreta mínima do artefato em questão.
 5. **Produza o código** seguindo as convenções oficiais descritas no contexto.
 
+## Compatível com várias ferramentas de IA
+
+Este pacote **não é exclusivo do GitHub Copilot**. Ele foi escrito no padrão aberto **Agent Skills** (pastas com `SKILL.md` + contexto e exemplos referenciados por caminho relativo), então funciona com qualquer agente de IA capaz de consumir esse tipo de material — Kiro, Claude Code, ChatGPT, Gemini CLI e similares.
+
+A única exigência é **adaptar a disposição das pastas à estrutura que cada ferramenta espera**. Os princípios que valem para todas:
+
+- Mantenha `skills/`, `context/` e `examples/` **lado a lado**, preservando os **caminhos relativos** que as skills usam (ex.: `../../context/conventions.md`). Se os caminhos quebrarem, as skills não encontram a fonte de verdade.
+- Posicione o `AGENTS.md` (ou o arquivo de instrução equivalente da ferramenta, como `CLAUDE.md`) no local que o agente lê primeiro — normalmente a **raiz do projeto** — e ajuste as referências de caminho conforme onde você colocou as pastas.
+- Cada ferramenta descobre skills em locais próprios (veja a documentação do seu agente). Copie ou aponte o pacote para esse local mantendo a estrutura acima.
+
+A seção a seguir detalha o exemplo do GitHub Copilot no VS Code; use-a como modelo e ajuste os caminhos para a sua ferramenta.
+
+## Modelos de IA recomendados
+
+A qualidade do resultado depende **diretamente** do modelo de IA usado pelo agente. Estas skills envolvem raciocínio sobre múltiplos arquivos, seguir convenções e gerar código correto — tarefas em que **modelos "básicos", pequenos ou econômicos tendem a entregar resultados ruins** (ignoram convenções, inventam APIs, quebram caminhos relativos).
+
+Para bons resultados, prefira modelos de raciocínio de ponta. Sugestões (use a versão mais recente disponível de cada família):
+
+- **Anthropic Claude** — Opus e Sonnet das gerações mais recentes (ex.: Claude Opus 4.x / Sonnet 4.x).
+- **OpenAI GPT** — modelos de topo da linha GPT-5 / o-series de raciocínio.
+- **Google Gemini** — Gemini 2.5 Pro ou superior.
+
+Evite variantes "mini", "nano", "flash-lite", "instant" ou modelos antigos para estas tarefas — elas priorizam custo/velocidade em detrimento da precisão de que as skills dependem. Se o orçamento exigir um modelo menor, **revise o resultado com atenção redobrada** e valide sempre contra os arquivos de `context/`.
+
+> A disponibilidade de cada modelo varia por ferramenta e plano. Consulte a documentação do seu agente para saber quais modelos ele oferece e como selecioná-los.
+
 ## Uso com VS Code + GitHub Copilot
 
 O GitHub Copilot no VS Code suporta o padrão aberto **Agent Skills**: cada skill é uma pasta com um `SKILL.md`, descoberta automaticamente em locais fixos. Como o pacote já segue esse formato, basta posicioná-lo onde o Copilot procura.
@@ -148,3 +174,12 @@ As skills de revisão classificam os achados por severidade e referenciam a regr
 ## Exemplos disponíveis
 
 `examples/` contém referências mínimas para os quatro tipos de artefato: `widget/`, `layout/`, `form/` e `dataset/`. Cada exemplo é um trecho de código curto que reflete as APIs e convenções descritas em `context/`.
+
+## Feedback da comunidade
+
+Este pacote evolui com quem o usa. **Tem feedback? Envie para nós.** Sugestões, correções, novos casos de uso ou relatos do que funcionou (ou não) com determinada ferramenta ou modelo são muito bem-vindos.
+
+- Abra uma **issue** ou um **pull request** no repositório.
+- Descreva, quando possível, a ferramenta de IA e o modelo utilizados, o resultado obtido e o esperado.
+
+Seu retorno ajuda a manter as skills úteis, precisas e alinhadas às práticas oficiais do Fluig.
