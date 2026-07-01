@@ -57,7 +57,7 @@ Fluxo de consumo por um agente de IA:
 
 ## Compatível com várias ferramentas de IA
 
-Este pacote **não é exclusivo do GitHub Copilot**. Ele foi escrito no padrão aberto **Agent Skills** (pastas com `SKILL.md` + contexto e exemplos referenciados por caminho relativo), então funciona com qualquer agente de IA capaz de consumir esse tipo de material — Kiro, Claude Code, ChatGPT, Gemini CLI e similares.
+Este pacote **não é exclusivo de uma única ferramenta de IA**. Ele foi escrito no padrão aberto **Agent Skills** (pastas com `SKILL.md` + contexto e exemplos referenciados por caminho relativo), então funciona com qualquer agente de IA capaz de consumir esse tipo de material — Kiro, Claude Code, ChatGPT, Gemini CLI e similares.
 
 A única exigência é **adaptar a disposição das pastas à estrutura que cada ferramenta espera**. Os princípios que valem para todas:
 
