@@ -4,6 +4,10 @@ Pacote de **Agent Skills** para desenvolvimento de customizações da plataforma
 
 Todo o conteúdo é baseado em **APIs, convenções e recursos públicos e oficiais** do Fluig, voltados à customização externa.
 
+## Versão do Fluig
+
+As skills foram **testadas com o Fluig 2.0.0 (Voyager) ou superior**. Para versões anteriores, APIs, convenções e recursos do Style Guide podem divergir — nesses casos, **considere revisão redobrada** do código gerado e valide sempre contra a documentação oficial da sua versão.
+
 ## ⚠️ Aviso legal
 
 > **A TOTVS NÃO PODERÁ SER RESPONSABILIZADA EM QUALQUER CASO DE MAL FUNCIONAMENTO DE SEUS PRODUTOS, SERVIÇOS OU SOLUÇÕES DECORRENTE DA UTILIZAÇÃO DE CÓDIGO GERADO POR FERRAMENTAS DE INTELIGÊNCIA ARTIFICIAL. TODO CÓDIGO GERADO DEVERÁ SER ANALISADO, REVISADO, VALIDADO E TESTADO PELO USUÁRIO ANTES DE SUA UTILIZAÇÃO. AS INFORMAÇÕES E MATERIAIS DISPONIBILIZADOS TÊM CARÁTER ORIENTATIVO E NÃO SUBSTITUEM A DOCUMENTAÇÃO OFICIAL NEM AS DIRETRIZES ADQUIRIDAS DIRETAMENTE DOS CANAIS OFICIAIS DE SUPORTE DA TOTVS.**
