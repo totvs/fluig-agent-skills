@@ -95,16 +95,17 @@ Já o **`AGENTS.md`** é uma instrução de repositório (não é uma skill) e *
 
 ```text
 seu-projeto/
-├── AGENTS.md          # instrução de repositório — fica na RAIZ do projeto
+├── AGENTS.md                   # instrução de repositório — fica na RAIZ do projeto
 └── .github/
-    ├── skills/        # copie o skills/ deste pacote
+    ├── copilot-instructions.md # instrução para o copilot 
+    ├── skills/                 # copie o skills/ deste pacote
     │   └── <nome>/SKILL.md
-    ├── context/       # copie o context/ deste pacote
+    ├── context/                # copie o context/ deste pacote
     │   ├── architecture.md
     │   ├── technologies.md
     │   ├── conventions.md
     │   └── style-guide.md
-    └── examples/      # copie o examples/ deste pacote
+    └── examples/               # copie o examples/ deste pacote
         ├── widget/
         ├── layout/
         ├── form/
