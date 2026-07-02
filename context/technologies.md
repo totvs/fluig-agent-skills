@@ -103,10 +103,10 @@ do Fluig — a URL base e as credenciais são cadastradas na plataforma e o cód
 apenas referencia o serviço pelo seu **código** (`serviceCode`):
 
 - Obtenha o cliente com **`fluigAPI.getAuthorizeClientService()`**.
-- Monte um objeto com `companyId`, `serviceCode` (código do serviço cadastrado),
+- Monte um objeto com `serviceCode` (código do serviço cadastrado),
   `endpoint` (complementa a URL base), `method` (`get`/`post`/...) e
-  `timeoutService`. O `companyId` (tenant atual) pode vir de
-  `fluigAPI.getSecurityService().getCurrentTenantId()`.
+  `timeoutService`. O `companyId` é **opcional** — quando omitido, é resolvido
+  a partir do `serviceCode` do serviço cadastrado.
 - Invoque com **`clientService.invoke(JSON.stringify(data))`** e leia a resposta
   com **`vo.getResult()`** (texto, normalmente JSON) — parseando com `JSON.parse(...)`.
 

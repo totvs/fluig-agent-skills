@@ -32,9 +32,10 @@ function createDataset(fields, constraints, sortFields) {
     var cep = new java.lang.String(cepParam).replaceAll('[^\\d]', '');
 
     // Consome o serviço externo pelo Cadastro de Serviços.
+    // O 'companyId' é opcional: quando omitido, é resolvido a partir do
+    // 'serviceCode' do serviço cadastrado.
     var clientService = fluigAPI.getAuthorizeClientService();
     var request = {
-      companyId: String(fluigAPI.getSecurityService().getCurrentTenantId()),
       serviceCode: 'wsViaCEP',
       endpoint: '/ws/' + cep + '/json/',
       method: 'get',

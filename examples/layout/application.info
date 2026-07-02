@@ -12,7 +12,7 @@ application.renderer=freemarker
 
 developer.code=example
 developer.name=Example Developer
-developer.url=http://www.fluig.com
+developer.url=http://www.totvs.com
 
 layout.defaultSlot=SlotA
 layout.file=layout.ftl
