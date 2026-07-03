@@ -1,7 +1,7 @@
 ---
 name: fluig-scaffolding-dataset
 description: Gera o esqueleto de um Dataset customizado do Fluig — o arquivo JavaScript server-side com a(s) função(ões) nomeada(s) que a plataforma invoca para construir e retornar o conjunto de dados via API pública de Dataset, aplicando filtros/constraints e ordenação. Use quando o desenvolvedor pedir para criar/iniciar um novo dataset customizado a partir de um nome/propósito, campos e fontes de dados.
-argument-hint: nome e/ou propósito do dataset, campos e fontes/filtros (ex.: "dataset de filiais com código, nome e UF, filtrando ativas")
+argument-hint: 'nome e/ou propósito do dataset, campos e fontes/filtros (ex.: "dataset de filiais com código, nome e UF, filtrando ativas")'
 ---
 
 # Scaffolding de Dataset (customizado, server-side)

@@ -1,7 +1,7 @@
 ---
 name: fluig-scaffolding-form
 description: Gera o esqueleto de um Form (formulário eletrônico) do Fluig — a definição dos campos, a view/markup do formulário e o arquivo de eventos com os handlers de ciclo de vida e de campos para validação e regras, aplicando as convenções oficiais. Use quando o desenvolvedor pedir para criar/iniciar um novo formulário do Fluig a partir de um nome ou propósito e seus campos.
-argument-hint: nome e/ou propósito do formulário, campos e regras de validação (ex.: "formulário de solicitação de férias com nome, data de início e dias")
+argument-hint: 'nome e/ou propósito do formulário, campos e regras de validação (ex.: "formulário de solicitação de férias com nome, data de início e dias")'
 ---
 
 # Scaffolding de Form (Formulário eletrônico)

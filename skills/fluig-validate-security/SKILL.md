@@ -1,7 +1,7 @@
 ---
 name: fluig-validate-security
 description: Sanitiza entradas e previne vulnerabilidades de frontend Fluig (XSS, innerHTML inseguro, eval/new Function com dados dinâmicos, escape FreeMarker ?html/?js_string, cuidado com Mustache triple-stache {{{ }}}, REST interna via WCMAPI/FLUIGC.ajax) usando APIs públicas como WCMAPI.validateXSS e DOMPurify.sanitize (preferindo-as à API legada FLUIGC.utilities.preventXSS). Use quando precisar validar/sanitizar código client-side de customização que manipula entrada do usuário no DOM, na persistência ou na exibição.
-argument-hint: o código frontend alvo a validar/sanitizar (ex.: trecho que insere input do usuário no DOM)
+argument-hint: 'o código frontend alvo a validar/sanitizar (ex.: trecho que insere input do usuário no DOM)'
 ---
 
 # Validação de Segurança (Sanitização e Prevenção de XSS)

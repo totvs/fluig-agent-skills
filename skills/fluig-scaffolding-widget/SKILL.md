@@ -1,7 +1,7 @@
 ---
 name: fluig-scaffolding-widget
 description: Gera o esqueleto de um Widget WCM do Fluig usando SuperWidget.extend (view FreeMarker + JS com init() e bindings), aplicando as convenções oficiais de customização. Use quando o desenvolvedor pedir para criar/iniciar um novo widget client-side do Fluig a partir de um nome ou descrição de propósito.
-argument-hint: nome e/ou propósito do widget a ser gerado (ex.: "widget de notificações")
+argument-hint: 'nome e/ou propósito do widget a ser gerado (ex.: "widget de notificações")'
 ---
 
 # Scaffolding de Widget (SuperWidget)

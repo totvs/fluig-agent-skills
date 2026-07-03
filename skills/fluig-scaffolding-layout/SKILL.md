@@ -1,7 +1,7 @@
 ---
 name: fluig-scaffolding-layout
 description: Gera o esqueleto de um Layout WCM do Fluig — a view FreeMarker (.ftl) que define as regiões/áreas onde os widgets são posicionados, usando o grid responsivo do Style Guide. Use quando o desenvolvedor pedir para criar/iniciar um novo layout (template de página) do Fluig a partir de um nome ou propósito.
-argument-hint: nome e/ou propósito do layout a ser gerado (ex.: "layout de duas colunas para o portal")
+argument-hint: 'nome e/ou propósito do layout a ser gerado (ex.: "layout de duas colunas para o portal")'
 ---
 
 # Scaffolding de Layout (WCM)
