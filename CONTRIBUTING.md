@@ -68,7 +68,7 @@ Cada skill é um **diretório** sob `skills/` contendo um arquivo `SKILL.md`. O
 
 ```yaml
 ---
-name: scaffolding-widget
+name: fluig-scaffolding-widget
 description: Gera o esqueleto de um Widget WCM do Fluig usando SuperWidget.extend... Use quando o desenvolvedor pedir para criar/iniciar um novo widget client-side do Fluig.
 argument-hint: nome e/ou propósito do widget a ser gerado (ex.: "widget de notificações")
 ---
@@ -104,7 +104,7 @@ previsível:
 - **Exemplo de Uso** — aponta para a referência correspondente em `examples/`.
 - **Checklist de Validação** — as verificações a fazer antes de entregar o resultado.
 
-As skills de revisão (`code-review`, `review-*`) seguem a mesma forma, mas
+As skills de revisão (`fluig-code-review`, `review-*`) seguem a mesma forma, mas
 classificam os achados por severidade e referenciam a regra correspondente em
 `context/`.
 
@@ -165,7 +165,7 @@ Diretrizes:
 ## Nomenclatura e organização
 
 - **Diretório e `name` da skill** — kebab-case, idênticos entre si
-  (ex.: `scaffolding-widget`). Agrupe por intenção mentalmente, mas mantenha os
+  (ex.: `fluig-scaffolding-widget`). Agrupe por intenção mentalmente, mas mantenha os
   nomes planos sob `skills/`.
 - **Arquivos de contexto** — atenha-se aos quatro arquivos canônicos; estenda o
   conteúdo deles em vez de adicionar arquivos avulsos, salvo um domínio novo claro.

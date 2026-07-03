@@ -37,13 +37,13 @@ Para entender qualquer regra, abra o arquivo indicado — ele é a fonte de verd
 Selecione a skill pela `description` no frontmatter do `SKILL.md`. Quando a skill
 recebe um argumento, ele é descrito em `argument-hint`.
 
-- **Geração:** `scaffolding-widget`, `scaffolding-layout`, `scaffolding-form`,
-  `scaffolding-dataset`.
-- **Modernização:** `migrate-jquery-es6`, `optimize-performance`,
-  `improve-accessibility`, `validate-security`, `dark-mode`,
-  `internationalization`, `style-guide-helpers`.
-- **Revisão:** `code-review`, `review-performance`, `review-security`,
-  `review-accessibility`, `fluig-best-practices`.
+- **Geração:** `fluig-scaffolding-widget`, `fluig-scaffolding-layout`, `fluig-scaffolding-form`,
+  `fluig-scaffolding-dataset`.
+- **Modernização:** `fluig-migrate-jquery-es6`, `fluig-optimize-performance`,
+  `fluig-improve-accessibility`, `fluig-validate-security`, `fluig-dark-mode`,
+  `fluig-internationalization`, `fluig-style-guide-helpers`.
+- **Revisão:** `fluig-code-review`, `fluig-review-performance`, `fluig-review-security`,
+  `fluig-review-accessibility`, `fluig-best-practices`.
 
 ### Exemplos (`examples/`)
 

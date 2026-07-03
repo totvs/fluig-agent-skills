@@ -125,8 +125,8 @@ Com essa disposição os links relativos das skills resolvem corretamente:
 
 1. Crie a pasta `.github/` no seu projeto (se ainda não existir).
 2. Copie as pastas `skills/`, `context/` e `examples/` deste pacote para dentro de `.github/`.
-3. No VS Code, abra o chat do Copilot e digite `/` — as skills aparecem como slash commands (ex.: `/scaffolding-widget`, `/code-review`). Você também pode rodar **Chat: Open Customizations** na paleta de comandos para visualizar e gerenciar as skills.
-4. Invoque uma skill com contexto adicional, por exemplo: `/scaffolding-widget widget de notificações`.
+3. No VS Code, abra o chat do Copilot e digite `/` — as skills aparecem como slash commands (ex.: `/fluig-scaffolding-widget`, `/fluig-code-review`). Você também pode rodar **Chat: Open Customizations** na paleta de comandos para visualizar e gerenciar as skills.
+4. Invoque uma skill com contexto adicional, por exemplo: `/fluig-scaffolding-widget widget de notificações`.
 
 > **Escopo de projeto vs. pessoal:** `.github/skills/` deixa as skills versionadas e isoladas no projeto — ideal para testes e para o time. Para reusar as skills em vários projetos, há também os locais pessoais (`~/.copilot/skills/`, `~/.claude/skills/`, `~/.agents/skills/`); nesse caso, o `context/` e o `examples/` também precisam ficar em uma posição que preserve os caminhos relativos. Alternativamente, o setting `chat.agentSkillsLocations` permite apontar outras pastas de skills, mas ele não altera a resolução dos links para `context/` — por isso a estrutura lado a lado continua sendo o caminho mais seguro.
 
@@ -147,31 +147,31 @@ Skills agrupadas por intenção. Cada uma vive em `skills/<nome>/SKILL.md` e é 
 
 | Skill | O que faz |
 |-------|-----------|
-| `scaffolding-widget` | Gera o esqueleto de um Widget WCM com `SuperWidget.extend`. |
-| `scaffolding-layout` | Gera o esqueleto de um Layout WCM com declaração de slots/regiões. |
-| `scaffolding-form` | Gera o esqueleto de um Form (campos, view e eventos). |
-| `scaffolding-dataset` | Gera o esqueleto de um Dataset via API pública de Dataset. |
+| `fluig-scaffolding-widget` | Gera o esqueleto de um Widget WCM com `SuperWidget.extend`. |
+| `fluig-scaffolding-layout` | Gera o esqueleto de um Layout WCM com declaração de slots/regiões. |
+| `fluig-scaffolding-form` | Gera o esqueleto de um Form (campos, view e eventos). |
+| `fluig-scaffolding-dataset` | Gera o esqueleto de um Dataset via API pública de Dataset. |
 
 ### Modernização — "melhorar o que existe"
 
 | Skill | O que faz |
 |-------|-----------|
-| `migrate-jquery-es6` | Migra código jQuery para JavaScript ES6+. |
-| `optimize-performance` | Otimiza a performance de código frontend. |
-| `improve-accessibility` | Melhora a acessibilidade de markup/UI. |
-| `validate-security` | Sanitiza entradas e previne vulnerabilidades (XSS e afins). |
-| `dark-mode` | Adapta estilos ao modo escuro com variáveis CSS de tema. |
-| `internationalization` | Aplica i18n, externalizando texto visível. |
-| `style-guide-helpers` | Substitui CSS customizado por helpers do Style Guide. |
+| `fluig-migrate-jquery-es6` | Migra código jQuery para JavaScript ES6+. |
+| `fluig-optimize-performance` | Otimiza a performance de código frontend. |
+| `fluig-improve-accessibility` | Melhora a acessibilidade de markup/UI. |
+| `fluig-validate-security` | Sanitiza entradas e previne vulnerabilidades (XSS e afins). |
+| `fluig-dark-mode` | Adapta estilos ao modo escuro com variáveis CSS de tema. |
+| `fluig-internationalization` | Aplica i18n, externalizando texto visível. |
+| `fluig-style-guide-helpers` | Substitui CSS customizado por helpers do Style Guide. |
 
 ### Revisão — "avaliar antes do merge"
 
 | Skill | O que faz |
 |-------|-----------|
-| `code-review` | Revisão geral de qualidade de código Fluig. |
-| `review-performance` | Revisão focada em performance. |
-| `review-security` | Revisão de segurança conforme OWASP Top 10. |
-| `review-accessibility` | Revisão de acessibilidade alinhada às WCAG. |
+| `fluig-code-review` | Revisão geral de qualidade de código Fluig. |
+| `fluig-review-performance` | Revisão focada em performance. |
+| `fluig-review-security` | Revisão de segurança conforme OWASP Top 10. |
+| `fluig-review-accessibility` | Revisão de acessibilidade alinhada às WCAG. |
 | `fluig-best-practices` | Revisão de aderência às boas práticas oficiais do Fluig. |
 
 As skills de revisão classificam os achados por severidade e referenciam a regra correspondente nos arquivos de `context/`.

@@ -280,7 +280,7 @@ Padrão de nome: `--fs-color-<família>-<tom>`
 ### Mapeamento de uso comum → variável CSS
 
 Esta tabela é a **fonte única de verdade** do mapeamento de cores do pacote; as
-skills (ex.: `dark-mode`) referenciam esta seção em vez de reproduzir as tabelas.
+skills (ex.: `fluig-dark-mode`) referenciam esta seção em vez de reproduzir as tabelas.
 Para cada uso comum de cor, prefira a variável CSS correspondente:
 
 | Uso | Variável CSS |
@@ -338,7 +338,7 @@ pela variável CSS equivalente (cor neutra que se adapta ao tema ativo):
 ## Referências Cruzadas
 
 - Para "como fazer" (gerar, adaptar a dark mode, substituir CSS por helpers e
-  revisar), ver as skills em `skills/` (ex.: `dark-mode`, `style-guide-helpers`).
+  revisar), ver as skills em `skills/` (ex.: `fluig-dark-mode`, `fluig-style-guide-helpers`).
 - Para convenções de código, i18n, segurança e a regra `fluig-style-guide` na
   raiz do widget: [conventions.md](conventions.md).
 - Para versões das bibliotecas client-side (jQuery, Bootstrap, Kendo UI):

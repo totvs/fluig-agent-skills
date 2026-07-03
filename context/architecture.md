@@ -574,8 +574,8 @@ hooks de evento) e a plataforma orquestra a execução.
 ## Referências Cruzadas
 
 - Para "como fazer" (gerar cada artefato, modernizar e revisar), ver as skills em
-  `skills/` (ex.: `scaffolding-widget`, `scaffolding-layout`, `scaffolding-form`,
-  `scaffolding-dataset`).
+  `skills/` (ex.: `fluig-scaffolding-widget`, `fluig-scaffolding-layout`, `fluig-scaffolding-form`,
+  `fluig-scaffolding-dataset`).
 - Para convenções de código, i18n, segurança e chamadas REST públicas:
   [conventions.md](conventions.md).
 - Para componentes, grid, ícones e variáveis CSS do Style Guide:

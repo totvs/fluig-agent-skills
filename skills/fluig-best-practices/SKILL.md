@@ -17,7 +17,7 @@ Revisar, com responsabilidade única, a **aderência de código de customizaçã
 - Antes de um merge, para verificar conformidade com os padrões oficiais do Fluig.
 - Quando há dúvida se o código segue as convenções de widget/Custom Element da plataforma.
 - Quando se quer garantir compatibilidade e manutenibilidade alinhadas ao padrão Fluig.
-- Como complemento às revisões especializadas (`review-performance`, `review-security`, `review-accessibility`).
+- Como complemento às revisões especializadas (`fluig-review-performance`, `fluig-review-security`, `fluig-review-accessibility`).
 
 ## Entradas Esperadas
 
@@ -79,7 +79,7 @@ Classifique **cada achado** em um destes níveis:
 1. Identificar o tipo de artefato e as convenções aplicáveis.
 2. Avaliar o código contra as boas práticas: ES6+, convenções de widget/Custom Element, i18n, Style Guide, REST interna e nomenclatura.
 3. Para cada desvio, registrar um achado com localização, descrição, **severidade** e a **regra de contexto** correspondente (`conventions.md`/`style-guide.md`, com a seção).
-4. Recomendar a correção objetiva, apontando a skill aplicável quando útil (ex.: `internationalization`, `style-guide-helpers`, `migrate-jquery-es6`).
+4. Recomendar a correção objetiva, apontando a skill aplicável quando útil (ex.: `fluig-internationalization`, `fluig-style-guide-helpers`, `fluig-migrate-jquery-es6`).
 5. Consolidar os achados ordenados do mais grave ao menos grave.
 6. Validar a revisão com o checklist abaixo antes de entregar.
 
