@@ -1,0 +1,83 @@
+name: CI - Security
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+jobs:
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install system dependencies
+        run: sudo apt-get update && sudo apt-get install -y git curl
+
+      - name: Make scripts executable
+        run: chmod +x ci/scripts/*.sh
+
+      - name: Run security scan
+        run: ./ci/scripts/security-scan.sh
+
+  validation-scan:
+    name: Validation Scan
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install system dependencies
+        run: sudo apt-get update && sudo apt-get install -y git curl
+
+      - name: Make scripts executable
+        run: chmod +x ci/scripts/*.sh
+
+      - name: Run validation scan
+        run: ./ci/scripts/validation-scan.sh
+  build-and-release:
+    name: Build & Publish Release Artifacts
+    runs-on: ubuntu-latest
+    needs: [security-scan]
+    if: github.event_name == 'release'
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: sudo apt-get update && sudo apt-get install -y zip
+
+      - name: Make scripts executable
+        run: chmod +x ci/scripts/*.sh
+
+      - name: Run build
+        run: ./ci/scripts/build.sh
+
+      - name: Upload release artifacts
+        uses: softprops/action-gh-release@v2
+        with:
+          files: release/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

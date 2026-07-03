@@ -1,3 +1,9 @@
 .kiro/
 .vscode/
 references/
+
+# Ambientes virtuais e artefatos de teste Python
+.venv/
+__pycache__/
+.hypothesis/
+.pytest_cache/
