@@ -1,0 +1,181 @@
+{
+  "version": "1.0.0",
+  "categories": {
+    "geracao": {
+      "name": "Geração",
+      "description": "Skills para gerar o esqueleto de artefatos de customização Fluig (widget, layout, form e dataset) seguindo as convenções oficiais"
+    },
+    "modernizacao": {
+      "name": "Modernização",
+      "description": "Skills para modernizar customizações Fluig — migração para ES6+, performance, acessibilidade, segurança, dark mode, i18n e uso do Style Guide"
+    },
+    "revisao": {
+      "name": "Revisão",
+      "description": "Skills para revisar código frontend Fluig produzindo achados classificados por severidade, sem reescrever o código"
+    }
+  },
+  "skills": [
+    {
+      "name": "fluig-scaffolding-widget",
+      "description": "Gera o esqueleto de um Widget WCM do Fluig usando SuperWidget.extend (view FreeMarker + JS com init() e bindings), aplicando as convenções oficiais de customização. Use quando o desenvolvedor pedir para criar/iniciar um novo widget client-side do Fluig a partir de um nome ou descrição de propósito.",
+      "argument-hint": "nome e/ou propósito do widget a ser gerado (ex.: \"widget de notificações\")",
+      "category": "geracao",
+      "path": "skills/fluig-scaffolding-widget",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "fluig-scaffolding-layout",
+      "description": "Gera o esqueleto de um Layout WCM do Fluig — a view FreeMarker (.ftl) que define as regiões/áreas onde os widgets são posicionados, usando o grid responsivo do Style Guide. Use quando o desenvolvedor pedir para criar/iniciar um novo layout (template de página) do Fluig a partir de um nome ou propósito.",
+      "argument-hint": "nome e/ou propósito do layout a ser gerado (ex.: \"layout de duas colunas para o portal\")",
+      "category": "geracao",
+      "path": "skills/fluig-scaffolding-layout",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "fluig-scaffolding-form",
+      "description": "Gera o esqueleto de um Form (formulário eletrônico) do Fluig — a definição dos campos, a view/markup do formulário e o arquivo de eventos com os handlers de ciclo de vida e de campos para validação e regras, aplicando as convenções oficiais. Use quando o desenvolvedor pedir para criar/iniciar um novo formulário do Fluig a partir de um nome ou propósito e seus campos.",
+      "argument-hint": "nome e/ou propósito do formulário, campos e regras de validação (ex.: \"formulário de solicitação de férias com nome, data de início e dias\")",
+      "category": "geracao",
+      "path": "skills/fluig-scaffolding-form",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "fluig-scaffolding-dataset",
+      "description": "Gera o esqueleto de um Dataset customizado do Fluig — o arquivo JavaScript server-side com a(s) função(ões) nomeada(s) que a plataforma invoca para construir e retornar o conjunto de dados via API pública de Dataset, aplicando filtros/constraints e ordenação. Use quando o desenvolvedor pedir para criar/iniciar um novo dataset customizado a partir de um nome/propósito, campos e fontes de dados.",
+      "argument-hint": "nome e/ou propósito do dataset, campos e fontes/filtros (ex.: \"dataset de filiais com código, nome e UF, filtrando ativas\")",
+      "category": "geracao",
+      "path": "skills/fluig-scaffolding-dataset",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "fluig-migrate-jquery-es6",
+      "description": "Migra e moderniza código jQuery para JavaScript ES6+ em customizações Fluig, preservando o comportamento, a internacionalização e a compatibilidade com a plataforma. Use quando o desenvolvedor pedir para converter/atualizar um trecho ou arquivo legado em jQuery para ES6+ (DOM nativo, eventos, REST via APIs públicas).",
+      "argument-hint": "o código jQuery alvo a ser migrado (trecho ou arquivo selecionado)",
+      "category": "modernizacao",
+      "path": "skills/fluig-migrate-jquery-es6",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "fluig-optimize-performance",
+      "description": "Otimiza a performance de código frontend Fluig (manipulação de DOM, eventos, requisições e carga de dados) preservando o comportamento, a internacionalização e a compatibilidade com a plataforma. Use quando o desenvolvedor relatar lentidão, travamentos, reflows excessivos ou muitas requisições em um widget/Custom Element e pedir para otimizar um trecho ou arquivo.",
+      "argument-hint": "o código/artefato frontend alvo a otimizar (trecho ou arquivo selecionado), idealmente com o sintoma observado",
+      "category": "modernizacao",
+      "path": "skills/fluig-optimize-performance",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "fluig-improve-accessibility",
+      "description": "Melhora a acessibilidade de markup/UI de customizações Fluig — HTML semântico, rótulos, navegação por teclado, foco visível, ARIA, texto alternativo e contraste de cor — preservando comportamento, internacionalização e compatibilidade com a plataforma. Use quando o desenvolvedor pedir para tornar acessível um trecho de markup ou componente de interface (widget, layout, Custom Element).",
+      "argument-hint": "o markup/componente alvo a tornar acessível (trecho ou arquivo selecionado), idealmente com o contexto de uso",
+      "category": "modernizacao",
+      "path": "skills/fluig-improve-accessibility",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "fluig-validate-security",
+      "description": "Sanitiza entradas e previne vulnerabilidades de frontend Fluig (XSS, innerHTML inseguro, eval/new Function com dados dinâmicos, escape FreeMarker ?html/?js_string, cuidado com Mustache triple-stache {{{ }}}, REST interna via WCMAPI/FLUIGC.ajax) usando APIs públicas como WCMAPI.validateXSS e DOMPurify.sanitize (preferindo-as à API legada FLUIGC.utilities.preventXSS). Use quando precisar validar/sanitizar código client-side de customização que manipula entrada do usuário no DOM, na persistência ou na exibição.",
+      "argument-hint": "o código frontend alvo a validar/sanitizar (ex.: trecho que insere input do usuário no DOM)",
+      "category": "modernizacao",
+      "path": "skills/fluig-validate-security",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "fluig-dark-mode",
+      "description": "Adapta CSS de customizações Fluig ao modo escuro (dark mode) substituindo cores fixas por variáveis CSS de tema no formato var(--fs-color-*), garantindo que o componente acompanhe a troca de tema automaticamente sem código adicional. Use quando o desenvolvedor pedir para dar suporte a dark mode, adaptar estilos ao tema ativo ou remover hexadecimais fixos de cores de um trecho/arquivo CSS.",
+      "argument-hint": "o código/CSS alvo a adaptar ao dark mode (trecho ou arquivo com cores fixas)",
+      "category": "modernizacao",
+      "path": "skills/fluig-dark-mode",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "fluig-internationalization",
+      "description": "Aplica internacionalização (i18n) em customizações Fluig externalizando todo texto visível para chaves de tradução resolvidas server-side — ${i18n.getTranslation('chave')} em FreeMarker e a sintaxe recomendada [=i18n.getTranslation('chave')] em arquivos .js (evita conflito com template literals do ES6) — com getTranslationP1/getTranslationPn para parâmetros, evitando strings fixas e o acesso incorreto a i18n como objeto JavaScript. Use quando o desenvolvedor pedir para internacionalizar um trecho/arquivo, remover textos fixos ou corrigir o uso de i18n em widgets, Custom Elements ou templates FreeMarker.",
+      "argument-hint": "o código alvo a internacionalizar (trecho ou arquivo com textos fixos ou uso incorreto de i18n)",
+      "category": "modernizacao",
+      "path": "skills/fluig-internationalization",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "fluig-style-guide-helpers",
+      "description": "Substitui CSS customizado e comportamentos recriados manualmente por helpers, componentes, grid e classes utilitárias do Fluig Style Guide (FLUIGC e Bootstrap 3.4.1), reduzindo código próprio e garantindo consistência visual e adaptação automática ao tema. Use quando o desenvolvedor pedir para trocar estilos/markup customizados por recursos oficiais do Style Guide ou simplificar CSS próprio reutilizando o design system.",
+      "argument-hint": "o código/CSS/markup alvo a substituir por helpers e componentes do Style Guide",
+      "category": "modernizacao",
+      "path": "skills/fluig-style-guide-helpers",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "fluig-code-review",
+      "description": "Revisa código frontend de customização Fluig (widgets com SuperWidget, Custom Elements, FreeMarker e CSS) e produz um relatório de achados classificados por severidade, cada um referenciando a regra correspondente dos arquivos de contexto. Use quando o desenvolvedor pedir revisão geral de qualidade de um trecho ou arquivo antes de merge, cobrindo ES6+, convenções de widget/Custom Element, i18n, segurança, CSS/Style Guide, acessibilidade e performance.",
+      "argument-hint": "o código/arquivo frontend alvo da revisão (trecho ou arquivo selecionado), idealmente com o tipo de artefato",
+      "category": "revisao",
+      "path": "skills/fluig-code-review",
+      "files": [
+        "SKILL.md",
+        "assets/checklist.md",
+        "assets/output-template.md"
+      ]
+    },
+    {
+      "name": "fluig-review-performance",
+      "description": "Revisa a performance de código frontend Fluig (manipulação de DOM, eventos de alta frequência, requisições REST e carga de dados) e produz achados classificados por severidade, cada um referenciando a regra correspondente do arquivo de contexto. Use quando o desenvolvedor pedir uma revisão focada em performance de um widget/Custom Element antes de merge, sem reescrever o código.",
+      "argument-hint": "o código/arquivo frontend alvo da revisão de performance (trecho ou arquivo selecionado), idealmente com o sintoma observado",
+      "category": "revisao",
+      "path": "skills/fluig-review-performance",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "fluig-review-security",
+      "description": "Revisa a segurança de código frontend de customização Fluig sob a ótica do OWASP Top 10 (XSS, injeção, exposição de dados sensíveis, configuração insegura) usando apenas API pública (WCMAPI.validateXSS, DOMPurify.sanitize) e produz achados classificados por severidade, cada um referenciando a regra do arquivo de contexto. Use quando o desenvolvedor pedir uma revisão de segurança de um trecho ou arquivo antes de merge, sem reescrever o código.",
+      "argument-hint": "o código/arquivo frontend alvo da revisão de segurança (trecho ou arquivo selecionado), idealmente com a origem dos dados do usuário",
+      "category": "revisao",
+      "path": "skills/fluig-review-security",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "fluig-review-accessibility",
+      "description": "Revisa a acessibilidade de markup/UI de customizações Fluig (HTML semântico, rótulos, navegação por teclado, foco visível, ARIA, texto alternativo e contraste de cor) e produz achados classificados por severidade alinhados às WCAG, cada um referenciando a regra do arquivo de contexto. Use quando o desenvolvedor pedir uma revisão de acessibilidade de um trecho de markup ou componente antes de merge, sem reescrever o código.",
+      "argument-hint": "o markup/componente alvo da revisão de acessibilidade (trecho ou arquivo selecionado), idealmente com o contexto de uso",
+      "category": "revisao",
+      "path": "skills/fluig-review-accessibility",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "fluig-best-practices",
+      "description": "Revisa a aderência de código de customização Fluig às boas práticas oficiais da plataforma (convenções de widget com SuperWidget, Custom Elements, i18n, uso do Style Guide, chamadas REST internas e ES6+) e produz achados classificados por severidade, cada um referenciando a regra do arquivo de contexto. Use quando o desenvolvedor pedir uma revisão de conformidade com os padrões Fluig de um trecho ou arquivo antes de merge, sem reescrever o código.",
+      "argument-hint": "o código/arquivo Fluig alvo da revisão de boas práticas (trecho ou arquivo selecionado), idealmente com o tipo de artefato",
+      "category": "revisao",
+      "path": "skills/fluig-best-practices",
+      "files": [
+        "SKILL.md"
+      ]
+    }
+  ]
+}
