@@ -89,6 +89,29 @@ Esta é uma **exceção explícita** à convenção de
 A exceção vale **apenas** para a variável raiz do widget; o **restante do JS do
 widget permanece em ES6+** (`const`/`let`, arrow functions, template literals).
 
+### Consulta a datasets no cliente (`vcXMLRPC.js`)
+
+Quando o widget precisa **consultar datasets no lado cliente** (via
+`DatasetFactory`), a view FreeMarker (`view.ftl` ou `edit.ftl`, conforme onde a
+consulta é necessária) **deve obrigatoriamente importar** a biblioteca
+`vcXMLRPC.js` que expõe essa API no navegador. Inclua o script **exatamente**
+nesta forma, sem alterar o caminho, os atributos ou a ordem:
+
+```html
+<script src="/webdesk/vcXMLRPC.js" type="text/javascript"></script>
+```
+
+Esta é uma **exceção explícita** à convenção de
+[Chamadas REST internas](#chamadas-rest-internas): a importação do script no
+`.ftl` é permitida (e exigida) **apenas** para habilitar a consulta a datasets no
+cliente. Regras:
+
+- Importe o script **somente** quando o widget de fato consulta datasets no
+  cliente; se o widget não consulta datasets, não inclua o script.
+- Inclua-o na **view onde a consulta ocorre** (`view.ftl` e/ou `edit.ftl`).
+- Mantenha o caminho `/webdesk/vcXMLRPC.js` e os atributos **inalterados** — é o
+  caminho público e oficial dessa biblioteca.
+
 ## Convenções de Custom Elements (Web Components)
 
 | Item | Regra | Exemplo |

@@ -108,6 +108,7 @@ Somente o mínimo para orientar a geração; o detalhe está no contexto:
 - Variável raiz da SuperWidget declarada com `var` (ex.: `var MyWidget = SuperWidget.extend({...})`); o restante do JS em ES6+ (`const`/`let`, arrow functions, template literals) → ver `conventions.md`.
 - Minimizar CSS próprio; priorizar os componentes do Style Guide; CSS próprio só sob pedido explícito → ver `style-guide.md`/`conventions.md`.
 - CSS **escopado** à raiz, reutilizando o Style Guide; cores de tema via `var(--fs-color-*)`, sem hexadecimais fixos → ver `style-guide.md`.
+- **Consulta a datasets no cliente:** quando o widget consulta datasets no lado cliente (via `DatasetFactory`), a view FreeMarker onde a consulta ocorre (`view.ftl` e/ou `edit.ftl`) **deve obrigatoriamente** importar a biblioteca `vcXMLRPC.js`, **exatamente** com `<script src="/webdesk/vcXMLRPC.js" type="text/javascript"></script>` (caminho e atributos inalterados). É uma **exceção** à regra de não importar scripts diretos no `.ftl`; inclua-o **apenas** quando houver consulta a datasets no cliente → ver `conventions.md`.
 
 ### Política de fallback
 
@@ -125,6 +126,7 @@ Somente o mínimo para orientar a geração; o detalhe está no contexto:
 3. Criar a **view de edição `edit.ftl`** (em `src/main/resources/`, irmã da `view.ftl`); pode ser vazia, mas é obrigatória e referenciada por `edit.file=edit.ftl`.
 4. Criar a **view `view.ftl`** (em `src/main/resources/`) com um elemento raiz contendo `class="fluig-style-guide super-widget wcm-widget-class ..."`, `id="<nomeWidget>_${instanceId}"` (camelCase com inicial minúscula, exatamente um `_`) e `data-params="<nomeWidget>.instance({})"`. As 3 classes obrigatórias fixas são: `fluig-style-guide`, `super-widget` e `wcm-widget-class`; a classe específica do widget é adicionada a seguir.5. Marcar os elementos interativos com atributos `data-*` (ex.: `data-save`) cujas chaves serão usadas nos bindings (sem o prefixo `data-`).
 6. Criar os arquivos **`.properties` de i18n** (base + `pt_BR`/`en_US`/`es`) com as chaves usadas e aplicar i18n em todo texto visível via `${i18n.getTranslation('chave')}`.
+6a. **Se o widget consultar datasets no cliente** (via `DatasetFactory`), incluir na view onde a consulta ocorre (`view.ftl` e/ou `edit.ftl`) a importação obrigatória `<script src="/webdesk/vcXMLRPC.js" type="text/javascript"></script>`, exatamente nessa forma (ver `conventions.md`). Não incluir se o widget não consulta datasets.
 7. Criar o **arquivo JS** (`webapp/resources/js/<code>.js`) com `var <Nome> = SuperWidget.extend({ ... })` (a variável raiz usa `var` — exceção controlada; ver `conventions.md`), declarando `init()` (preparar estado, carregar dados, vincular comportamento) e `bindings: { local: { ... }, global: { ... } }`.
 8. Implementar os métodos referenciados pelos bindings; dentro do JS, usar `this.instanceId` quando necessário.
 9. Adicionar CSS **escopado** (`webapp/resources/css/<code>.css`) à classe raiz **apenas se necessário** (CSS próprio é exceção sob pedido explícito), reutilizando componentes/grid do Style Guide e variáveis `var(--fs-color-*)` para cores de tema.
@@ -158,6 +160,7 @@ Use `examples/widget/` como referência mínima (view `.ftl` + arquivo `*.widget
 - [ ] Elemento raiz da view contém as **3 classes obrigatórias fixas**: `fluig-style-guide`, `super-widget` e `wcm-widget-class`, além da classe específica do widget.
 - [ ] `id` da **div raiz** usa camelCase com inicial minúscula + exatamente um `_` (ex.: `myWidget_${instanceId}`). Nunca mais de um `_` na div raiz. Demais `id`s internos seguem o padrão do artefato.
 - [ ] `.instance()` é chamado sem `instanceId`.
+- [ ] Se o widget consulta datasets no cliente (via `DatasetFactory`), a view onde a consulta ocorre (`view.ftl`/`edit.ftl`) importa **exatamente** `<script src="/webdesk/vcXMLRPC.js" type="text/javascript"></script>`; se não consulta datasets, o script **não** está presente.
 - [ ] Bindings usam a chave sem o prefixo `data-` (escopo local/global correto).
 - [ ] Todo texto visível usa i18n — sem strings fixas.
 - [ ] JavaScript em ES6+ (`const`/`let`, arrow functions, template literals), **exceto a variável raiz da SuperWidget** (declarada com `var`).

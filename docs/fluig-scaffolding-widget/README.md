@@ -13,3 +13,7 @@ Prompts prontos para acionar a skill `fluig-scaffolding-widget` com um agente de
 ## Completo
 
 > Crie o esqueleto de um widget de notificações chamado `Notifications` para o portal, com elemento raiz contendo as classes `fluig-style-guide super-widget wcm-widget-class`, `instanceId` apenas no `id` da div raiz (camelCase, um único `_`), `.instance()` sem `instanceId` e `init()` em ES6+. Inclua bindings declarativos para marcar itens como lidos, todos os textos visíveis via `${i18n.getTranslation('chave')}` com os quatro arquivos `.properties` (base + `pt_BR`/`en_US`/`es`) e estilos reutilizando o Style Guide, usando `var(--fs-color-*)` para as cores de tema.
+
+## Consulta a datasets no cliente
+
+> Crie o esqueleto de um widget chamado `BranchList` que lista filiais consultando um dataset no lado cliente via `DatasetFactory`. Como a consulta ocorre no cliente, importe obrigatoriamente na `view.ftl` o script `<script src="/webdesk/vcXMLRPC.js" type="text/javascript"></script>` (exatamente nessa forma), mantendo o restante das convenções (raiz com as 3 classes obrigatórias, `instanceId` só no `id`, i18n para textos visíveis e Style Guide).
