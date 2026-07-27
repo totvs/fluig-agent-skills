@@ -22,6 +22,9 @@ function createDataset(fields, constraints, sortFields) {
   dataset.addRow(['002', 'Filial Sul', 'RS']);
 
   // Opção B — consulta a outro dataset via API pública, aplicando filtros.
+  // Assinatura exata (ver context/architecture.md):
+  //   DatasetFactory.createConstraint(field, initialValue, finalValue, type[, likeSearch])
+  // Igualdade exata: repita o valor em initialValue/finalValue, sem likeSearch.
   // Filtra apenas registros ativos (campo 'active' = 'true').
   var activeConstraint = DatasetFactory.createConstraint(
     'active',
@@ -30,8 +33,21 @@ function createDataset(fields, constraints, sortFields) {
     ConstraintType.MUST
   );
 
+  // Busca parcial (LIKE): quinto parâmetro likeSearch = true.
+  var nameConstraint = DatasetFactory.createConstraint(
+    'name',
+    'Fil',
+    'Fil',
+    ConstraintType.MUST,
+    true
+  );
+
   // Repassa também os filtros/ordenação recebidos pela função, quando houver.
-  var queryConstraints = [activeConstraint].concat(constraints || []);
+  var queryConstraints = [activeConstraint, nameConstraint].concat(constraints || []);
+
+  // Assinatura exata: getDataset(name, fields, constraints, order[, callback]).
+  // No servidor (Rhino) a chamada é SEMPRE síncrona: não passe callback.
+  // O retorno expõe os registros em .values e as colunas em .columns.
   var branches = DatasetFactory.getDataset('branches', fields, queryConstraints, sortFields);
 
   // Copia os registros consultados para o dataset de saída (laço clássico).

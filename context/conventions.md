@@ -112,6 +112,28 @@ cliente. Regras:
 - Mantenha o caminho `/webdesk/vcXMLRPC.js` e os atributos **inalterados** — é o
   caminho público e oficial dessa biblioteca.
 
+Uma vez importado o script, o `DatasetFactory` fica disponível no cliente com as
+**mesmas assinaturas** do runtime server-side — a única diferença é o parâmetro
+`callback` (exclusivo do cliente), que torna a chamada **assíncrona** quando
+informado e **síncrona** quando omitido:
+
+```javascript
+// Assíncrono: resultado em callback.success; falhas em callback.error
+var constraints = [DatasetFactory.createConstraint('active', 'true', 'true', ConstraintType.MUST)];
+DatasetFactory.getDataset('branches', ['code', 'name', 'state'], constraints, ['name'], {
+  success: function (content) { /* content.values */ },
+  error: function (jqXHR, textStatus, errorThrown) { /* trata falha */ }
+});
+
+// Síncrono: sem callback, retorna o conteúdo diretamente
+var result = DatasetFactory.getDataset('branches', ['code', 'name', 'state'], constraints, ['name']);
+```
+
+> As **assinaturas completas** de `DatasetFactory.getDataset`,
+> `DatasetFactory.createConstraint`, `ConstraintType` e correlatos são fonte de
+> verdade de [architecture.md](architecture.md), seção "API pública de Dataset —
+> assinaturas". Não as duplique nem invente parâmetros.
+
 ## Convenções de Custom Elements (Web Components)
 
 | Item | Regra | Exemplo |

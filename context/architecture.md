@@ -549,6 +549,105 @@ Pontos de extensão e contexto de execução visíveis ao código:
   coluna `ERROR`), para que o consumidor receba um resultado previsível.
 - **Consumo**: o resultado é consumido por widgets/forms na camada cliente.
 
+### API pública de Dataset — assinaturas (`DatasetFactory`)
+
+Esta é a **fonte de verdade das assinaturas** do `DatasetFactory`. As assinaturas
+refletem a biblioteca pública oficial (`vcXMLRPC.js`, carregada no cliente como
+`/webdesk/vcXMLRPC.js`) e valem igualmente para o `DatasetFactory` exposto no
+scripting server-side (datasets), com **uma única diferença**: no servidor a
+execução é sempre **síncrona** — o parâmetro `callback`, exclusivo do cliente, não
+se aplica. **Não invente parâmetros, nomes ou ordem**; use exatamente as
+assinaturas abaixo.
+
+#### `DatasetFactory.getDataset(name, fields, constraints, order, callback)`
+
+Consulta um dataset e retorna o conjunto de dados.
+
+| Parâmetro | Tipo | Obrigatório | Descrição |
+|-----------|------|-------------|-----------|
+| `name` | `String` | sim | Nome/código do dataset consultado (ex.: `'colleague'`, `'branches'`). |
+| `fields` | `Array<String>` \| `null` | não | Colunas a retornar. `null` retorna todas as colunas. |
+| `constraints` | `Array<SearchConstraint>` \| `null` | não | Filtros criados com `DatasetFactory.createConstraint(...)`. `null`/`[]` = sem filtro. |
+| `order` | `Array<String>` \| `null` | não | Campos de ordenação (ex.: `['name']`, `['state', 'name']`). |
+| `callback` | `Object { success, error }` | não | **Somente no cliente.** Quando informado, a chamada é **assíncrona**: o resultado chega em `callback.success(content)` e falhas em `callback.error(jqXHR, textStatus, errorThrown)`. Quando **omitido**, a chamada é **síncrona** e o resultado é retornado pela função. No **servidor**, sempre síncrono (nunca passe `callback`). |
+
+**Formato do `callback`** (exclusivo do cliente): é um **objeto** com duas
+funções — **não** uma função solta:
+
+```javascript
+{
+  success: function (content) { /* content.values / content.columns */ },
+  error:   function (jqXHR, textStatus, errorThrown) { /* trata a falha */ }
+}
+```
+
+- `success(content)` — chamada em caso de sucesso; recebe o mesmo objeto de
+  conteúdo devolvido no modo síncrono.
+- `error(jqXHR, textStatus, errorThrown)` — chamada em caso de falha, com os três
+  argumentos padrão de erro de requisição (nessa ordem).
+
+**Retorno** (valor síncrono ou argumento de `callback.success`): o objeto de
+conteúdo do dataset, com os registros em `.values` (array de linhas) e as colunas
+em `.columns`.
+
+```javascript
+// Cliente — síncrono (sem callback): retorna o conteúdo diretamente
+var constraints = [DatasetFactory.createConstraint('active', 'true', 'true', ConstraintType.MUST)];
+var result = DatasetFactory.getDataset('branches', ['code', 'name', 'state'], constraints, ['name']);
+var rows = (result && result.values) || [];
+
+// Cliente — assíncrono (com callback): resultado chega em success
+DatasetFactory.getDataset('branches', ['code', 'name'], constraints, ['name'], {
+  success: function (content) { /* content.values */ },
+  error: function (jqXHR, textStatus, errorThrown) { /* trata falha */ }
+});
+
+// Servidor (dataset) — sempre síncrono, sem callback
+var branches = DatasetFactory.getDataset('branches', fields, constraints, sortFields);
+```
+
+#### `DatasetFactory.createConstraint(field, initialValue, finalValue, type, likeSearch)`
+
+Cria um filtro (`SearchConstraint`) para o array `constraints` de `getDataset`.
+
+| Parâmetro | Tipo | Obrigatório | Descrição |
+|-----------|------|-------------|-----------|
+| `field` | `String` | sim | Nome do campo a filtrar. |
+| `initialValue` | `String` | sim | Valor do filtro; em faixa (range), é o limite **inicial**. `null` é convertido internamente para o sentinela `"___NULL___VALUE___"`. |
+| `finalValue` | `String` | sim | Limite **final** da faixa. Para igualdade simples, repita o `initialValue`. |
+| `type` | `Number` (`ConstraintType`) | sim | Operador lógico: `ConstraintType.MUST` (1), `ConstraintType.SHOULD` (2) ou `ConstraintType.MUST_NOT` (3). |
+| `likeSearch` | `boolean` | não | `true` faz busca **parcial** (LIKE); omitido/`false` faz comparação **exata**. |
+
+**Retorno:** um objeto `SearchConstraint`. No servidor, seus valores são lidos
+pelos **métodos** `getFieldName()`, `getInitialValue()` e `getFinalValue()` (use
+os métodos, **não** as propriedades).
+
+```javascript
+// Igualdade exata (initialValue == finalValue, sem likeSearch)
+DatasetFactory.createConstraint('state', 'SP', 'SP', ConstraintType.MUST);
+
+// Faixa de valores / BETWEEN (initialValue != finalValue)
+DatasetFactory.createConstraint('admissionDate', '2024-01-01', '2024-12-31', ConstraintType.MUST);
+
+// Busca parcial (LIKE) com likeSearch = true
+DatasetFactory.createConstraint('name', 'Fil', 'Fil', ConstraintType.MUST, true);
+```
+
+#### `ConstraintType`
+
+| Constante | Valor | Semântica |
+|-----------|-------|-----------|
+| `ConstraintType.MUST` | `1` | Filtro obrigatório (equivale a AND / "deve conter"). |
+| `ConstraintType.SHOULD` | `2` | Filtro opcional (equivale a OR / "deveria conter"). |
+| `ConstraintType.MUST_NOT` | `3` | Negação (equivale a NOT / "não deve conter"). |
+
+#### Métodos correlatos (mesma biblioteca)
+
+| Assinatura | Uso |
+|------------|-----|
+| `DatasetFactory.getAvailableDatasets(callback)` | Lista os datasets disponíveis. `callback` opcional (assíncrono no cliente; síncrono quando omitido). |
+| `DatasetFactory.getDatasetValues(datasetId, filter, callback)` | Consulta valores de um dataset. `datasetId` **numérico** usa o dataset de card (`cardDatasetValues`); `datasetId` **string** usa o dataset padrão (`standardDatasetValues`). `filter` é um objeto (`{}` quando ausente); `callback` opcional. |
+
 ## Como os artefatos se integram
 
 Todos os artefatos executam **dentro** da plataforma Fluig, que os carrega e os
