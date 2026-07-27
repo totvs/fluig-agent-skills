@@ -151,7 +151,7 @@ Use `examples/widget/` como referência mínima (view `.ftl` + arquivo `*.widget
 
 ## Checklist de Validação
 
-- [ ] Estrutura oficial criada, com o descritor **`application.info`** com os campos completos (`application.type=widget`, `view.file=view.ftl`, `edit.file=edit.ftl`, `application.version=${build.version}-${build.revision}`, recursos CSS/JS, `developer.*`, `hash` — ver `architecture.md`).
+- [ ] Estrutura oficial criada, com o descritor **`application.info`** com os campos completos (`application.type=widget`, `view.file=view.ftl`, `edit.file=edit.ftl`, `application.version=${build.version}-${build.revision}`, recursos CSS/JS, `developer.*` — ver `architecture.md`).
 - [ ] `application.code` **igual** a `locale.file.base.name`.
 - [ ] Presença da `edit.ftl` (irmã da `view.ftl`, pode ser vazia) e do campo `edit.file=edit.ftl` no descritor.
 - [ ] Arquivos **`.properties` de i18n** (base + `pt_BR`/`en_US`/`es`) com as mesmas chaves usadas na view/JS.

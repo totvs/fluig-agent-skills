@@ -25,5 +25,3 @@ locale.file.base.name=notifications
 
 application.resource.js.1=/resources/js/notifications.js
 application.resource.css.2=/resources/css/notifications.css
-
-hash=4a16315e9e66fa7d797b3f6b1fb365b69f9a4ce2

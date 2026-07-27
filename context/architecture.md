@@ -146,7 +146,6 @@ Campos do `application.info` de um widget (tabela completa):
 | `application.resource.component.N` | Componente de negócio do Style Guide usado (ex.: `datatable`, `treeview`) |
 | `locale.file.base.name` | Nome base dos arquivos `.properties` de i18n — **igual a** `application.code` |
 | `developer.code` / `developer.name` / `developer.url` | Identificação do desenvolvedor |
-| `hash` | Hash do pacote/build |
 
 > **Versão e build:** `application.version` é declarada como
 > `${build.version}-${build.revision}`, resolvida pelo build a partir das
@@ -303,7 +302,6 @@ Campos do `application.info` de um layout (tabela completa):
 | `application.resource.css.N` | Caminhos do CSS — `css.1` aponta para a folha global do Fluig (`/portal/resources/css/wcm_responsive_layout.css`) e `css.2` para o `responsive_layout.css` padrão do layout (e o `<code>.css` próprio como recurso adicional, se houver) |
 | `locale.file.base.name` | Nome base dos arquivos `.properties` de i18n — **igual a** `application.code` |
 | `developer.code` / `developer.name` / `developer.url` | Identificação do desenvolvedor |
-| `hash` | Hash do pacote/build |
 
 > **Regra crítica:** `application.code` **deve ser igual** a
 > `locale.file.base.name` (mesma regra do widget). O `layout.defaultSlot` precisa
