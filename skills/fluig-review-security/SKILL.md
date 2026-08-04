@@ -1,16 +1,16 @@
 ---
 name: fluig-review-security
-description: Revisa a segurança de código frontend de customização Fluig sob a ótica do OWASP Top 10 (XSS, injeção, exposição de dados sensíveis, configuração insegura) usando apenas API pública (WCMAPI.validateXSS, DOMPurify.sanitize) e produz achados classificados por severidade, cada um referenciando a regra do arquivo de contexto. Use quando o desenvolvedor pedir uma revisão de segurança de um trecho ou arquivo antes de merge, sem reescrever o código.
+description: Revisa a segurança de código frontend de customização Fluig sob a ótica do OWASP Top 10 2025 (XSS, injeção, exposição de dados sensíveis, configuração insegura) usando apenas API pública (WCMAPI.validateXSS, DOMPurify.sanitize) e produz achados classificados por severidade, cada um referenciando a regra do arquivo de contexto. Use quando o desenvolvedor pedir uma revisão de segurança de um trecho ou arquivo antes de merge, sem reescrever o código.
 argument-hint: o código/arquivo frontend alvo da revisão de segurança (trecho ou arquivo selecionado), idealmente com a origem dos dados do usuário
 ---
 
-# Revisão de Segurança (OWASP Top 10) de Frontend Fluig
+# Revisão de Segurança (OWASP Top 10 2025) de Frontend Fluig
 
-Esta skill revisa a segurança de código frontend Fluig sob a ótica do OWASP Top 10 e emite achados por severidade; ela **não duplica** convenções — o arquivo de `context/` é a fonte de verdade, referenciada abaixo. Usa **apenas API pública** e **não reescreve** o código.
+Esta skill revisa a segurança de código frontend Fluig sob a ótica do OWASP Top 10 2025 e emite achados por severidade; ela **não duplica** convenções — o arquivo de `context/` é a fonte de verdade, referenciada abaixo. Usa **apenas API pública** e **não reescreve** o código.
 
 ## Objetivo
 
-Revisar, com responsabilidade única, a **segurança de código frontend de customização Fluig** sob a ótica do **OWASP Top 10**, identificando vulnerabilidades e produzindo um **relatório de achados classificados por severidade**, cada um vinculado à regra correspondente do arquivo de contexto e à categoria OWASP. Para aplicar as correções, use a skill `fluig-validate-security`.
+Revisar, com responsabilidade única, a **segurança de código frontend de customização Fluig** sob a ótica do **OWASP Top 10 2025**, identificando vulnerabilidades e produzindo um **relatório de achados classificados por severidade**, cada um vinculado à regra correspondente do arquivo de contexto e à categoria OWASP. Para aplicar as correções, use a skill `fluig-validate-security`.
 
 ## Quando Usar
 
@@ -33,17 +33,29 @@ Leia antes de executar — não reproduza o conteúdo aqui:
 
 - [conventions.md](../../context/conventions.md) — seção **Segurança (APIs públicas)**: `WCMAPI.validateXSS`, `DOMPurify.sanitize`, `textContent` vs `innerHTML`, escape FreeMarker (`${value?html}`, `${value?js_string}`), proibição de `eval()`/`new Function()` com dados dinâmicos, sanitização na entrada e na exibição, e chamadas REST internas via `WCMAPI`/`FLUIGC.ajax`.
 
+## Referência OWASP Top 10 2025
+
+Esta skill segue a estrutura do **OWASP Top 10 2025** ([owasp.org/Top10/2025](https://owasp.org/Top10/2025/)). O escopo de cobertura **não muda** em relação às revisões anteriores — continua focado em XSS/injeção, exposição de dados sensíveis e configuração insegura no frontend Fluig. Apenas a **numeração e a nomenclatura** das categorias foram alinhadas à edição 2025:
+
+| Cobertura da skill | Categoria OWASP 2025 | Numeração anterior (2021) |
+|--------------------|----------------------|----------------------------|
+| Injeção / XSS | **A05:2025 – Injection** | A03:2021 |
+| Configuração insegura | **A02:2025 – Security Misconfiguration** | A05:2021 |
+| Exposição de dados sensíveis | **A04:2025 – Cryptographic Failures** | A02:2021 |
+
+Ao citar a categoria OWASP em um achado, use a numeração 2025 (ex.: `A05:2025 Injection`).
+
 ## Regras Aplicáveis (Resumo Executivo)
 
-Somente o mínimo para orientar a revisão, mapeado ao OWASP Top 10; o detalhe está no contexto. Cada achado deve citar a regra de origem. Use **apenas API pública**.
+Somente o mínimo para orientar a revisão, mapeado ao OWASP Top 10 2025; o detalhe está no contexto. Cada achado deve citar a regra de origem. Use **apenas API pública**.
 
-- **Injeção / XSS (A03):** entrada do usuário sanitizada com `DOMPurify.sanitize` (HTML válido) ou `WCMAPI.validateXSS` (texto puro) antes de ir ao DOM → ver `conventions.md`.
+- **Injeção / XSS (A05:2025):** entrada do usuário sanitizada com `DOMPurify.sanitize` (HTML válido) ou `WCMAPI.validateXSS` (texto puro) antes de ir ao DOM → ver `conventions.md`.
 - **XSS via `innerHTML`:** preferir `textContent`; só usar `innerHTML` com conteúdo já sanitizado → ver `conventions.md`.
 - **Injeção via `eval`:** **nunca** `eval()`/`new Function()` com dados dinâmicos → ver `conventions.md`.
 - **Escape de template:** dados dinâmicos escapados em FreeMarker (`${value?html}`, `${value?js_string}`) → ver `conventions.md`.
-- **Sanitização na entrada e na exibição (A03):** validar tanto em POST/PUT quanto em GET → ver `conventions.md`.
-- **Configuração insegura (A05):** chamadas a endpoints internos via `WCMAPI`/`FLUIGC.ajax` (token de sessão automático); sem `fetch`/`$.ajax` direto → ver `conventions.md`.
-- **Exposição de dados sensíveis (A02):** não embutir segredos/tokens no cliente; não logar dados sensíveis.
+- **Sanitização na entrada e na exibição (A05:2025):** validar tanto em POST/PUT quanto em GET → ver `conventions.md`.
+- **Configuração insegura (A02:2025):** chamadas a endpoints internos via `WCMAPI`/`FLUIGC.ajax` (token de sessão automático); sem `fetch`/`$.ajax` direto → ver `conventions.md`.
+- **Exposição de dados sensíveis (A04:2025):** não embutir segredos/tokens no cliente; não logar dados sensíveis.
 
 ## Escala de Severidade
 
@@ -59,7 +71,7 @@ Classifique **cada achado** em um destes níveis, considerando explorabilidade e
 ## Procedimento
 
 1. Mapear o fluxo de dados do usuário (origem → uso no DOM/persistência/exibição) no código revisado.
-2. Avaliar cada ponto contra as categorias OWASP aplicáveis: XSS/injeção (A03), exposição de dados (A02), configuração insegura (A05).
+2. Avaliar cada ponto contra as categorias OWASP 2025 aplicáveis: XSS/injeção (A05:2025), exposição de dados (A04:2025), configuração insegura (A02:2025).
 3. Para cada vulnerabilidade, registrar um achado com localização, descrição, **categoria OWASP**, **severidade** e a **regra de contexto** correspondente (`conventions.md` › Segurança).
 4. Recomendar a correção usando **apenas API pública** (`DOMPurify.sanitize`, `WCMAPI.validateXSS`, escape FreeMarker), apontando a skill `fluig-validate-security`.
 5. Consolidar os achados ordenados do mais grave ao menos grave.
@@ -88,7 +100,7 @@ container.innerHTML = userInput; // entrada do usuário direto no DOM como HTML
 ## Achados
 
 ### 🔴 Crítico
-- **A03 Injeção/XSS — linha 1:** `innerHTML` recebe `userInput` sem sanitização (XSS refletido/armazenado).
+- **A05:2025 Injeção/XSS — linha 1:** `innerHTML` recebe `userInput` sem sanitização (XSS refletido/armazenado).
   - Regra: `conventions.md` › Segurança (APIs públicas).
   - Recomendação: usar `textContent` ou `DOMPurify.sanitize(userInput)` antes de inserir; `WCMAPI.validateXSS` para reduzir a texto puro. Ver skill `fluig-validate-security`.
 ```
