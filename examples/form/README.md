@@ -7,6 +7,8 @@
 
 - `form.example.html` — view/markup do formulário: contêiner `fluig-style-guide` e `<form name="form" role="form">`, com CSS/libs no `<head>`, campos com `name` (obrigatório), `id`/`for`/`placeholder` por boa prática, rótulos via `i18n.translate("chave")` e script inline antes de `</body>`.
 - `form.example.js` — eventos do formulário: handlers de ciclo de vida (carga e validação) e de campo, em ES6+, com mensagens via `i18n.translate("chave")` e entrada sanitizada com `WCMAPI.validateXSS`/`DOMPurify.sanitize`.
+- `form-parent-child.example.html` — tabela Pai x Filho no formulário com `tablename`, `<tbody>` base e campos que o Fluig replica com sufixo `___n`.
+- `form-parent-child-dataset.example.js` — exemplo de consumo da tabela filha via `DatasetFactory.getDataset(...)` com constraints `documentid`, `tablename` e `metadata#active`.
 - `vacationRequest_pt_BR.properties` — bundle de i18n em Português (Brasil).
 - `vacationRequest_en_US.properties` — bundle de i18n em Inglês (EUA).
 - `vacationRequest_es.properties` — bundle de i18n em Espanhol.
@@ -20,6 +22,11 @@
 - Handlers nos pontos de extensão públicos do formulário (ciclo de vida e campos).
 - Entrada do usuário tratada como não confiável e sanitizada (`WCMAPI.validateXSS`, `DOMPurify.sanitize`).
 - JavaScript em ES6+ (`const`/`let`, arrow functions, template literals).
+- Em Pai x Filho: `<table tablename="...">` + linha-base no `<tbody>`; o Fluig
+	controla índice/sufixo (`___1`, `___2`, ...) e usa `wdkAddChild`/`wdkRemoveChild`
+	para inclusão/remoção de linhas.
+- Em consumo analítico da tabela filha: filtro obrigatório por `documentid` e
+	`tablename` (com `metadata#active=true`) na consulta ao dataset do formulário.
 
 > Fonte de verdade: `context/architecture.md` (pontos de extensão do Form) e
 > `context/conventions.md` (seções "Convenções de Form" e "i18n — Formulários").

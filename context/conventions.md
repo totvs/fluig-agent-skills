@@ -321,6 +321,94 @@ componentes do Style Guide) e em um elemento `<form>` nomeado.
 > Associe cada `label` ao seu campo via `for`/`id` para acessibilidade, mesmo que
 > não seja obrigatório.
 
+### Tabela Pai x Filho (Form)
+
+No Form, a técnica Pai x Filho e declarada no HTML com o atributo `tablename` na
+tag `<table>`. O Fluig usa a linha-base do `<tbody>` como template e cria as
+linhas dinâmicas no render da pagina.
+
+#### Estrutura HTML minima
+
+| Elemento | Regra |
+|----------|-------|
+| `<table tablename="...">` | Obrigatório para ativar Pai x Filho na tabela |
+| `<tbody id="...">` | Deve representar a tabela (normalmente o mesmo identificador do `tablename`) |
+| Linha base no `<tbody>` | Define os campos que serão replicados nas linhas dinamicas |
+
+```html
+<table class="table table-striped" tablename="observacoes" noaddbutton="false" nodeletebutton="false">
+  <thead>
+    <tr>
+      <th>Observações</th>
+    </tr>
+  </thead>
+  <tbody id="aprovacoes">
+    <tr>
+      <td><input type="text" name="obs" id="obs" class="form-control" /></td>
+    </tr>
+  </tbody>
+</table>
+```
+
+#### Sufixo automatico das linhas
+
+- No HTML de origem, declare os campos com nome simples (ex.: `name="nomeFantasia"`).
+- Nas linhas renderizadas dinamicamente, o Fluig aplica sufixo numerico no
+  formato `___<índice>` (ex.: `nomeFantasia___1`, `nomeFantasia___2`, ...).
+- O indice da linha e controlado pelo Fluig e nao deve ser manipulado manualmente.
+- Evite usar `___` no nome base do campo para nao conflitar com o índice gerado.
+
+#### Adição e remoção de linhas
+
+- `wdkAddChild("<tablename>")` adiciona uma nova linha e retorna o índice criado.
+- `wdkRemoveChild(element)` remove a linha da interface de edição.
+- A linha base (template mestre) fica oculta; o usuário visualiza apenas as
+  linhas dinâmicas geradas.
+
+#### Persistência, histórico e versão
+
+- Os dados Pai x Filho sao persistidos em estrutura própria vinculada ao registro
+  do formulário.
+- Ao salvar o formulário, o Fluig gera nova versão do registro e mantém
+  histórico das versões anteriores.
+- IDs de linhas removidas nao sao reaproveitados em versões futuras.
+
+Colunas padrão recorrentes na persistência da tabela filha:
+
+| Coluna | Uso |
+|--------|-----|
+| `anonymization_date` | Data de anonimização (LGPD) |
+| `anonymization_user_id` | Usuário que realizou a anonimização |
+| `cardid` | ID do formulário no Fluig |
+| `companyid` | ID da empresa |
+| `documentid` | ID do documento/registro do formulário |
+| `id` | ID da linha da tabela filha |
+| `masterid` | ID de referencia da tabela |
+| `tableid` | Nome da tabela (valor de `tablename`) |
+| `version` | versão do registro do formulário |
+
+Encadeamento de relacionamento usado para leitura/versionamento:
+`companyid -> cardid -> documentid -> id -> version`.
+
+#### Consumo via Dataset (relatórios, dashboards, integrações)
+
+Para consultar registros de uma tabela Pai x Filho do formulário, use
+`DatasetFactory.getDataset(...)` com as constraints de `documentid`, `tablename`
+e `metadata#active`.
+
+```javascript
+const rows = DatasetFactory.getDataset("nomeDoDatasetDoformulário", null, [
+  DatasetFactory.createConstraint("documentid", documentId, documentId, ConstraintType.MUST),
+  DatasetFactory.createConstraint("tablename", nomePaiFilho, nomePaiFilho, ConstraintType.MUST),
+  DatasetFactory.createConstraint("metadata#active", "true", "true", ConstraintType.MUST)
+], null);
+```
+
+Colunas recorrentes do retorno incluem metadados e campos da tabela, como:
+`anonymization_date`, `anonymization_user_id`, `cardid`, `companyid`,
+`documentid`, `id`, `masterid`, `tableid`, `version` e as colunas definidas pelo
+desenvolvedor no HTML.
+
 ### Internacionalização (i18n) em formulários
 
 > **Mecanismo exclusivo de formulários** — completamente diferente do i18n de
@@ -420,9 +508,9 @@ Todo formulário **deve** gerar exatamente **3 arquivos `.properties`**:
 
 | Arquivo | Locale |
 |---------|--------|
-| `<nomeFormulario>_pt_BR.properties` | Português (Brasil) |
-| `<nomeFormulario>_en_US.properties` | Inglês (EUA) |
-| `<nomeFormulario>_es.properties` | Espanhol |
+| `<nomeformulário>_pt_BR.properties` | Português (Brasil) |
+| `<nomeformulário>_en_US.properties` | Inglês (EUA) |
+| `<nomeformulário>_es.properties` | Espanhol |
 
 > Diferentemente de widgets (que têm um arquivo base sem sufixo de locale), os
 > formulários usam **apenas os 3 arquivos com sufixo de locale** listados acima.
