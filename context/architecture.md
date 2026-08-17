@@ -515,6 +515,25 @@ Pontos de extensão visíveis ao código:
 - **Eventos de campo**: hooks de validação e reação a mudanças em campos
   específicos, permitindo regras de preenchimento e consistência.
 
+### Form com Tabela Pai x Filho
+
+Quando o Form usa tabela Pai x Filho, o ponto de extensão continua sendo o HTML
+do formulário, com uma regra adicional: a tabela e identificada por
+`<table tablename="...">` e o Fluig usa a linha-base do `<tbody>` como template
+para gerar as linhas dinâmicas.
+
+Comportamentos relevantes para agentes de IA:
+
+- **Índice automation por sufixo**: os campos da linha gerada recebem sufixo no
+  formato `___<indice>` (ex.: `campo___1`, `campo___2`).
+- **Adição/Remoção de filhos**: `wdkAddChild("<tablename>")` adiciona linha e
+  `wdkRemoveChild(element)` remove da interface.
+- **Versionamento nativo**: ao salvar, o Fluig cria nova versão do registro e
+  preserva histórico; IDs removidos nao sao reaproveitados.
+- **Consumo de dados**: leitura via dataset do formulário com constraints por
+  `documentid` + `tablename` (+ `metadata#active=true`) para recuperar os
+  registros da tabela filha.
+
 Descreva apenas os pontos de extensão públicos do formulário; as APIs específicas
 só devem ser usadas quando confirmadas como públicas e oficiais.
 

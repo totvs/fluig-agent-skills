@@ -1,6 +1,6 @@
 ---
 name: fluig-scaffolding-form
-description: Gera o esqueleto de um Form (formulário eletrônico) do Fluig — a definição dos campos, a view/markup do formulário e o arquivo de eventos com os handlers de ciclo de vida e de campos para validação e regras, aplicando as convenções oficiais. Use quando o desenvolvedor pedir para criar/iniciar um novo formulário do Fluig a partir de um nome ou propósito e seus campos.
+description: Gera o esqueleto de um Form (formulário eletrônico) do Fluig — definição de campos, view/markup, eventos e (quando solicitado) tabela Pai x Filho com tablename, template de linha e orientações de consumo via dataset, aplicando as convenções oficiais. Use quando o desenvolvedor pedir para criar/iniciar um novo formulário do Fluig a partir de um nome ou propósito e seus campos.
 argument-hint: 'nome e/ou propósito do formulário, campos e regras de validação (ex.: "formulário de solicitação de férias com nome, data de início e dias")'
 ---
 
@@ -12,11 +12,17 @@ Esta skill gera o esqueleto de um Form do Fluig; ela **não duplica** convençõ
 
 Produzir, com responsabilidade única, o **esqueleto de um Form (formulário eletrônico)** do Fluig: a definição dos campos, a view/markup do formulário e o arquivo de eventos com os **handlers de ciclo de vida e de campos** que implementam validação e regras de preenchimento, já em conformidade com as convenções públicas.
 
+Quando a entrada pedir grade dinâmica, o escopo inclui também a estrutura de
+**tabela Pai x Filho** (HTML com `tablename`, linha-base no `<tbody>` e acionamento
+de inclusão/remoção de filhos), seguindo as regras oficiais.
+
 ## Quando Usar
 
 - Ao criar um **novo formulário eletrônico** do Fluig a partir do zero.
 - Quando o desenvolvedor fornece um nome/propósito e a lista de campos e quer um ponto de partida correto (campos + view + eventos) seguindo as convenções oficiais.
 - Quando é preciso garantir, desde o início, i18n nos textos visíveis, validação/sanitização da entrada do usuário e código em ES6+.
+- Quando o formulário precisa de **coleções dinâmicas** (itens, aprovações,
+  anexos lógicos etc.) com modelagem em **Pai x Filho**.
 
 ## Entradas Esperadas
 
@@ -43,6 +49,13 @@ Somente o mínimo para orientar a geração; o detalhe está no contexto:
 
 - A **view/markup** envolve os campos em `fluig-style-guide` + `<form>` nomeado; CSS/libs no `<head>`, scripts inline antes de `</body>` → ver `conventions.md`.
 - **Todo campo tem o atributo `name`** (obrigatório para o Fluig gravar/ler o valor); `id`, `for`, `placeholder` são recomendados por semântica/acessibilidade → ver `conventions.md`.
+- **Pai x Filho (quando aplicável):** declarar a tabela com `tablename` no
+   `<table>`, manter uma linha-base no `<tbody>` e deixar o Fluig gerar as linhas
+   com sufixo `___<indice>` → ver `conventions.md`.
+- **Adicionar/remover filhos:** usar `wdkAddChild("<tablename>")` e
+   `wdkRemoveChild(...)` sem manipular índice manualmente → ver `conventions.md`.
+- **Consumo via dataset:** para consultar a tabela filha, filtrar por
+   `documentid`, `tablename` e `metadata#active` → ver `conventions.md`.
 - O desenvolvedor implementa **handlers nos eventos públicos do formulário** (ciclo de vida e campos) → ver `architecture.md`.
 - **i18n — HTML:** todo texto exibido ao usuário usa `i18n.translate("chave")`. **Nunca** gerar texto fixo em elementos visíveis → ver `conventions.md`.
 - **i18n — Eventos JS:** mensagens em handlers usam `i18n.translate("chave")` — chave **sempre entre aspas duplas**. Em variável: `var t = 'i18n.translate("chave")'`; em template literal: `placeholder="i18n.translate("chave")"`. **Nunca** strings literais → ver `conventions.md`.
@@ -65,13 +78,22 @@ Somente o mínimo para orientar a geração; o detalhe está no contexto:
 3. Criar a **view/markup** (`<nomeFormulario>.html`) — o nome do arquivo HTML deve ser **idêntico** ao prefixo dos `.properties`.
 4. Criar o **arquivo de eventos** com os handlers dos eventos públicos (ciclo de vida e campos). Mensagens de validação via `i18n.translate("chave")`; sanitizar a entrada com `WCMAPI.validateXSS`/`DOMPurify.sanitize`.
 5. Criar os **3 arquivos `.properties`** (`_pt_BR`, `_en_US`, `_es`) com todas as chaves levantadas no passo 2. Em todos os arquivos: **nenhum** caractere não-ASCII diretamente — usar `\uXXXX`.
-6. Validar o resultado com o checklist abaixo antes de entregar.
+6. Se houver necessidade de grade dinâmica, criar a seção **Pai x Filho** no HTML:
+   - `<table tablename="...">` com `<tbody id="...">` contendo a linha-base.
+   - Campos com nome base sem sufixo manual (`campo`, não `campo___1`).
+   - Botão/ação para inclusão usando `wdkAddChild("<tablename>")`.
+7. Quando solicitado consumo analítico, incluir exemplo de consulta ao dataset do
+   formulário com constraints de `documentid`, `tablename` e `metadata#active`.
+8. Validar o resultado com o checklist abaixo antes de entregar.
 
 ## Saída Esperada
 
 Esqueleto de formulário pronto para evoluir, contendo:
 
 - A **view/markup** com contêiner `fluig-style-guide`, `<form>` nomeado, cada campo com `name` (e `id`/`for`/`placeholder` quando aplicável) e todos os rótulos via `i18n.translate("chave")`.
+- Quando aplicável, a **tabela Pai x Filho** com `tablename`, linha-base no
+   `<tbody>`, campos prontos para sufixação automática `___<indice>` e gatilhos de
+   inclusão/remoção compatíveis com Fluig.
 - O **arquivo de eventos** com handlers de ciclo de vida e de campos, mensagens via `i18n.translate`, entrada sanitizada, em ES6+.
 - Os **3 arquivos `.properties`** (`_pt_BR`, `_en_US`, `_es`) com todas as chaves, sem caracteres não-ASCII diretos (usar `\uXXXX`).
 
@@ -88,6 +110,12 @@ Use `examples/form/` como referência mínima que demonstra `i18n.translate` no 
 - [ ] **Todo texto visível** no HTML usa `i18n.translate("chave")` — nenhum texto fixo em rótulos, placeholders ou mensagens.
 - [ ] **Mensagens em handlers** usam `i18n.translate("chave")` — nenhuma string literal lançada diretamente.
 - [ ] O **nome do arquivo HTML** é idêntico ao prefixo dos `.properties` (ex.: `registroIncidenteTI.html` + `registroIncidenteTI_pt_BR.properties`, etc.).
+- [ ] Se houver Pai x Filho: tabela declarada com `tablename`, linha-base no
+   `<tbody>` e campos com nome base (sem sufixar manualmente `___n`).
+- [ ] Se houver Pai x Filho: inclusão/remoção de linhas modeladas com
+   `wdkAddChild(...)` e `wdkRemoveChild(...)`.
+- [ ] Se houver consumo da tabela filha: exemplo de dataset com constraints de
+   `documentid`, `tablename` e `metadata#active`.
 - [ ] Os **3 arquivos `.properties`** foram gerados (`_pt_BR`, `_en_US`, `_es`).
 - [ ] Todas as **chaves do HTML e dos eventos** existem nos 3 arquivos `.properties`.
 - [ ] Nenhum arquivo `.properties` contém caracteres não-ASCII diretos — todos convertidos para `\uXXXX`.

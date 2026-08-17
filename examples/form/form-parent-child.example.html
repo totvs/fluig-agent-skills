@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<!-- Exemplo minimo de referencia: Form com tabela Pai x Filho -->
+<!-- Demonstra tablename, tbody base e campos sem sufixo manual. -->
+<html>
+<head>
+    <link rel="stylesheet" type="text/css"
+          href="/style-guide/css/fluig-style-guide-flat.min.css">
+    <script src="/portal/resources/js/jquery/jquery.js"></script>
+    <script src="/portal/resources/js/jquery/jquery-ui.min.js"></script>
+    <script src="/portal/resources/js/mustache/mustache-min.js"></script>
+    <script src="/style-guide/js/fluig-style-guide.min.js"></script>
+</head>
+<body>
+    <div class="fluig-style-guide">
+        <form name="form" role="form">
+
+            <table class="table table-striped" tablename="aprovacoes" noaddbutton="false" nodeletebutton="false">
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Atividade</th>
+                        <th>Matricula</th>
+                        <th>Nome do aprovador</th>
+                        <th>Observações</th>
+                        <th>Aprovado</th>
+                    </tr>
+                </thead>
+                <tbody id="aprovacoes">
+                    <tr>
+                        <td><input type="text" name="dtAprovador" id="dtAprovador" class="form-control" readonly="true" /></td>
+                        <td><input type="text" name="aprovadorAtividade" id="aprovadorAtividade" class="form-control" readonly="true" /></td>
+                        <td><input type="text" name="codAprovador" id="codAprovador" class="form-control" readonly="true" /></td>
+                        <td><input type="text" name="nomeAprovador" id="nomeAprovador" class="form-control" readonly="true" /></td>
+                        <td><textarea name="obsAprovador" id="obsAprovador" class="form-control" readonly="true" rows="1"></textarea></td>
+                        <td><input type="text" name="statusAprovado" id="statusAprovado" class="form-control" readonly="true" /></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <button type="button" class="btn btn-primary" onclick="addAprovacaoRow()">
+                i18n.translate("label.add.approval")
+            </button>
+
+        </form>
+    </div>
+
+    <script>
+        // O Fluig cria os sufixos automaticamente: ___1, ___2, ___3...
+        function addAprovacaoRow() {
+            const rowId = wdkAddChild("aprovacoes");
+            return rowId;
+        }
+
+        // Exemplo de remocao: passe um elemento da linha (ex.: botao lixeira customizado).
+        function removeAprovacaoRow(element) {
+            wdkRemoveChild(element);
+        }
+    </script>
+</body>
+</html>
