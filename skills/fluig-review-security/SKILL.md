@@ -8,6 +8,16 @@ argument-hint: o código/arquivo frontend alvo da revisão de segurança (trecho
 
 Esta skill revisa a segurança de código frontend Fluig sob a ótica do OWASP Top 10 2025 e emite achados por severidade; ela **não duplica** convenções — o arquivo de `context/` é a fonte de verdade, referenciada abaixo. Usa **apenas API pública** e **não reescreve** o código.
 
+## Passo 0 — Persona
+
+Antes de revisar, classifique a persona do desenvolvedor seguindo a cascata em
+[persona-routing.md](../../context/persona-routing.md): conversa > marcador de
+arquivo > marcador técnico de Store (`component.xml` ou API de slot) > estrutura
+do projeto > pergunta. Se restar ambígua, pare e pergunte antes de
+continuar. Emita `Persona: <Parceiro|Consultor> (motivo)` antes do relatório —
+a persona determina a camada de contexto carregada (ver "Contexto de
+Referência") e a forma de saída da revisão (ver "Saída Esperada").
+
 ## Objetivo
 
 Revisar, com responsabilidade única, a **segurança de código frontend de customização Fluig** sob a ótica do **OWASP Top 10 2025**, identificando vulnerabilidades e produzindo um **relatório de achados classificados por severidade**, cada um vinculado à regra correspondente do arquivo de contexto e à categoria OWASP. Para aplicar as correções, use a skill `fluig-validate-security`.
@@ -31,7 +41,14 @@ Revisar, com responsabilidade única, a **segurança de código frontend de cust
 
 Leia antes de executar — não reproduza o conteúdo aqui:
 
-- [conventions.md](../../context/conventions.md) — seção **Segurança (APIs públicas)**: `WCMAPI.validateXSS`, `DOMPurify.sanitize`, `textContent` vs `innerHTML`, escape FreeMarker (`${value?html}`, `${value?js_string}`), proibição de `eval()`/`new Function()` com dados dinâmicos, sanitização na entrada e na exibição, e chamadas REST internas via `WCMAPI`/`FLUIGC.ajax`.
+### Core (sempre)
+
+- [conventions.md](../../context/conventions.md) — seção **Segurança (APIs públicas)**: `WCMAPI.validateXSS`, `DOMPurify.sanitize`, `textContent` vs `innerHTML`, escape FreeMarker (`${value?html}`, `${value?js_string}`), proibição de `eval()`/`new Function()` com dados dinâmicos, sanitização na entrada e na exibição, e chamadas REST via `fetch()` ao domínio do próprio Fluig (API pública, `WCMAPI.getServerURL()`) ou a terceiro.
+- [platform-constitution.md](../../context/platform-constitution.md) — regras invioláveis de i18n (`${i18n.getTranslation('chave')}`, mesma sintaxe em `.js` e em `.ftl`) e HTTP (`fetch()` + `async/await`, nunca síncrono).
+
+### Parceiro (somente se persona = Parceiro)
+
+- [partner-store-review-rules.md](../../context/partner-store-review-rules.md) — análise contextual completa de classificação de APIs e severidades ([§ 22](../../context/partner-store-review-rules.md#22-análise-contextual-e-heurísticas-anti-falso-positivo)), cabeçalho de pré-review ([§ 32.9](../../context/partner-store-review-rules.md#329-natureza-de-pré-review-não-é-aprovação)) e persistência do relatório ([§ 32.10](../../context/partner-store-review-rules.md#3210-persistência-do-relatório-em-arquivo-md)).
 
 ## Referência OWASP Top 10 2025
 
@@ -54,18 +71,25 @@ Somente o mínimo para orientar a revisão, mapeado ao OWASP Top 10 2025; o deta
 - **Injeção via `eval`:** **nunca** `eval()`/`new Function()` com dados dinâmicos → ver `conventions.md`.
 - **Escape de template:** dados dinâmicos escapados em FreeMarker (`${value?html}`, `${value?js_string}`) → ver `conventions.md`.
 - **Sanitização na entrada e na exibição (A05:2025):** validar tanto em POST/PUT quanto em GET → ver `conventions.md`.
-- **Configuração insegura (A02:2025):** chamadas a endpoints internos via `WCMAPI`/`FLUIGC.ajax` (token de sessão automático); sem `fetch`/`$.ajax` direto → ver `conventions.md`.
+- **Configuração insegura (A02:2025):** domínio do próprio Fluig consumido apenas via **API pública**, com a URL montada a partir de `WCMAPI.getServerURL()`; qualquer chamada (ao próprio Fluig ou a terceiro) é feita com `fetch()` + `async/await` + `try/catch`, nunca `async: false` → ver `conventions.md`. A severidade **Alta** é pela **rota interna não documentada** acessada (ex.: `/ecm/api/rest/` direto), não pelo uso de `fetch`.
 - **Exposição de dados sensíveis (A04:2025):** não embutir segredos/tokens no cliente; não logar dados sensíveis.
 
 ## Escala de Severidade
 
-Classifique **cada achado** em um destes níveis, considerando explorabilidade e impacto:
+Classifique **cada achado** em um destes níveis, considerando explorabilidade e impacto.
+
+> **Fonte canônica da severidade.** Esta escala é a definição **conceitual**. Quando
+> o padrão já tiver severidade atribuída em `conventions.md` (seção **"Classificação
+> de segurança frontend (review)"**), **vale a severidade de lá**. Ex.: *XSS com
+> origem de API/dataset/input/URL*, *execução dinâmica (`eval`/`new Function`/`setTimeout`
+> com string)* e *debug embarcado (`eruda`/`vConsole`)* = **Crítica**; *rota interna
+> não documentada* = **Alta**; *XSS de origem ambígua* = **Média "VERIFICAR MANUALMENTE"**.
 
 | Severidade | Critério | Exemplos típicos |
 |------------|----------|------------------|
 | **Crítico** | Vulnerabilidade explorável diretamente, com alto impacto | XSS por `innerHTML` com input não sanitizado; `eval()` sobre dados do usuário; segredo embutido no cliente |
-| **Alto** | Vulnerabilidade provável ou proteção ausente em fluxo de dados do usuário | FreeMarker sem escape em dado dinâmico; sanitização ausente na persistência (POST/PUT) |
-| **Médio** | Fraqueza que depende de condições, mas reduz a postura de segurança | Sanitização só na entrada, faltando na exibição; chamada interna via `fetch` direto |
+| **Alto** | Vulnerabilidade provável ou proteção ausente em fluxo de dados do usuário | FreeMarker sem escape em dado dinâmico; sanitização ausente na persistência (POST/PUT); acesso a **rota interna não documentada** do Fluig (ex.: `/ecm/api/rest/` direto) — a severidade é pela rota, **não** pelo uso de `fetch` |
+| **Médio** | Fraqueza que depende de condições, mas reduz a postura de segurança | Sanitização só na entrada, faltando na exibição; log verboso de dado potencialmente sensível |
 | **Baixo** | Endurecimento recomendado de baixo risco imediato | Log verboso de payload; falta de validação defensiva redundante |
 
 ## Procedimento
@@ -79,13 +103,23 @@ Classifique **cada achado** em um destes níveis, considerando explorabilidade e
 
 ## Saída Esperada
 
-Um **relatório de revisão de segurança** contendo:
+Um **relatório de revisão de segurança**, com **Resumo** (contagem de achados por
+severidade e avaliação geral), **Achados** agrupados por severidade (crítico →
+baixo; cada um com localização, descrição, **categoria OWASP**, severidade e a
+**regra de contexto referenciada**) e **Recomendações** acionáveis com API
+pública, indicando a skill `fluig-validate-security`. A forma de entrega segue a
+persona (ver `conventions.md` › Saída do review por persona):
 
-- **Resumo** com a contagem de achados por severidade e a avaliação geral.
-- **Achados** agrupados por severidade (crítico → baixo); cada um com localização, descrição, **categoria OWASP**, severidade e a **regra de contexto referenciada**.
-- **Recomendações** acionáveis com API pública, indicando a skill `fluig-validate-security`.
+- **Consultor:** o relatório é **gravado** em `review-<artefato>-<AAAA-MM-DD>.md` na raiz do alvo — análise de boas práticas para a customização do cliente, **sem** cabeçalho de pré-review e **sem** menção à Store ou ao App Review.
+- **Parceiro (Store):** o relatório é um **pré-review preparatório** (não aprova,
+  não substitui o App Review oficial), abre por um **cabeçalho de pré-review** e é
+  **gravado** em `pre-review-<artefato>-<AAAA-MM-DD>.md` na raiz do alvo — a única
+  escrita permitida. O **contrato completo** desse relatório (cabeçalho, nome do
+  arquivo e modo somente leitura) é **canônico** em
+  [§ 32.9](../../context/partner-store-review-rules.md#329-natureza-de-pré-review-não-é-aprovação) / [§ 32.10](../../context/partner-store-review-rules.md#3210-persistência-do-relatório-em-arquivo-md)
+  ([§ 32.1](../../context/partner-store-review-rules.md#321-modo-somente-leitura)) — siga-o de lá, esta skill não o duplica.
 
-A skill **não altera** o código — apenas diagnostica e recomenda.
+Fora esse cenário de Parceiro, a skill **não altera** o código — apenas diagnostica e recomenda.
 
 ## Exemplo de Uso
 
@@ -112,4 +146,7 @@ container.innerHTML = userInput; // entrada do usuário direto no DOM como HTML
 - [ ] Cada achado **referencia a regra** do `conventions.md` › Segurança (com a seção).
 - [ ] As recomendações usam **apenas API pública** (`DOMPurify.sanitize`, `WCMAPI.validateXSS`, escape FreeMarker).
 - [ ] O relatório está ordenado do mais grave ao menos grave e aponta a skill `fluig-validate-security`.
-- [ ] A revisão não alterou o código — apenas diagnosticou e recomendou.
+- [ ] A persona foi classificada (Passo 0) e emitida como `Persona: <Parceiro|Consultor> (motivo)`.
+- [ ] **Consultor:** o relatório foi **gravado** em `review-<artefato>-<AAAA-MM-DD>.md` na raiz do alvo, sem cabeçalho de pré-review e sem menção à Store/App Review.
+- [ ] **Parceiro:** o relatório abre por um **cabeçalho de pré-review** (não aprova, não substitui o App Review oficial — `partner-store-review-rules.md` [§ 32.9](../../context/partner-store-review-rules.md#329-natureza-de-pré-review-não-é-aprovação)) e foi **gravado** em `pre-review-<artefato>-<AAAA-MM-DD>.md` na raiz do alvo (`partner-store-review-rules.md` [§ 32.10](../../context/partner-store-review-rules.md#3210-persistência-do-relatório-em-arquivo-md)).
+- [ ] A revisão não alterou o código além do eventual `.md` de relatório do Parceiro — apenas diagnosticou e recomendou.

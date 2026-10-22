@@ -22,23 +22,57 @@ ferramental que o código de customização toca.
 
 ## Linguagem e ambiente client-side
 
-O frontend de customização é escrito em **JavaScript moderno (ES6+)**. Para
-componentes novos, o padrão são **Web Components** (Custom Elements ES6+); jQuery
-permanece apenas para manutenção de código legado. As diretrizes de quando usar
-cada paradigma estão em [conventions.md](conventions.md).
+O frontend de customização é escrito em **JavaScript moderno (ES6+)**, com
+**Strict Mode** (`'use strict';`) e recursos modernos (arrow functions, template
+literals, desestruturação, `async/await`) como padrão. Para componentes novos, o
+padrão são **Web Components** (Custom Elements ES6+); jQuery é uma via válida e
+suportada para código escrito em jQuery. As diretrizes de quando usar cada
+paradigma estão em [conventions.md](conventions.md).
+
+> **Princípio de manutenibilidade no frontend (preferir o embarcado/nativo).**
+> Assim como no backend, **prefira o que o Fluig já embarca** (Style Guide,
+> `FLUIGC.*`, jQuery UI, Mustache) e **JavaScript puro** antes de trazer uma
+> biblioteca de terceiro. Toda lib externa entra **com cautela**: ela vira risco
+> de manutenção futura (conflito com o que a plataforma atualiza, peso, segurança).
+> Antes de adicionar uma dependência frontend, pergunte: **o Style Guide/`FLUIGC`
+> já faz isso? dá para resolver com JS nativo ou com um plugin já embarcado?**
 
 As bibliotecas client-side abaixo são as que o desenvolvedor efetivamente
 consome ao customizar a interface:
 
-- **jQuery** — disponível para compatibilidade com widgets legados; código novo
-  deve preferir ES6+.
+- **jQuery** — biblioteca suportada; em código novo, ES6+ é a via recomendada.
+- **jQuery UI** — conjunto curado de interações, efeitos e widgets de UI sobre o
+  jQuery (`draggable`, `sortable`, `droppable`, `resizable`, `selectable`,
+  `datepicker`, etc.). Já é **carregado pela plataforma** junto do Style Guide —
+  não requer import manual nos artefatos que o Style Guide alcança. Antes de
+  recriar uma interação do zero (ex.: arrastar-e-soltar), verifique se o jQuery
+  UI já a resolve — ver [style-guide.md](style-guide.md), seção "Plugins
+  embutidos (jQuery, jQuery UI, Mustache)".
 - **Bootstrap** — base de CSS e grid responsivo sobre a qual o Style Guide é
   construído.
 - **Kendo UI** — componentes de UI avançados disponíveis na plataforma.
-- **Mustache** — templating client-side usado por widgets legados (`SuperWidget`).
+- **Mustache** — templating client-side usado por widgets `SuperWidget`,
+  também já carregado pela plataforma junto do Style Guide.
 - **Fluig Style Guide** (`@fluig/lib-styleguide`) — design system oficial e sua
   API JavaScript pública `FLUIGC`. Detalhes de componentes, grid, ícones e
   variáveis CSS estão em [style-guide.md](style-guide.md) (não duplicar aqui).
+
+### Integrações HTTP no client-side
+
+Ao consumir APIs REST e Datasets no navegador, a regra é **única** para qualquer
+chamada (ao domínio do próprio Fluig ou a terceiro): use **`fetch()` com
+`async/await` e `try/catch`**. Diretrizes transversais:
+
+- **Sempre assíncrono:** toda integração (APIs e Datasets) deve ser assíncrona.
+  Nunca use `async: false` nem chamadas síncronas — elas bloqueiam a interface.
+- **Paralelismo:** dispare chamadas independentes em paralelo com `Promise.all`
+  para reduzir o tempo de carregamento da interface.
+- **Tratamento de erros:** use `try/catch` com `async/await`, sempre fornecendo
+  feedback ao usuário.
+
+As regras completas de chamadas REST, paralelismo e tratamento de erros são
+fonte de verdade de [conventions.md](conventions.md), seção "Chamadas REST e
+Integrações". Não as duplique.
 
 ## Templating de view (server-side)
 
@@ -94,6 +128,83 @@ Os mecanismos públicos do Rhino para isso são:
 > artefato. A interop não dá acesso a componentes internos do servidor: restringe-se
 > às classes Java padrão da plataforma de execução.
 
+#### Princípio: valores vindos de API Java no Rhino são objetos Java, não primitivos JS
+
+> **Regra base (vale para todo código server-side: eventos de form, datasets,
+> eventos de processo).** Métodos da plataforma que "retornam String/boolean"
+> (ex.: `form.getFormMode()`, `form.getValue(...)`, `WCMAPI.getIsEditMode()`
+> **no server-side**, retornos de interop `Packages.*`) normalmente devolvem um
+> **objeto Java** (`java.lang.String`, etc.), **não** um primitivo JS. Isso gera
+> três armadilhas recorrentes — todas com a mesma causa e a mesma cura
+> (`String(valor)` + igualdade solta `==`):
+>
+> 1. **Sobrecarga ambígua** ao encadear métodos de texto (`.replace`, `.split`) —
+>    ver abaixo.
+> 2. **Igualdade estrita sempre falsa:** `valorJava === 'ADD'` é **sempre `false`**
+>    porque `===` exige mesmo tipo e identidade, e um `java.lang.String` nunca é um
+>    literal JS. Use `==` (ou normalize com `String(...)` e então compare). Ex.:
+>    `form.getFormMode() == 'ADD'`; `WCMAPI.getIsEditMode() == 'true'`.
+> 3. **Coerção silenciosa inesperada** (ex.: um `boolean` Java tratado como objeto
+>    "truthy"): quando o valor importa para a lógica, **normalize antes**
+>    (`String(valor)` e compare com `==`).
+>
+> Resumo operacional: **compare com `==`** e, para comparação estrita ou para
+> encadear métodos de texto, **converta antes com `String(valor)`**.
+
+As subseções abaixo detalham a armadilha nº 1 (a de diagnóstico menos óbvio).
+
+##### Sobrecarga ambígua ao chamar métodos de `java.lang.String`
+
+No Rhino, um valor vindo da API Java (ex.: um campo lido via `hAPI`/`form`) pode
+ser uma instância de **`java.lang.String`**, não uma string JS nativa. Ao chamar
+um método Java sobrecarregado nesse objeto passando argumentos JS, o motor tenta
+casar os tipos e pode **não conseguir decidir qual sobrecarga usar**, lançando:
+
+```
+The choice of Java method java.lang.String.replace matching JavaScript argument
+types (object,string) is ambiguous; candidate methods are:
+replace(CharSequence,CharSequence) / replace(char,char)
+```
+
+Isso acontece porque, enquanto o valor for `java.lang.String`, o `.replace` (e
+`.split`, `.indexOf`, etc.) é resolvido como o **método Java sobrecarregado** —
+`.replace(",", ".")` fica ambíguo entre `replace(CharSequence,CharSequence)` e
+`replace(char,char)`. **Passar um regex JS não evita o erro:** o método Java não
+aceita regex, então o Rhino ainda tenta casar as sobrecargas e cai na mesma
+ambiguidade `(object, string)`.
+
+> ⚠️ **`.toString()` NÃO resolve.** No Rhino, `objetoJava.toString()` devolve
+> **outra `java.lang.String`**, não uma string JS — logo `.toString().replace(...)`
+> continua caindo no método Java e quebra, inclusive com regex. A única correção
+> confiável é **`String(valor)`** (construtor JS), que produz uma string primitiva
+> JS cujo `.replace` é o método do próprio JavaScript.
+
+Para evitar, force uma **string JS nativa** com `String(...)` antes de operar — aí
+o método que roda é o do próprio JavaScript, sem casamento de sobrecarga Java:
+
+```javascript
+// ❌ ambíguo: valorRaw é java.lang.String e .replace vira método Java
+var valor = parseFloat(valorRaw.replace(",", "."));
+
+// ❌ ainda ambíguo: .toString() devolve outra java.lang.String
+var valor = parseFloat(valorRaw.toString().replace(/,/g, "."));
+
+// ✅ String(...) produz string JS nativa; .replace é o método JS (aceita regex)
+var valor = parseFloat(String(valorRaw).replace(/,/g, "."));
+
+// ✅ também vale para trim/limpeza: troque .toString() por String(...)
+var descricao = String(form.getValue("descricao")).replace(/^\s+|\s+$/g, "");
+
+// ✅ alternativa: normalizar para string JS e então operar
+var valor = parseFloat(String(valorRaw).replace(",", "."));
+```
+
+> Regra prática: em eventos/datasets server-side, **envolva valores vindos do Java
+> com `String(...)`** antes de encadear métodos de texto (`.replace`, `.split`,
+> `.trim`, etc.). Não basta passar regex nem chamar `.toString()`: enquanto o valor
+> for `java.lang.String`, o método resolvido é o do Java e a sobrecarga continua
+> ambígua. Só `String(...)` garante uma string JS nativa.
+
 ### Sem APIs de navegador; HTTP externo via Cadastro de Serviços
 
 O runtime server-side **não** tem APIs de navegador: não existem `fetch`,
@@ -133,10 +244,11 @@ documentação oficial do Fluig.
 | Tecnologia | Versão | Uso na customização |
 |------------|--------|---------------------|
 | ES6+ (Web Components / Custom Elements) | ECMAScript moderno | Padrão para frontend novo |
-| jQuery | 3.7.1 | Compatibilidade com widgets legados |
+| jQuery | 3.7.1 | Embutido e **suportado** pela plataforma (não é legado); usado pelos plugins embutidos (jQuery UI, Mustache, `fluig.datatable.*`) — só o plugin jQuery Migrate está em descontinuação |
+| jQuery UI | 1.13.2 | Interações de UI prontas (`draggable`/`sortable`/`droppable`/`resizable`/`selectable`), já carregadas pela plataforma — ver [style-guide.md](style-guide.md) |
 | Bootstrap | 3.4.1 | CSS e grid (base do Style Guide) |
 | Kendo UI | 2025.1.211 | Componentes de UI avançados |
-| Mustache | 4.2.0 | Templating client-side (widgets legados) |
+| Mustache | 4.2.0 | Templating client-side **suportado**, já carregado pela plataforma (uso legítimo, não legado) |
 | Fluig Style Guide (`@fluig/lib-styleguide`) | 2.0.0 | Design system e API `FLUIGC` |
 | FreeMarker (`.ftl`) | — | View server-side e i18n |
 | JavaScript server-side (motor Mozilla Rhino) | ECMAScript 5 (ES6+ parcial) | Scripting de datasets; permite interop com Java |

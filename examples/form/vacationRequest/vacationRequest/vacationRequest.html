@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<!-- Exemplo mínimo de referência — view de Form Fluig -->
+<!-- Demonstra: contêiner fluig-style-guide, <form> nomeado, CSS/scripts de     -->
+<!-- biblioteca no <head>, campos com atributo name (obrigatório), labels via   -->
+<!-- i18n.translate("chave") (CONTEÚDO de elemento).                            -->
+<!-- ATENÇÃO 1: i18n de formulários usa i18n.translate("chave") — diferente de  -->
+<!-- widgets/layouts que usam ${i18n.getTranslation('chave')}. Não misture.     -->
+<!-- ATENÇÃO 2: i18n.translate NÃO interpola em ATRIBUTO (placeholder/value/...) -->
+<!-- — aparece literal. Placeholder traduzido = definir via JS (ver <script>).  -->
+<!-- Ver context/conventions.md (seção "Convenções de Form") e context/architecture.md. -->
+<html>
+<head>
+    <!-- Estilos e scripts de biblioteca SEMPRE no <head> (funcionamento interno do Fluig) -->
+    <link rel="stylesheet" type="text/css"
+          href="/style-guide/css/fluig-style-guide-flat.min.css">
+    <script src="/portal/resources/js/jquery/jquery.js"></script>
+    <script src="/portal/resources/js/jquery/jquery-ui.min.js"></script>
+    <script src="/portal/resources/js/mustache/mustache-min.js"></script>
+    <script src="/style-guide/js/fluig-style-guide.min.js"></script>
+</head>
+<body>
+    <!-- Contêiner fluig-style-guide ativa os estilos/componentes do Style Guide -->
+    <div class="fluig-style-guide">
+        <form name="form" role="form">
+
+            <!-- Campo: name é OBRIGATÓRIO; id/for recomendados por semântica.           -->
+            <!-- Texto visível em CONTEÚDO (label) via i18n.translate("chave").          -->
+            <!-- Placeholder traduzido: i18n.translate NÃO funciona em atributo NEM em    -->
+            <!-- <script> client-side. O texto fica num elemento oculto (conteúdo, onde   -->
+            <!-- i18n funciona) e o <script> ao final o lê e aplica no atributo.          -->
+            <div class="form-group">
+                <label for="requesterName">i18n.translate("customer.name")</label>
+                <input type="text" class="form-control"
+                       id="requesterName" name="requesterName">
+                <span id="ph_requesterName" hidden>i18n.translate("customer.name.placeholder")</span>
+            </div>
+
+            <div class="form-group">
+                <label for="startDate">i18n.translate("vacation.start.date")</label>
+                <input type="date" class="form-control"
+                       id="startDate" name="startDate">
+            </div>
+
+            <div class="form-group">
+                <label for="days">i18n.translate("vacation.days")</label>
+                <input type="number" class="form-control"
+                       id="days" name="days" min="1">
+            </div>
+
+        </form>
+    </div>
+
+    <!-- Scripts inline do formulário: no FIM da página, antes de </body> -->
+    <script>
+        // Placeholder traduzido SEM chamar i18n.translate no client-side:
+        // lê o texto já traduzido do elemento oculto (conteúdo) e aplica no atributo.
+        $(document).ready(function () {
+            var ph = document.getElementById('ph_requesterName');
+            if (ph) { $('#requesterName').attr('placeholder', ph.textContent); }
+        });
+    </script>
+</body>
+</html>

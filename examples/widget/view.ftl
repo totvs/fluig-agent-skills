@@ -1,12 +1,13 @@
 <#-- Exemplo mínimo de referência — View de Widget Fluig (FreeMarker) -->
-<#-- Demonstra: raiz com 3 classes fixas + classe do widget, instanceId só no id  -->
-<#-- (camelCase inicial minúscula + exatamente um _), instance() sem instanceId,  -->
-<#-- data-* para bindings e i18n para texto visível.                              -->
-<#-- Não é um projeto completo. Ver context/conventions.md e context/style-guide.md. -->
+<#-- Padrão de view de widget: div raiz com as 3 classes fixas, instanceId só   -->
+<#-- no id (PascalCase + exatamente um _), data-params com                       -->
+<#-- <NomeWidget>.instance() SEM {}, data-* para bindings e i18n para texto      -->
+<#-- visível. Não é um projeto completo.                                         -->
+<#-- Ver context/conventions.md e context/style-guide.md.                        -->
 
-<div id="notifications_${instanceId}"
-     class="fluig-style-guide super-widget wcm-widget-class notifications-widget"
-     data-params="notifications.instance({})">
+<div id="Notifications_${instanceId}"
+     class="super-widget wcm-widget-class fluig-style-guide notifications-widget"
+     data-params="Notifications.instance()">
 
   <div class="row">
     <div class="col-xs-12">
@@ -18,8 +19,9 @@
 
   <div class="row">
     <div class="col-xs-12">
-      <ul id="NotificationsList_${instanceId}" class="notifications-widget__list">
-        <#-- A lista é preenchida pelo init() a partir de um endpoint interno. -->
+      <ul id="notificationsList_${instanceId}" class="notifications-widget__list">
+        <#-- A lista é preenchida pelo init() via fetch() ao domínio próprio do Fluig
+             (WCMAPI.getServerURL() + API pública) — ver notifications.js. -->
       </ul>
     </div>
   </div>

@@ -1,0 +1,27 @@
+# Wizard de Instalação — Exemplo mínimo
+# Fonte de verdade: context/architecture.md
+
+application.type=widget
+application.code=meuappwizard
+application.title=Meu App - Wizard
+application.description=Wizard de provisionamento inicial
+application.category=Meu App
+application.icon=icon.png
+application.renderer=freemarker
+application.uiwidget=false
+application.mobileapp=false
+
+locale.file.base.name=meuappwizard
+
+developer.code=PARCEIRO
+developer.name=Parceiro Dev
+developer.url=https\://www.parceiro.com
+
+view.file=view.ftl
+edit.file=edit.ftl
+
+# Componentes FLUIGC (fluigfilter para picker de membros)
+application.resource.component.1=fluigfilter
+
+# ÚNICO arquivo JS — sem CSS customizado
+application.resource.js.1=/resources/js/meuappwizard.js

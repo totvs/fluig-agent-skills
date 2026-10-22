@@ -1,0 +1,3 @@
+# Checklist
+
+- [ ] Item de exemplo.

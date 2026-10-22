@@ -1,0 +1,8 @@
+{
+  "version": "1.0.0",
+  "categories": {},
+  "skills": [
+    { "name": "fluig-alpha", "description": "d", "category": "geracao", "path": "skills/fluig-alpha", "files": ["SKILL.md"] },
+    { "name": "fluig-beta", "description": "d", "category": "revisao", "path": "skills/fluig-beta", "files": ["SKILL.md"] }
+  ]
+}

@@ -16,7 +16,6 @@ developer.url=http://www.totvs.com
 
 application.uiwidget=true
 application.mobileapp=false
-application.version=${build.version}-${build.revision}
 
 view.file=view.ftl
 edit.file=edit.ftl

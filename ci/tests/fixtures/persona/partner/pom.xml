@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.parceiro</groupId>
+    <artifactId>meuapp</artifactId>
+    <version>${revision}</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>meuapp-widget</module>
+        <module>meuapp-config</module>
+        <module>meuapp-pack</module>
+    </modules>
+
+    <repositories>
+        <repository>
+            <id>nexus</id>
+            <name>fluig Nexus Repository</name>
+            <url>https://nexus.fluig.com/content/groups/public</url>
+        </repository>
+    </repositories>
+</project>

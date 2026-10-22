@@ -1,10 +1,12 @@
 // Exemplo mínimo de referência — Dataset que consome serviço externo (REST)
-// Demonstra: leitura de filtro do chamador via constraints (getFieldName/
-// getInitialValue), consumo de API externa pelo Cadastro de Serviços
+// Demonstra: leitura de filtro do chamador via propriedades da constraint
+// (constraint.fieldName / .initialValue), consumo de API externa pelo Cadastro de Serviços
 // (fluigAPI.getAuthorizeClientService + invoke) e tratamento de erro como dado
 // (coluna/linha de erro). Sintaxe compatível com o motor Rhino (base ES5).
-// Ver context/technologies.md (seções "Runtime Rhino" e "HTTP externo via
-// Cadastro de Serviços") e context/architecture.md. Não é um projeto completo.
+// Ver context/technologies.md#runtime-rhino-sintaxe-rígida-não-é-es6 (Runtime Rhino)
+// e context/technologies.md#sem-apis-de-navegador-http-externo-via-cadastro-de-serviços
+// (HTTP externo via Cadastro de Serviços) e
+// context/architecture.md#dataset (Dataset). Não é um projeto completo.
 //
 // Observações:
 // - O serviço externo precisa estar previamente cadastrado no Cadastro de
@@ -74,8 +76,13 @@ function obterParametro(constraints, campo) {
   if (constraints != null && constraints.length > 0) {
     for (var i = 0; i < constraints.length; i++) {
       var constraint = constraints[i];
-      if (constraint.getFieldName().trim().toUpperCase() === campo.trim().toUpperCase()) {
-        valor = constraint.getInitialValue();
+      // Leitura por PROPRIEDADE (doc oficial: constraint.fieldName / .initialValue).
+      // O valor pode vir como java.lang.String (interop Rhino); normalize com
+      // String(...) antes de comparar — `===` entre java.lang.String e string
+      // JS pode dar false mesmo com valores iguais.
+      var fieldName = String(constraint.fieldName).trim().toUpperCase();
+      if (fieldName === String(campo).trim().toUpperCase()) {
+        valor = String(constraint.initialValue);
         break;
       }
     }

@@ -37,7 +37,7 @@
     },
     {
       "name": "fluig-scaffolding-form",
-      "description": "Gera o esqueleto de um Form (formulário eletrônico) do Fluig — a definição dos campos, a view/markup do formulário e o arquivo de eventos com os handlers de ciclo de vida e de campos para validação e regras, aplicando as convenções oficiais. Use quando o desenvolvedor pedir para criar/iniciar um novo formulário do Fluig a partir de um nome ou propósito e seus campos.",
+      "description": "Gera o esqueleto de um Form (formulário eletrônico) do Fluig — definição de campos, view/markup, eventos e (quando solicitado) tabela Pai x Filho com tablename, template de linha e orientações de consumo via dataset, aplicando as convenções oficiais. Use quando o desenvolvedor pedir para criar/iniciar um novo formulário do Fluig a partir de um nome ou propósito e seus campos.",
       "argument-hint": "nome e/ou propósito do formulário, campos e regras de validação (ex.: \"formulário de solicitação de férias com nome, data de início e dias\")",
       "category": "geracao",
       "path": "skills/fluig-scaffolding-form",
@@ -87,7 +87,7 @@
     },
     {
       "name": "fluig-validate-security",
-      "description": "Sanitiza entradas e previne vulnerabilidades de frontend Fluig (XSS, innerHTML inseguro, eval/new Function com dados dinâmicos, escape FreeMarker ?html/?js_string, cuidado com Mustache triple-stache {{{ }}}, REST interna via WCMAPI/FLUIGC.ajax) usando APIs públicas como WCMAPI.validateXSS e DOMPurify.sanitize (preferindo-as à API legada FLUIGC.utilities.preventXSS). Use quando precisar validar/sanitizar código client-side de customização que manipula entrada do usuário no DOM, na persistência ou na exibição.",
+      "description": "Sanitiza entradas e previne vulnerabilidades de frontend Fluig (XSS, innerHTML inseguro, eval/new Function com dados dinâmicos, escape FreeMarker ?html/?js_string, cuidado com Mustache triple-stache {{{ }}}, acesso a rota interna não documentada do Fluig) usando as APIs públicas WCMAPI.validateXSS (API oficial de alto nível, que internamente usa FLUIGC.utilities.preventXSS) e DOMPurify.sanitize. Use quando precisar validar/sanitizar código client-side de customização que manipula entrada do usuário no DOM, na persistência ou na exibição.",
       "argument-hint": "o código frontend alvo a validar/sanitizar (ex.: trecho que insere input do usuário no DOM)",
       "category": "modernizacao",
       "path": "skills/fluig-validate-security",
@@ -107,7 +107,7 @@
     },
     {
       "name": "fluig-internationalization",
-      "description": "Aplica internacionalização (i18n) em customizações Fluig externalizando todo texto visível para chaves de tradução resolvidas server-side — ${i18n.getTranslation('chave')} em FreeMarker e a sintaxe recomendada [=i18n.getTranslation('chave')] em arquivos .js (evita conflito com template literals do ES6) — com getTranslationP1/getTranslationPn para parâmetros, evitando strings fixas e o acesso incorreto a i18n como objeto JavaScript. Use quando o desenvolvedor pedir para internacionalizar um trecho/arquivo, remover textos fixos ou corrigir o uso de i18n em widgets, Custom Elements ou templates FreeMarker.",
+      "description": "Aplica internacionalização (i18n) em customizações Fluig externalizando todo texto visível para chaves de tradução resolvidas server-side — ${i18n.getTranslation('chave')}, com a mesma sintaxe em FreeMarker (.ftl) e em arquivos .js (sintaxe oficial da TOTVS) — com getTranslationP1/getTranslationPn para parâmetros, evitando strings fixas e o acesso incorreto a i18n como objeto JavaScript. Por cautela oficial da TOTVS sobre a minificação com Closure Compiler, orienta preferir concatenação clássica (+) a template literals em um .js que usa i18n. Use quando o desenvolvedor pedir para internacionalizar um trecho/arquivo, remover textos fixos ou corrigir o uso de i18n em widgets, Custom Elements ou templates FreeMarker.",
       "argument-hint": "o código alvo a internacionalizar (trecho ou arquivo com textos fixos ou uso incorreto de i18n)",
       "category": "modernizacao",
       "path": "skills/fluig-internationalization",
@@ -117,8 +117,8 @@
     },
     {
       "name": "fluig-style-guide-helpers",
-      "description": "Substitui CSS customizado e comportamentos recriados manualmente por helpers, componentes, grid e classes utilitárias do Fluig Style Guide (FLUIGC e Bootstrap 3.4.1), reduzindo código próprio e garantindo consistência visual e adaptação automática ao tema. Use quando o desenvolvedor pedir para trocar estilos/markup customizados por recursos oficiais do Style Guide ou simplificar CSS próprio reutilizando o design system.",
-      "argument-hint": "o código/CSS/markup alvo a substituir por helpers e componentes do Style Guide",
+      "description": "Substitui CSS customizado e comportamentos recriados manualmente por helpers, componentes e classes utilitárias do Fluig Style Guide (FLUIGC e Bootstrap 3.4.1) ou pelos plugins já embutidos na plataforma (jQuery UI, Mustache), reduzindo código próprio e garantindo consistência visual e adaptação automática ao tema. Use quando o desenvolvedor pedir para trocar estilos/markup/interações customizados por recursos oficiais do Style Guide, ou quando reimplementar do zero uma interação (drag-and-drop, ordenação, redimensionamento) que o jQuery UI já embutido na plataforma resolve.",
+      "argument-hint": "o código/CSS/markup/interação alvo a substituir por helpers, componentes do Style Guide ou plugins embutidos (jQuery UI, Mustache)",
       "category": "modernizacao",
       "path": "skills/fluig-style-guide-helpers",
       "files": [
@@ -149,7 +149,7 @@
     },
     {
       "name": "fluig-review-security",
-      "description": "Revisa a segurança de código frontend de customização Fluig sob a ótica do OWASP Top 10 (XSS, injeção, exposição de dados sensíveis, configuração insegura) usando apenas API pública (WCMAPI.validateXSS, DOMPurify.sanitize) e produz achados classificados por severidade, cada um referenciando a regra do arquivo de contexto. Use quando o desenvolvedor pedir uma revisão de segurança de um trecho ou arquivo antes de merge, sem reescrever o código.",
+      "description": "Revisa a segurança de código frontend de customização Fluig sob a ótica do OWASP Top 10 2025 (XSS, injeção, exposição de dados sensíveis, configuração insegura) usando apenas API pública (WCMAPI.validateXSS, DOMPurify.sanitize) e produz achados classificados por severidade, cada um referenciando a regra do arquivo de contexto. Use quando o desenvolvedor pedir uma revisão de segurança de um trecho ou arquivo antes de merge, sem reescrever o código.",
       "argument-hint": "o código/arquivo frontend alvo da revisão de segurança (trecho ou arquivo selecionado), idealmente com a origem dos dados do usuário",
       "category": "revisao",
       "path": "skills/fluig-review-security",
@@ -169,7 +169,7 @@
     },
     {
       "name": "fluig-best-practices",
-      "description": "Revisa a aderência de código de customização Fluig às boas práticas oficiais da plataforma (convenções de widget com SuperWidget, Custom Elements, i18n, uso do Style Guide, chamadas REST internas e ES6+) e produz achados classificados por severidade, cada um referenciando a regra do arquivo de contexto. Use quando o desenvolvedor pedir uma revisão de conformidade com os padrões Fluig de um trecho ou arquivo antes de merge, sem reescrever o código.",
+      "description": "Revisa a MANUTENIBILIDADE e a arquitetura de código de customização Fluig — modularização e responsabilidade única (métodos pequenos no SuperWidget, `init` que delega), nomenclatura, organização, acoplamento, reuso (Componentes de Negócio nativos, Style Guide, plugins embutidos) e aderência às convenções estruturais da plataforma — produzindo achados por severidade, cada um referenciando a regra do contexto. É o eixo de QUALIDADE ESTRUTURAL do código; NÃO cobre segurança, performance nem acessibilidade (use `fluig-review-security`/`-performance`/`-accessibility`), nem substitui a varredura transversal da `fluig-code-review`. Use quando o desenvolvedor pedir revisão de boas práticas/manutenibilidade/organização de um trecho ou arquivo antes de merge, sem reescrever o código.",
       "argument-hint": "o código/arquivo Fluig alvo da revisão de boas práticas (trecho ou arquivo selecionado), idealmente com o tipo de artefato",
       "category": "revisao",
       "path": "skills/fluig-best-practices",

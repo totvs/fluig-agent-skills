@@ -1,0 +1,1 @@
+# Arquitetura de parceiro (fixture)

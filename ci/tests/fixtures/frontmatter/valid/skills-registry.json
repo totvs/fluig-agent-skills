@@ -1,0 +1,35 @@
+{
+  "version": "1.0.0",
+  "categories": {
+    "revisao": {
+      "name": "Revisão",
+      "description": "Fixture"
+    }
+  },
+  "skills": [
+    {
+      "name": "demo-skill",
+      "description": "Skill de exemplo.",
+      "argument-hint": "caminho do artefato",
+      "category": "revisao",
+      "path": "skills/demo-skill",
+      "files": ["SKILL.md"]
+    },
+    {
+      "name": "literal-skill",
+      "description": "Skill de exemplo (bloco literal).",
+      "argument-hint": "",
+      "category": "revisao",
+      "path": "skills/literal-skill",
+      "files": ["SKILL.md"]
+    },
+    {
+      "name": "quoted-skill",
+      "description": "Skill de exemplo (aspas).",
+      "argument-hint": "trecho de código alvo",
+      "category": "revisao",
+      "path": "skills/quoted-skill",
+      "files": ["SKILL.md"]
+    }
+  ]
+}
