@@ -1,7 +1,5 @@
 .vscode/
-
-# Conteúdo interno de auditoria — não versionar (confidencial)
-.kiro/app-review-interno/
+.kiro/
 
 # Ambientes virtuais e artefatos de teste Python
 .venv/

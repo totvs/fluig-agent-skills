@@ -55,7 +55,7 @@ Somente o mínimo para orientar a tarefa; o catálogo completo está no contexto
 - ⚠️ **Proibido inventar classes helpers ou variáveis CSS.** Usar **somente** as classes documentadas em [style-guide.md](../../context/style-guide.md#classes-helper-fs-) e as variáveis documentadas em [style-guide.md](../../context/style-guide.md#theming-e-dark-mode-variáveis-css--fonte-de-verdade). Se não estiver nessas referências, não existe no Style Guide.
 - Usar o **grid responsivo** (`.container`/`.row`/`.col-*`) em vez de posicionamento/medidas fixas → ver `style-guide.md`.
 - Usar a **API pública `FLUIGC.*`** (ex.: `modal`, `toast`, `datatable`, `calendar`, `select`, `loading`) em vez de recriar comportamentos → ver `style-guide.md`.
-- Usar **ícones do Style Guide** (`flat`/`animalia`, `FLUIGC.icons()`) em vez de imagens próprias → ver `style-guide.md`.
+- Usar **ícones do Style Guide** (`flaticon`, `FLUIGC.icons()`) em vez de imagens próprias → ver `style-guide.md`.
 - Aproveitar **classes utilitárias** (espaçamento, alinhamento, visibilidade responsiva) e as **classes helper `fs-*`** do Style Guide — scrollbar, posicionamento, display, flexbox (alinhamento, justify, direção, gap), tamanho, espaçamento responsivo com breakpoints (`fs-mt-24`, `sm:fs-mt-16`), tipografia, cursor, background, cor de texto e utilitários gerais; referência completa em [style-guide.md](../../context/style-guide.md#classes-helper-fs-) → ver `style-guide.md`.
 - Manter cores de tema via `var(--fs-color-*)` (sem hexadecimais fixos) ao ajustar estilos remanescentes → ver `style-guide.md`.
 - Garantir a classe `fluig-style-guide` na raiz para que os estilos/componentes se apliquem no escopo do widget → ver `style-guide.md`.

@@ -392,35 +392,34 @@ Reutilize o grid em vez de criar layouts com posicionamento/medidas fixas.
 ## Ícones
 
 Os ícones são entregues como fontes de ícone (icon fonts) organizadas em
-conjuntos/temas. Conjuntos públicos confirmados:
+conjuntos/temas. Conjunto público confirmado:
 
 | Conjunto | Identificador |
 |----------|---------------|
 | Flat Icons | `flat` |
-| Animalia Icons | `animalia` |
 
 O catálogo de ícones pode ser consultado programaticamente via `FLUIGC.icons()`.
 Prefira os ícones do Style Guide a imagens próprias para manter consistência
 visual e adaptação automática ao tema.
 
-### Catálogos Disponíveis
+### Catálogo Disponível
 
-| Catálogo | Arquivo de referência | Uso preferencial |
-|----------|----------------------|------------------|
-| **Animalia Icons** | `context/references/icons/animaliaicon.json` | HTML/FTL — ícones em interfaces visuais (widgets, layouts, wizards) |
-| **Flaticon** | `context/references/icons/flaticon.json` | `pages.xml` — ícones de páginas no `component.xml` e navegação |
+O projeto adota **única e exclusivamente o Flaticon** como catálogo de ícones.
+
+| Catálogo | Arquivo de referência | Uso |
+|----------|----------------------|-----|
+| **Flaticon** | `context/references/icons/flaticon.json` | Todos os contextos: HTML/FTL (interfaces visuais) e `pages.xml`/`component.xml` (navegação) |
 
 ### Regras de Uso
 
-1. **Em HTML/FTL (interfaces visuais):** usar **Animalia Icons** preferencialmente.
-   Sintaxe: `<i class="animaliaicon-{nome}"></i>` (ex.: `<i class="animaliaicon-gear"></i>`)
+1. **Em HTML/FTL (interfaces visuais):** usar **Flaticon**.
+   Sintaxe: `<i class="flaticon flaticon-{nome}"></i>` (ex.: `<i class="flaticon flaticon-settings"></i>`)
 
 2. **Em pages.xml e component.xml (navegação):** usar **Flaticon**.
    Sintaxe: valor do `<icon>` em `pages.xml` é o nome sem prefixo CSS (ex.: `flaticon-settings`)
 
-3. **Prefira os catálogos embarcados do Fluig** (Animalia Icons/Flaticon) a
-   ícones de CDNs externas (Font Awesome, Material Icons, etc.) — CDN externo é
-   desaconselhado.
+3. **Prefira o catálogo embarcado do Fluig** (Flaticon) a ícones de CDNs
+   externas (Font Awesome, Material Icons, etc.) — CDN externo é desaconselhado.
 
    > **Parceiro (Store):** CDN externo de ícones é proibido (Crítica) — ver
    > [§ 5](partner-store-review-rules.md#5-cdn-externo).
@@ -428,9 +427,8 @@ visual e adaptação automática ao tema.
 4. **Consultar o catálogo JSON** para verificar se o ícone desejado existe antes
    de usar — nomes incorretos resultam em ícone vazio/invisível.
 
-### Formato dos Catálogos
+### Formato do Catálogo
 
-- **animaliaicon.json**: array de strings com os nomes dos ícones (ex.: `"animaliaicon-gear"`)
 - **flaticon.json**: array de objetos com `key` (nome CSS) e `keywords` (termos de busca em português)
 
 ## Utilitários e helpers

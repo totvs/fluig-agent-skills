@@ -139,7 +139,7 @@ cabeçalho e estas 3 opções:
   multi-módulo — carregado **quando a estrutura do projeto for Maven** ou houver
   backend Java),
   [writing-style-guide.md](writing-style-guide.md) (terminologia oficial TOTVS
-  para textos ao usuário), [references/](references/) (ícones Flaticon/Animalia,
+  para textos ao usuário), [references/](references/) (ícones Flaticon,
   layouts nativos) e a
   [platform-constitution.md](platform-constitution.md) (regras invioláveis de
   plataforma, válidas para todos).

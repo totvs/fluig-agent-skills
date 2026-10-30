@@ -42,7 +42,7 @@ var MeuAppWizard = SuperWidget.extend({
         {
             id: 'terms',
             phase: 'terms',
-            icon: 'file-text',
+            icon: 'file',
             title: '${i18n.getTranslation("wizard.step.terms")}'
         },
         {
@@ -62,7 +62,7 @@ var MeuAppWizard = SuperWidget.extend({
                 {
                     id: 'form-categorias',
                     type: 'cardindex',
-                    icon: 'file-text',
+                    icon: 'file',
                     title: '${i18n.getTranslation("item.form")}',
                     description: '${i18n.getTranslation("item.form.desc")}',
                     config: {
@@ -519,7 +519,7 @@ var MeuAppWizard = SuperWidget.extend({
         }
 
         var labels = {
-            checking: '<span class="label label-default"><i class="animaliaicon animaliaicon-refresh icon-xs"></i></span>',
+            checking: '<span class="label label-default"><i class="flaticon flaticon-refresh icon-xs"></i></span>',
             installed: '<span class="label label-success">${i18n.getTranslation("label.installed")}</span>',
             pending: '<span class="label label-warning">${i18n.getTranslation("label.pending")}</span>',
             error: '<span class="label label-danger" title="' + (errorMsg || '') + '">${i18n.getTranslation("label.error")}</span>'

@@ -21,14 +21,14 @@
                 <ul class="pager fs-mt-24" id="wizard-nav_{{instanceId}}">
                     <li class="previous">
                         <a href="#" data-wizard-prev>
-                            <i class="animaliaicon animaliaicon-arrow-left icon-xs"></i>
+                            <i class="flaticon flaticon-arrow-left icon-xs"></i>
                             ${i18n.getTranslation("label.previous")}
                         </a>
                     </li>
                     <li class="next">
                         <a href="#" data-wizard-next>
                             ${i18n.getTranslation("label.next")}
-                            <i class="animaliaicon animaliaicon-arrow-right icon-xs"></i>
+                            <i class="flaticon flaticon-arrow-right icon-xs"></i>
                         </a>
                     </li>
                 </ul>
@@ -50,7 +50,7 @@
         <div class="panel panel-default" id="step-terms_{{instanceId}}">
             <div class="panel-heading">
                 <h3 class="panel-title">
-                    <i class="animaliaicon animaliaicon-file-text icon-sm fs-mr-8"></i>
+                    <i class="flaticon flaticon-file icon-sm fs-mr-8"></i>
                     ${i18n.getTranslation("wizard.step.terms")}
                 </h3>
             </div>
@@ -73,7 +73,7 @@
         <div class="panel panel-default" id="step-install_{{instanceId}}">
             <div class="panel-heading">
                 <h3 class="panel-title">
-                    <i class="animaliaicon animaliaicon-download icon-sm fs-mr-8"></i>
+                    <i class="flaticon flaticon-download icon-sm fs-mr-8"></i>
                     ${i18n.getTranslation("wizard.step.install")}
                 </h3>
             </div>
@@ -88,7 +88,7 @@
     <#-- Card de recurso individual (list-group-item com status) -->
     <script type="text/template" class="template-resource-card">
         <div class="list-group-item fs-display-flex fs-align-items-center" id="item-{{id}}_{{instanceId}}">
-            <i class="animaliaicon animaliaicon-{{icon}} icon-sm fs-mr-12"></i>
+            <i class="flaticon flaticon-{{icon}} icon-sm fs-mr-12"></i>
             <div class="fs-flex-1">
                 <strong>{{title}}</strong>
                 <p class="fs-no-margin text-muted fs-text-sm">{{description}}</p>
@@ -102,7 +102,7 @@
     <#-- Botão Instalar (Alert info) -->
     <script type="text/template" class="template-btn-install">
         <div class="alert alert-info fs-display-flex fs-align-items-center">
-            <i class="animaliaicon animaliaicon-info icon-sm fs-mr-8"></i>
+            <i class="flaticon flaticon-info icon-sm fs-mr-8"></i>
             <span class="fs-flex-1">${i18n.getTranslation("wizard.install.hint")}</span>
             <button class="btn btn-primary fs-ml-16" type="button" data-install>
                 ${i18n.getTranslation("label.install")}
@@ -113,7 +113,7 @@
     <#-- Botão Instalado (Alert success) -->
     <script type="text/template" class="template-btn-installed">
         <div class="alert alert-success fs-display-flex fs-align-items-center">
-            <i class="animaliaicon animaliaicon-check-circle icon-sm fs-mr-8"></i>
+            <i class="flaticon flaticon-check-circle icon-sm fs-mr-8"></i>
             <strong>${i18n.getTranslation("label.installed")}</strong>
         </div>
     </script>
@@ -127,7 +127,7 @@
                 <p class="text-muted fs-mb-24">${i18n.getTranslation("wizard.complete.desc")}</p>
                 <a class="btn btn-primary btn-lg" href="{{ctaUrl}}">
                     ${i18n.getTranslation("label.cta")}
-                    <i class="animaliaicon animaliaicon-arrow-right icon-sm fs-ml-4"></i>
+                    <i class="flaticon flaticon-arrow-right icon-sm fs-ml-4"></i>
                 </a>
             </div>
         </div>
