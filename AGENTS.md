@@ -150,13 +150,6 @@ contexto entre fatias (resuma e descarte o que já foi concluído). Um pedido de
 | Refatorar/migrar em massa | modernizar **um arquivo por vez** com a skill de modernização aplicável (`fluig-migrate-jquery-es6`, `fluig-optimize-performance`, …), aplicar e seguir para o próximo |
 | Gerar um sistema completo | gerar **uma parte por vez** com a skill `fluig-scaffolding-*` aplicável, na **ordem de dependência**: dados → form → apresentação → integração |
 
-> **Nota (mantenedor):** este repositório contém **orquestradores** internos em
-> `.kiro/specs/orchestrate-*` que automatizam esse fatiamento (batching, cache de
-> achados, liberação de contexto). Eles são um **recurso de desenvolvimento do
-> pacote** e **não** acompanham o zip distribuído (`.kiro/` fica fora do build) —
-> por isso **não** são pré-requisito: o fatiamento manual acima cobre o mesmo
-> fluxo usando apenas as skills distribuídas.
-
 ## Limites
 
 - Use somente APIs públicas do Fluig (ex.: `SuperWidget`, `WCMAPI`, `FLUIGC`,

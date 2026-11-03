@@ -397,14 +397,15 @@ conjuntos/temas. Conjunto público confirmado:
 | Conjunto | Identificador |
 |----------|---------------|
 | Flat Icons | `flat` |
+| Animalia Icons | `animalia` |
 
 O catálogo de ícones pode ser consultado programaticamente via `FLUIGC.icons()`.
 Prefira os ícones do Style Guide a imagens próprias para manter consistência
 visual e adaptação automática ao tema.
 
-### Catálogo Disponível
+### Catálogos Disponíveis
 
-O projeto adota **única e exclusivamente o Flaticon** como catálogo de ícones.
+O projeto disponibiliza o catálogo de ícones embarcados do Fluig: **Flaticon**.
 
 | Catálogo | Arquivo de referência | Uso |
 |----------|----------------------|-----|
@@ -412,20 +413,22 @@ O projeto adota **única e exclusivamente o Flaticon** como catálogo de ícones
 
 ### Regras de Uso
 
-1. **Em HTML/FTL (interfaces visuais):** usar **Flaticon**.
+1. **Em HTML/FTL (interfaces visuais):** preferir **Flaticon**.
    Sintaxe: `<i class="flaticon flaticon-{nome}"></i>` (ex.: `<i class="flaticon flaticon-settings"></i>`)
 
-2. **Em pages.xml e component.xml (navegação):** usar **Flaticon**.
+2. **Em pages.xml e component.xml (navegação):** preferir **Flaticon**.
    Sintaxe: valor do `<icon>` em `pages.xml` é o nome sem prefixo CSS (ex.: `flaticon-settings`)
 
-3. **Prefira o catálogo embarcado do Fluig** (Flaticon) a ícones de CDNs
-   externas (Font Awesome, Material Icons, etc.) — CDN externo é desaconselhado.
+3. **Prefira os catálogos embarcados do Fluig** (Flaticon, Animalia) a ícones de
+   CDNs externas (Font Awesome, Material Icons, etc.) — CDN externo é
+   desaconselhado.
 
    > **Parceiro (Store):** CDN externo de ícones é proibido (Crítica) — ver
    > [§ 5](partner-store-review-rules.md#5-cdn-externo).
 
-4. **Consultar o catálogo JSON** para verificar se o ícone desejado existe antes
-   de usar — nomes incorretos resultam em ícone vazio/invisível.
+4. **Consultar o catálogo JSON** (quando disponível) ou `FLUIGC.icons()` para
+   verificar se o ícone desejado existe antes de usar — nomes incorretos
+   resultam em ícone vazio/invisível.
 
 ### Formato do Catálogo
 
