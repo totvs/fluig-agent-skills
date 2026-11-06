@@ -285,9 +285,15 @@ formulário, gravando o valor exibido e, opcionalmente, um código associado.
 
 ### Métodos sobrescrevíveis (CLIENT-SIDE, navegador)
 
-Estas funções rodam **no navegador** (não no Rhino): são JS **client-side**,
-em **ES5** (`var`/`function`), e manipulam o DOM (jQuery embutido disponível).
-Declare-as no `.js`/`<script>` do form.
+Estas funções rodam **no navegador** (não no Rhino): são JS **client-side**
+comum, escrito direto no `.js`/`<script>` do form e executado pelo navegador sem
+passar por FreeMarker nem pelo Rhino. Por isso **não há restrição de sintaxe**:
+use **ES6+** (`const`/`let`, arrow functions, template literals, `async/await`)
+no corpo das funções, como em qualquer JS de frontend; o jQuery embutido segue
+disponível. Mantenha apenas a **declaração do ponto de entrada** na forma
+documentada (`function setSelectedZoomItem(item) { ... }`,
+`var beforeSendValidate = function(...) { ... }`), pois a plataforma chama essas
+funções pelo nome.
 
 | Função | Assinatura | Dispara quando | Uso típico |
 |--------|-----------|----------------|------------|
@@ -308,23 +314,25 @@ Declare-as no `.js`/`<script>` do form.
   da seleção anterior na tela.
 
 ```javascript
-// Autopreenchimento + limpeza (client-side, ES5, jQuery embutido)
+// Autopreenchimento + limpeza (client-side, ES6+ no corpo; ponto de entrada
+// declarado como function para a plataforma chamar pelo nome)
 function setSelectedZoomItem(item) {
-    if (item.inputId == "user") {
+    if (item.inputId === "user") {
         document.getElementById("selected_userCode").value = item.colleagueId;
     }
 }
 function removedZoomItem(item) {
-    if (item.inputId == "user") {
+    if (item.inputId === "user") {
         document.getElementById("selected_userCode").value = "";
     }
 }
 ```
 
 > Como são **client-side** (navegador), **não** se aplica a pegadinha do Rhino
-> (`java.lang.String`): aqui os valores do DOM/`item` são strings JS nativas. Use
-> `==` por consistência com os exemplos oficiais; `===` também funciona com
-> strings JS nativas.
+> (`java.lang.String`): aqui os valores do DOM/`item` são strings JS nativas.
+> Use `===` normalmente (os exemplos oficiais usam `==`, mas ambos funcionam com
+> strings JS nativas). O `==` obrigatório vale **só** nos eventos server-side
+> (Rhino).
 
 ### Zoom dependente/encadeado — filtrar um zoom pela seleção de outro
 

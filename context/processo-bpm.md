@@ -37,7 +37,21 @@ formato) — client-side, igual a qualquer outro formulário eletrônico (ver
 [conventions.md](conventions.md#convenções-de-form-formulário-eletrônico)).
 
 Os **Eventos de Processo** são handlers server-side de roteamento leve,
-executados ainda dentro da thread da requisição do usuário. Os mais comuns:
+executados ainda dentro da thread da requisição do usuário.
+
+> ⚠️ **Sintaxe: Rhino/ES5, não ES6+.** Eventos de processo (e o código das
+> Atividades de Serviço) rodam **no servidor, no motor Rhino** — o mesmo dos
+> datasets e dos eventos `events/` de formulário. Escreva em **ES5**: `var` e
+> `function` tradicionais, concatenação com `+`, **sem** `const`/`let`, arrow
+> functions, template literals, destructuring, `for...of` ou `async/await`, e sem
+> APIs de navegador (`document`, `WCMAPI`, `DOMPurify`). Valores lidos do Java
+> (`getValue`, `form.getValue`) podem ser `java.lang.String`: envolva com
+> `String(...)` antes de encadear métodos e compare com `==`, não `===` → ver
+> [technologies.md](technologies.md) › "Runtime Rhino: sintaxe rígida" e
+> "Interoperabilidade com Java (Rhino)". O ES6+ vale apenas para o que roda no
+> navegador (ex.: o `<script>` do formulário).
+
+Os mais comuns:
 
 - `beforeTaskSave` — executa antes de a tarefa ser salva/movida para a próxima
   atividade; ponto comum para validações finais e gravação de campos do card.

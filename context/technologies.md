@@ -84,11 +84,18 @@ escaping em FreeMarker estão em [conventions.md](conventions.md).
 
 ## Scripting server-side de customização
 
-A customização de **datasets** é escrita em
+A customização de **datasets**, os **eventos de formulário** (pasta `events/`) e
+os **eventos de processo** (workflow) são escritos em
 **JavaScript executado no servidor sobre o motor Mozilla Rhino**. Esse é o
 runtime público de scripting de customização: o desenvolvedor escreve funções
 que a plataforma invoca em pontos de extensão definidos, usando a API pública
-exposta para esse contexto (API pública de Dataset).
+exposta para esse contexto (API pública de Dataset, `form`, `getValue`, etc.).
+
+> **Regra de bolso:** o que **roda no navegador** (scripts do form, widgets,
+> layouts, Custom Elements, `beforeMovementOptions`/`beforeSendValidate`,
+> `setSelectedZoomItem`) é JS comum e usa **ES6+**. O que roda **"por baixo dos
+> panos" no servidor** (datasets, `events/` do form, eventos de processo e
+> servicetask) roda no Rhino e segue **ES5**.
 
 O código de scripting interage somente com essas APIs públicas — não há acesso a
 componentes internos de servidor a partir do código de customização.
@@ -100,7 +107,8 @@ componentes internos de servidor a partir do código de customização.
 > (ES5)** com suporte apenas **parcial** a recursos de ES6+. Trate o ambiente
 > como **ES5** por padrão e **não** assuma que sintaxe moderna está disponível.
 
-Diretrizes práticas para datasets:
+Diretrizes práticas para datasets, eventos de formulário (`events/`) e eventos de
+processo (workflow):
 
 - **Declarações:** use `var`. Não dependa de `let`/`const` (escopo de bloco não é
   garantido no runtime).

@@ -103,8 +103,11 @@ pasta `events/`** e rodam **server-side (Rhino/ES5)**.
 > `beforeSendValidate(numState, nextState)` — ficam na **raiz do form** (não em
 > `events/`) como `.js` **vinculado no HTML** via
 > `<script src="beforeMovementOptions.js" charset="utf-8"></script>` no `<head>`.
-> Os client-side usam `var nome = function(...) { ... }`, leem o DOM
-> (`document.form.campo.value`) e sinalizam erro com `throw`. Ver a tabela
+> Os client-side declaram o ponto de entrada como `var nome = function(...) { ... }`
+> (a plataforma os chama pelo nome), leem o DOM (`document.form.campo.value`) e
+> sinalizam erro com `throw`. Como rodam direto no navegador (sem FreeMarker nem
+> Rhino), o **corpo** pode usar ES6+ (`const`/`let`, arrow, template literals);
+> o ES5 vale só para `events/` (Rhino). Ver a tabela
 > completa (assinatura × contexto) em `conventions-form.md` › "Eventos de
 > Formulário".
 
