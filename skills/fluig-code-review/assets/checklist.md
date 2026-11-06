@@ -44,7 +44,7 @@
 - [ ] `bindings.local` para elementos dentro da raiz; `bindings.global` para elementos fora (modais/dropdowns no `body`).
 - [ ] Variável raiz da SuperWidget declarada com `var` (ex.: `var MyWidget = SuperWidget.extend({...})`).
 - [ ] Métodos dentro de `.extend({})` declarados como `nome: function() { }` — **sem** method shorthand ES6 (`nome() {}`) nem arrow function como método (`nome: () => {}`).
-- [ ] Cada método captura o contexto com `var ctx = this;` no topo e os callbacks internos usam `function() {}` acessando `ctx` via closure.
+- [ ] Nenhum método usa cache de escopo (`var ctx = this;` / `var that = this;`): o contexto é acessado por `this` direto e os callbacks internos (success, fail, eventos) são Arrow Functions `() => {}`.
 - [ ] Chamadas REST via `fetch()` + `async/await`; domínio do próprio Fluig só com API pública, URL a partir de `WCMAPI.getServerURL()`.
 
 ## 4. Convenções de Custom Elements (Web Components)

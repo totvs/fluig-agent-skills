@@ -60,7 +60,7 @@ Somente o mínimo para orientar a otimização; o detalhe está no contexto. Boa
 - **Reutilizar jQuery UI/Mustache** (já embutidos) em vez de reimplementar interações de UI ou templating manual — evita listeners redundantes e concatenação de string custosa → ver `style-guide.md`, seção "Plugins embutidos (jQuery, jQuery UI, Mustache)".
 - **CSS responsivo e funções CSS modernas:** preferir funções nativas (`calc`/`var`/`rgba`/`hsla`/`min`/`max`/`clamp`/`minmax`) e media/container queries para layouts fluidos e eficientes em vez de valores fixos repetidos → ver `conventions.md` (CSS responsivo e moderno).
 - **Liberar recursos:** remover listeners/timers ao destruir o widget para evitar vazamentos.
-- **Preservar a sintaxe de widget ao otimizar (regra 3 da constituição):** ao refatorar o JS de um widget `SuperWidget.extend({})`, **não** converta os métodos para arrow/method shorthand nem troque `var ctx = this;` por outra forma — métodos continuam `nome: function() {}` com `var ctx = this;` e callbacks internos em `function() {}` (arrow não vincula `this` e pode quebrar na minificação). Otimizações de performance **não** justificam violar a regra 3 → ver `platform-constitution.md` (regra 3) e `conventions.md`.
+- **Preservar a sintaxe de widget ao otimizar (regra 3 da constituição):** ao refatorar o JS de um widget `SuperWidget.extend({})`, **não** converta os métodos para arrow/method shorthand, e remova (nunca introduza) `var ctx = this;` — métodos continuam `nome: function() {}` (arrow como método não vincula `this`), com `this` direto e callbacks internos em Arrow Functions — **nunca** `var ctx = this;`. Otimizações de performance **não** justificam violar a regra 3 → ver `platform-constitution.md` (regra 3) e `conventions.md`.
 
 ## Procedimento
 

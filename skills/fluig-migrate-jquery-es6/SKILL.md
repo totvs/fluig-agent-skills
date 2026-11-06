@@ -63,8 +63,8 @@ Somente o mínimo para orientar a migração; o detalhe está no contexto. Equiv
 - `$(sel)` → `document.querySelector` / `document.querySelectorAll` → ver `conventions.md`.
 - `.on('click', fn)` / `$.proxy` → `addEventListener` (ou bindings declarativos do widget quando aplicável) → ver `conventions.md`.
 - `$.ajax()` → `fetch()` + `async/await` + `try/catch` para qualquer chamada; domínio do próprio Fluig só com API pública, URL via `WCMAPI.getServerURL()` → ver `platform-constitution.md`.
-- `var` → `const` por padrão, `let` quando há reatribuição → ver `conventions.md`. **Exceções que permanecem `var` (regra 3 da constituição):** a **variável raiz** que recebe `SuperWidget.extend({...})` (ex.: `var MyWidget = SuperWidget.extend(...)`) e o `var ctx = this;` no topo dos métodos dentro de `.extend({})`. **Não** converta esses para `const`/arrow → ver `platform-constitution.md` e `conventions.md`.
-- **Dentro de `.extend({})` (regra 3):** manter métodos como `nome: function() {}` (nunca method shorthand nem arrow como método) e `var ctx = this;` + callbacks `function() {}` acessando `ctx` — a migração **não** converte isso para arrow/shorthand → ver `platform-constitution.md`.
+- `var` → `const` por padrão, `let` quando há reatribuição → ver `conventions.md`. **Exceção que permanece `var` (regra 3 da constituição):** apenas a **variável raiz** que recebe `SuperWidget.extend({...})` (ex.: `var MyWidget = SuperWidget.extend(...)`). **Não** converta essa para `const` → ver `platform-constitution.md` e `conventions.md`.
+- **Dentro de `.extend({})` (regra 3):** manter métodos como `nome: function() {}` (nunca method shorthand nem arrow como método). **Remover** `var ctx = this;` / `var that = this;` (usar `this` direto no método) e **converter** os callbacks `function() {}` para Arrow Functions `() => {}` — a migração nunca ensina ES5 → ver `platform-constitution.md`.
 - Concatenação de strings → template literals, **exceto** em `.js` que usa i18n e é minificado pelo Closure Compiler: nesse caso **manter concatenação (`+`)**, não converter para template literal (a minificação conflita com template strings que contêm i18n) → ver `conventions.md` e `platform-constitution.md`.
 - `.each()` → `for...of` ou `Array.prototype.forEach` → ver `conventions.md`.
 - Preservar **comportamento** e **i18n** (`${i18n.getTranslation('chave')}`, mesma sintaxe em `.js` e em `.ftl`) → ver `platform-constitution.md`.
@@ -99,7 +99,7 @@ $list.on('click', '.item', function () {
 // ⚠️ Se o arquivo usar i18n e for minificado pelo Closure Compiler, prefira
 // concatenação (`+`) a template literal ao montar textos com a tradução.
 // Obs.: este é um listener de DOM comum (arrow é ok aqui). Dentro de
-// SuperWidget.extend({}) os MÉTODOS continuam `nome: function() {}` + `var ctx = this;`.
+// SuperWidget.extend({}) os MÉTODOS continuam `nome: function() {}`, com `this` direto (sem `var ctx = this;`).
 const list = document.querySelector('#MyWidget_' + this.instanceId + ' .items');
 list.addEventListener('click', (event) => {
   const item = event.target.closest('.item');
@@ -111,8 +111,8 @@ list.addEventListener('click', (event) => {
 
 - [ ] O alvo é **client-side** (widget/Custom Element no navegador) — **não** é evento server-side de form/dataset/processo (Rhino/ES5). Se for server-side, a migração foi **interrompida** (ES6+/`===` quebrariam o Rhino) → ver `technologies.md`/`conventions-form.md`.
 - [ ] Sem jQuery no código novo **de aplicação** (`$()`, `$.ajax`, `$.proxy`); **exceção:** uso legítimo dos **plugins embutidos** da plataforma que expõem API jQuery (jQuery UI, Mustache, eventos `fluig.datatable.*`) permanece válido — ver `fluig-style-guide-helpers` e `technologies.md`.
-- [ ] `const`/`let` no código em geral, **exceto** a variável raiz do `SuperWidget.extend` (`var`) e o `var ctx = this;` nos métodos do `.extend({})` (regra 3 da constituição).
-- [ ] Dentro de `.extend({})`: métodos como `nome: function() {}` (sem shorthand/arrow como método), `var ctx = this;` no topo e callbacks `function() {}` — **não** convertidos para arrow.
+- [ ] `const`/`let` no código em geral, **exceto** a variável raiz do `SuperWidget.extend` (`var`) (regra 3 da constituição).
+- [ ] Dentro de `.extend({})`: métodos como `nome: function() {}` (sem shorthand/arrow como método), `this` direto (sem `var ctx = this;`) e callbacks em Arrow Functions `() => {}`.
 - [ ] Chamadas REST via `fetch()` + `async/await` + `try/catch`; domínio do próprio Fluig só com API pública via `WCMAPI.getServerURL()`.
 - [ ] Comportamento original preservado (mesma lógica e efeitos).
 - [ ] i18n preservada (`${i18n.getTranslation('...')}`, mesma sintaxe em `.js` e em `.ftl`).

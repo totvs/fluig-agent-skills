@@ -113,19 +113,20 @@ document.addEventListener('mouseup', function(e) { /* detecta coluna de destino 
 
 ```javascript
 // ✅ jQuery UI já embutido na plataforma — sem import adicional
-// Escopar ao container da instância (nunca seletor global): var ctx = this;
-// e buscar dentro da raiz do widget com this.DOM.find(...) para não afetar
-// outras instâncias do mesmo widget na mesma página (ver conventions.md).
-var ctx = this;
-ctx.DOM.find('.kanban-card').draggable({
+// Escopar ao container da instância (nunca seletor global): buscar dentro da
+// raiz do widget com this.DOM.find(...) para não afetar outras instâncias do
+// mesmo widget na mesma página (ver conventions.md). Dentro de um método do
+// SuperWidget.extend({}), use `this` direto — sem `var ctx = this;`.
+this.DOM.find('.kanban-card').draggable({
   revert: 'invalid',
-  containment: ctx.DOM.find('.kanban-board')
+  containment: this.DOM.find('.kanban-board')
 });
 
-ctx.DOM.find('.kanban-column').droppable({
+this.DOM.find('.kanban-column').droppable({
   accept: '.kanban-card',
-  drop: function(event, ui) {
-    ui.draggable.appendTo(this);
+  drop: (event, ui) => {
+    // arrow não altera o `this` do widget; o elemento da coluna vem de event.target
+    ui.draggable.appendTo(event.target);
     // persistir a nova coluna do card via API pública (dataset/REST)
   }
 });
