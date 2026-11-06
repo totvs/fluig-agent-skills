@@ -47,21 +47,21 @@ Utilizar a **API REST v2** (preferencial) ou `DatasetFactory` encapsulado em Pro
 // ✅ regra 2 da constituição: fetch com async/await e try/catch
 // (método dentro de SuperWidget.extend({}); o chamador trata o erro)
 loadColleagues: async function() {
-    var url = WCMAPI.getServerURL()
+    const url = WCMAPI.getServerURL()
         + '/dataset/api/v2/dataset-handle/search'
         + '?datasetId=colleague'
         + '&field=colleagueId&field=login&field=colleagueName'
         + '&limit=50&offset=0';
 
     try {
-        var response = await fetch(url, {
+        const response = await fetch(url, {
             headers: { 'Accept': 'application/json; charset=UTF-8' }
         });
         if (!response.ok) throw new Error('HTTP ' + response.status);
-        var data = await response.json();
+        const data = await response.json();
         return data.values || []; // data.values contém os registros
     } catch (error) {
-        FLUIGC.toast({ message: "${i18n.getTranslation('dataset.loadError')}", type: 'danger' });
+        FLUIGC.toast({ message: "[=i18n.getTranslation('dataset.loadError')]", type: 'danger' });
         return [];
     }
 }

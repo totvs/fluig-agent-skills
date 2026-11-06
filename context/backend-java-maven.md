@@ -623,7 +623,9 @@ por isso ambos coexistem no build. Os níveis de otimização do Closure são
 > JavaScript (widget, layout, rest com recursos estáticos, wizard).
 
 A minificação de um `.js` pelo `closure-compiler-maven-plugin` conflita com o
-mecanismo de i18n quando esse arquivo usa template strings — ver
+mecanismo de i18n apenas quando esse arquivo combina template strings com a
+sintaxe legada `${i18n.getTranslation(...)}`; com `[=i18n.getTranslation(...)]`
+não há conflito — ver
 [Internacionalização (i18n)](conventions.md#internacionalização-i18n--widgets-e-layouts).
 
 ### `<pluginManagement>` (configuração herdável)

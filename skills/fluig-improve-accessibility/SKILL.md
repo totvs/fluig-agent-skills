@@ -41,7 +41,7 @@ Melhorar, com responsabilidade única, a **acessibilidade do frontend Fluig** �
 
 Leia antes de executar — não reproduza o conteúdo aqui:
 
-- [conventions.md](../../context/conventions.md) — convenções de markup e **i18n** (texto visível sempre via `${i18n.getTranslation('chave')}`). ⚠️ O core ainda **não** tem seção dedicada de acessibilidade (ADR-16, em avaliação); as regras de a11y abaixo se ancoram na **WCAG 2.1 AA** (W3C) — use `conventions.md` para i18n e `style-guide.md` para contraste/componentes.
+- [conventions.md](../../context/conventions.md) — convenções de markup e **i18n** (texto visível sempre via i18n: `[=i18n.getTranslation('chave')]` em `.js` e `${i18n.getTranslation('chave')}` em `.ftl`). ⚠️ O core ainda **não** tem seção dedicada de acessibilidade (ADR-16, em avaliação); as regras de a11y abaixo se ancoram na **WCAG 2.1 AA** (W3C) — use `conventions.md` para i18n e `style-guide.md` para contraste/componentes.
 - [style-guide.md](../../context/style-guide.md) — componentes acessíveis do Style Guide, tokens de cor/contraste via `var(--fs-color-*)` e conjuntos de ícones.
 
 ## Regras Aplicáveis (Resumo Executivo)
@@ -63,7 +63,7 @@ Somente o mínimo para orientar a melhoria; o detalhe está no contexto. Boas pr
 2. Aplicar **HTML semântico** e corrigir a estrutura antes de recorrer a ARIA.
 3. Associar **rótulos/nomes acessíveis** aos controles e garantir **navegação por teclado e foco visível** (foco gerenciado em modais).
 4. Adicionar **ARIA e texto alternativo** apenas onde a semântica nativa não basta; ajustar **contraste** usando `var(--fs-color-*)`.
-5. Manter a **i18n** em todos os textos acessíveis (rótulos, `aria-label`, `alt`) via `${i18n.getTranslation('chave')}`.
+5. Manter a **i18n** em todos os textos acessíveis (rótulos, `aria-label`, `alt`) via i18n (`[=i18n.getTranslation('chave')]` em `.js`, `${i18n.getTranslation('chave')}` em `.ftl`/markup server-side).
 6. Validar o resultado com o checklist abaixo antes de entregar, anotando as melhorias aplicadas.
 
 > **Nota importante:** a conformidade WCAG completa exige **teste manual com tecnologias assistivas** (leitores de tela, navegação só por teclado) e **revisão por especialista**. Esta skill **auxilia** a tornar a UI mais acessível, mas **não garante** conformidade total por si só.

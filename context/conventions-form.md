@@ -442,8 +442,8 @@ el.innerHTML = DOMPurify.sanitize(valorNaoConfiavel);
 ## Internacionalização (i18n) em formulários
 
 > **Mecanismo exclusivo de formulários** — completamente diferente do i18n de
-> widgets/layouts (`${i18n.getTranslation(...)}` em `.ftl` **e** `.js`, mesma
-> sintaxe) e do de processos de workflow.
+> widgets/layouts (`${i18n.getTranslation(...)}` no `.ftl` e
+> `[=i18n.getTranslation(...)]` no `.js`) e do de processos de workflow.
 > É um dos [três domínios de i18n do Fluig](conventions.md#os-três-domínios-de-i18n-do-fluig).
 > **Nunca misture os padrões.**
 
@@ -470,8 +470,8 @@ Todo texto exibido ao usuário no HTML do formulário deve usar `i18n.translate(
 
 ### Sintaxe em JavaScript — onde o i18n funciona (e onde NÃO)
 
-⚠️ **O formulário não passa por FreeMarker.** O padrão de widget/layout
-(`${i18n.getTranslation(...)}`) **não funciona** no form. O i18n de formulário é
+⚠️ **O formulário não passa por FreeMarker.** Os padrões de widget/layout
+(`${i18n.getTranslation(...)}` e `[=i18n.getTranslation(...)]`) **não funcionam** no form. O i18n de formulário é
 **substituição textual** do trecho `i18n.translate("chave")` pelo texto traduzido,
 feita quando a plataforma processa o artefato. Por isso ele só funciona onde o
 texto substituído forma um resultado válido. A documentação oficial (TDN "Tradução

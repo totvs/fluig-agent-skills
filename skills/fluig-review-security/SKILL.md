@@ -44,7 +44,7 @@ Leia antes de executar — não reproduza o conteúdo aqui:
 ### Core (sempre)
 
 - [conventions.md](../../context/conventions.md) — seção **Segurança (APIs públicas)**: `WCMAPI.validateXSS`, `DOMPurify.sanitize`, `textContent` vs `innerHTML`, escape FreeMarker (`${value?html}`, `${value?js_string}`), proibição de `eval()`/`new Function()` com dados dinâmicos, sanitização na entrada e na exibição, e chamadas REST via `fetch()` ao domínio do próprio Fluig (API pública, `WCMAPI.getServerURL()`) ou a terceiro.
-- [platform-constitution.md](../../context/platform-constitution.md) — regras invioláveis de i18n (`${i18n.getTranslation('chave')}`, mesma sintaxe em `.js` e em `.ftl`) e HTTP (`fetch()` + `async/await`, nunca síncrono).
+- [platform-constitution.md](../../context/platform-constitution.md) — regras invioláveis de i18n (`[=i18n.getTranslation('chave')]` em `.js`, `${i18n.getTranslation('chave')}` em `.ftl`) e HTTP (`fetch()` + `async/await`, nunca síncrono).
 
 ### Parceiro (somente se persona = Parceiro)
 

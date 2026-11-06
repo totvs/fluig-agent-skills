@@ -23,14 +23,17 @@ três regras, **a constituição prevalece**.
 - Todo texto visível em widgets e layouts vem de i18n, resolvido server-side pelo
   FreeMarker antes de o `.js` chegar ao navegador. Em `.js`, **prefira**
   `[=i18n.getTranslation('key')]`: a sintaxe `${...}` colide com template literals
-  do ES6, e os colchetes evitam esse conflito. Respeite o padrão do arquivo: um
-  `.js` legado que já usa `${i18n...}` mantém essa sintaxe; **não misture** as duas
-  no mesmo arquivo. Nunca acesse `i18n` como objeto (`i18n.key`) e coloque a
-  expressão entre aspas ao atribuí-la a uma variável. Em `.js` minificado pelo
-  Closure Compiler, evite template literals (backticks) quando usar i18n — prefira
-  concatenação clássica (`+`) para evitar conflitos confirmados pela TOTVS (TDN
-  "Closure Compiler Maven Plugin"). Formulários/processos usam mecanismo próprio
-  (`i18n.translate("chave")`) e **não** seguem esta regra.
+  do ES6, e os colchetes evitam esse conflito — com `[=...]`, template literals
+  ficam liberados no mesmo arquivo, inclusive na minificação pelo Closure Compiler.
+  Respeite o padrão do arquivo: um `.js` legado que já usa `${i18n...}` mantém essa
+  sintaxe (a troca para `[=...]` só quando explicitamente solicitada); **não
+  misture** as duas no mesmo arquivo. Nunca acesse `i18n` como objeto (`i18n.key`)
+  e coloque a expressão entre aspas ao atribuí-la a uma variável. Somente em `.js`
+  **legado** com `${i18n...}` minificado pelo Closure Compiler, evite template
+  literals (backticks) — prefira concatenação clássica (`+`) para evitar conflitos
+  confirmados pela TOTVS (TDN "Closure Compiler Maven Plugin"). Formulários/
+  processos usam mecanismo próprio (`i18n.translate("chave")`) e **não** seguem
+  esta regra.
 - Detalhe completo, incluindo exemplos `✅`/`❌` e a cautela da TOTVS:
   [conventions.md — i18n — Widgets e Layouts](conventions.md#internacionalização-i18n--widgets-e-layouts).
 

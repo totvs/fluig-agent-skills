@@ -12,7 +12,7 @@ Prompts prontos para acionar a skill `fluig-scaffolding-widget` com um agente de
 
 ## Completo
 
-> Crie o esqueleto de um widget de notificações chamado `Notifications` para o portal, com elemento raiz contendo as classes `fluig-style-guide super-widget wcm-widget-class`, `instanceId` apenas no `id` da div raiz (camelCase, um único `_`), `.instance()` sem `instanceId` e os métodos do `SuperWidget.extend({})` declarados como `init: function() { ... }` usando `this` direto e Arrow Functions nos callbacks, sem `var ctx = this;` (nunca method shorthand ES6 nem arrow como método — regra 3 da constituição). Inclua bindings declarativos para marcar itens como lidos, todos os textos visíveis via `${i18n.getTranslation('chave')}` com os quatro arquivos `.properties` (base + `pt_BR`/`en_US`/`es`) e estilos reutilizando o Style Guide, usando `var(--fs-color-*)` para as cores de tema.
+> Crie o esqueleto de um widget de notificações chamado `Notifications` para o portal, com elemento raiz contendo as classes `fluig-style-guide super-widget wcm-widget-class`, `instanceId` apenas no `id` da div raiz (camelCase, um único `_`), `.instance()` sem `instanceId` e os métodos do `SuperWidget.extend({})` declarados como `init: function() { ... }` usando `this` direto e Arrow Functions nos callbacks, sem `var ctx = this;` (nunca method shorthand ES6 nem arrow como método — regra 3 da constituição). Inclua bindings declarativos para marcar itens como lidos, todos os textos visíveis via `[=i18n.getTranslation('chave')]` no `.js` e `${i18n.getTranslation('chave')}` no `.ftl`, com os quatro arquivos `.properties` (base + `pt_BR`/`en_US`/`es`) e estilos reutilizando o Style Guide, usando `var(--fs-color-*)` para as cores de tema.
 
 ## Consulta a datasets no cliente
 

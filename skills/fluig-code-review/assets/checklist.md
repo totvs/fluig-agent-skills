@@ -16,7 +16,7 @@
 
 - [ ] Usa `const` por padrão e `let` apenas quando há reatribuição; **não** usa `var`.
 - [ ] Usa arrow functions para funções anônimas (concisão e `this` léxico).
-- [ ] Usa template literals em vez de concatenação com `+` — **exceto** em `.js` que usa i18n e é minificado pelo Closure Compiler, onde a concatenação (`+`) é preferida (ver item de i18n abaixo).
+- [ ] Usa template literals em vez de concatenação com `+` — **exceto** em `.js` **legado** com `${i18n...}` minificado pelo Closure Compiler, onde a concatenação (`+`) é preferida (ver item de i18n abaixo); com `[=i18n...]`, template literals são liberados.
 - [ ] Trata assíncrono com `async/await` em `try/catch`, não cadeias longas de `.then()`.
 - [ ] Funções pequenas, com responsabilidade única; organização em módulos ES6.
 - [ ] **Não** mistura jQuery e ES6+ no mesmo arquivo (jQuery só em manutenção de legado); **não** usa `$()` em código novo.
@@ -63,10 +63,10 @@
 > Regra-fonte: [`../../../context/conventions.md`](../../../context/conventions.md) › "Internacionalização (i18n)"
 > e [`../../../context/platform-constitution.md`](../../../context/platform-constitution.md).
 
-- [ ] Todo texto visível ao usuário vem de i18n — `${i18n.getTranslation('key')}`, mesma sintaxe em `.js` e em `.ftl`; sem strings fixas. **(Exceção: Formulários usam `i18n.translate("chave")` — outro domínio; não cobrar `${i18n.getTranslation}` ao revisar form.)**
+- [ ] Todo texto visível ao usuário vem de i18n — `[=i18n.getTranslation('key')]` em `.js` de widget/layout (código novo; `.js` legado com `${...}` mantém a sintaxe do arquivo, sem misturar) e `${i18n.getTranslation('key')}` em `.ftl`; sem strings fixas. **(Exceção: Formulários usam `i18n.translate("chave")` — outro domínio; não cobrar `${i18n.getTranslation}` ao revisar form.)**
 - [ ] **Não** acessa `i18n` como objeto JavaScript (`i18n.key` / `i18n['key']`).
 - [ ] A expressão de i18n está entre aspas quando atribuída a variável.
-- [ ] Em `.js` que usa i18n e é minificado pelo Closure Compiler, a concatenação com variáveis JS usa `+` em vez de template literal.
+- [ ] Em `.js` **legado** com `${i18n...}` minificado pelo Closure Compiler, a concatenação com variáveis JS usa `+` em vez de template literal (com `[=i18n...]`, template literal é permitido e não deve ser reportado).
 - [ ] Usa `getTranslationP1`/`getTranslationPn` quando há parâmetros.
 
 ## 6. Segurança

@@ -42,7 +42,7 @@ Leia antes de executar — não reproduza o conteúdo aqui:
 
 ### Core (sempre)
 
-- [conventions.md](../../context/conventions.md) — HTML semântico, convenções de markup e i18n (texto visível sempre via `${i18n.getTranslation('chave')}`, mesma sintaxe em `.js` e em `.ftl`).
+- [conventions.md](../../context/conventions.md) — HTML semântico, convenções de markup e i18n (texto visível sempre via i18n: `[=i18n.getTranslation('chave')]` em `.js` e `${i18n.getTranslation('chave')}` em `.ftl`).
 - [style-guide.md](../../context/style-guide.md) — componentes acessíveis do Style Guide, tokens de cor/contraste via `var(--fs-color-*)` e conjuntos de ícones.
 - [platform-constitution.md](../../context/platform-constitution.md) — regras invioláveis de i18n e HTTP.
 

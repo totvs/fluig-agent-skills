@@ -33,7 +33,7 @@ paradigmas no mesmo arquivo.
 |---------|-------------------------------|
 | Declaração de variável | **Nunca** `var`; `const` por padrão; `let` única e exclusivamente quando há reatribuição (única exceção: a variável raiz da SuperWidget — ver [Convenções de Widget](#convenções-de-widget-superwidgetextend)) |
 | Funções anônimas | Arrow functions obrigatórias em todos os callbacks (concisão e `this` léxico) — **exceto** os próprios métodos do objeto de `SuperWidget.extend({})`, declarados como `nome: function() {}` (ver [Sintaxe de métodos dentro de `.extend({})`](#sintaxe-de-métodos-dentro-de-extend)) |
-| Concatenação de texto | Template literals — em arquivos `.js` com i18n, use `[=i18n.getTranslation('key')]` (não colide com `${...}` do ES6); em um `.js` que usa i18n e é minificado pelo Closure Compiler, prefira concatenação clássica (`+`) a template literals (ver [i18n — Widgets e Layouts](#internacionalização-i18n--widgets-e-layouts)) — arquivos `.js` sem i18n não são afetados |
+| Concatenação de texto | Template literals — em arquivos `.js` com i18n, use `[=i18n.getTranslation('key')]` (não colide com `${...}` do ES6 e permite template literals no mesmo arquivo); só em `.js` **legado** com `${i18n.getTranslation(...)}` minificado pelo Closure Compiler, prefira concatenação clássica (`+`) (ver [i18n — Widgets e Layouts](#internacionalização-i18n--widgets-e-layouts)) |
 | Assíncrono | `async/await` em vez de cadeias longas de `.then()` |
 | Organização | Módulos ES6; funções pequenas com responsabilidade única |
 
@@ -229,12 +229,12 @@ Esta é a **única exceção explícita** à proibição de `var` em
 A exceção vale **apenas** para a variável raiz do widget; o **restante do JS do
 widget permanece em ES6+** (`const`/`let`, arrow functions, template literals).
 
-> ⚠️ **Ressalva de i18n (regra 1 da constituição):** num arquivo `.js` que usa
-> i18n (`[=i18n.getTranslation(...)]` / `getTranslationP1/Pn`) e passa pela
-> minificação do **Closure Compiler**, **prefira concatenação clássica (`+`) a
-> template literals** ao montar textos com a tradução — a minificação conflita
-> com template strings que contêm i18n. Template literals
-> seguem liberados no JS de widget que **não** usa i18n. Ver
+> ⚠️ **Ressalva de i18n (regra 1 da constituição):** com a sintaxe
+> `[=i18n.getTranslation(...)]` (padrão para código novo), template literals são
+> **liberados** no mesmo arquivo — não há conflito, inclusive na minificação pelo
+> Closure Compiler. A restrição ("prefira concatenação clássica (`+`)") vale
+> **somente** para `.js` **legado** que ainda usa `${i18n.getTranslation(...)}` e é
+> minificado pelo Closure Compiler. Ver
 > [platform-constitution.md](platform-constitution.md) (regra 1).
 
 ### Sintaxe de métodos dentro de `.extend({})`
@@ -1453,22 +1453,24 @@ documentada pela TOTVS — TDN "Internacionalização", pageId=185738869):
 | Contexto | Sintaxe | Observação |
 |----------|---------|------------|
 | FreeMarker (`.ftl`) | `${i18n.getTranslation('key')}` | Sintaxe padrão em templates; mantenha a já usada no arquivo |
-| **Arquivo `.js` (código novo)** | `[=i18n.getTranslation('key')]` | Preferida: não colide com template literals ES6 (regra 1 de [platform-constitution.md](platform-constitution.md)) |
-| Arquivo `.js` legado | `${i18n.getTranslation('key')}` | Mantida se o arquivo já usa esse padrão — **não misture** as duas sintaxes no mesmo arquivo |
+| **Arquivo `.js` (código novo)** | `[=i18n.getTranslation('key')]` | Preferida: não colide com template literals ES6 nem com o Closure Compiler (regra 1 de [platform-constitution.md](platform-constitution.md)) |
+| Arquivo `.js` legado | `${i18n.getTranslation('key')}` | Mantida se o arquivo já usa esse padrão — **não misture** as duas sintaxes no mesmo arquivo; a troca para `[=...]` em código legado só deve ser feita quando explicitamente solicitada |
 
 **Regra para arquivos `.js`:** em código novo use
 `[=i18n.getTranslation('key')]`. A expressão deve estar **entre aspas** quando
-atribuída a uma variável: `const t = "[=i18n.getTranslation('key')]";`.
+atribuída a uma variável: `const t = "[=i18n.getTranslation('key')]";`. Com essa
+sintaxe, template literals ficam **liberados** no mesmo arquivo.
 
-> **Minificação com Closure Compiler.** A minificação de um `.js` pelo
-> `closure-compiler-maven-plugin` (ver a documentação oficial
+> **Minificação com Closure Compiler (somente sintaxe `${...}` legada).** A
+> minificação de um `.js` pelo `closure-compiler-maven-plugin` (ver a documentação
+> oficial
 > ["Closure Compiler Maven Plugin"](https://tdn.totvs.com/display/public/fluig/Closure+Compiler+Maven+Plugin))
 > conflita com o mecanismo de i18n quando esse arquivo usa template strings
-> (backticks), gerando inconsistências. Se o `.js` **não** usa i18n, o template
-> string funciona normalmente. Em um `.js` que usa i18n, prefira concatenação
-> clássica (`+`) a template literals para montar textos com
-> `[=i18n.getTranslation(...)]`. O cuidado é do **arquivo inteiro** que passa
-> por essa minificação, não de um backtick específico — ver também
+> (backticks) **junto com** `${i18n.getTranslation(...)}`, gerando inconsistências.
+> Por isso, num `.js` **legado** que mantém `${i18n...}` e é minificado pelo
+> Closure Compiler, prefira concatenação clássica (`+`) a template literals. A
+> sintaxe `[=i18n.getTranslation(...)]` **não** tem esse conflito — nenhuma
+> restrição se aplica a ela. Ver também
 > [platform-constitution.md](platform-constitution.md).
 
 > **Parceiro (Store):** a configuração do `closure-compiler-maven-plugin`
@@ -1478,14 +1480,17 @@ atribuída a uma variável: `const t = "[=i18n.getTranslation('key')]";`.
 // ✅ correto em .js (código novo) — colchetes, entre aspas
 const title = "[=i18n.getTranslation('save.success.title')]";
 
-// ✅ correto por cautela — concatenação clássica (+) em vez de template
-// literal, em .js que usa i18n e é minificado pelo Closure Compiler
-const translatedPart = "[=i18n.getTranslation('save.success.message')]";
-const fullMessage = translatedPart + ': ' + name;
+// ✅ correto — [=...] não conflita com template literals nem com o Closure Compiler
+const fullMessage = `[=i18n.getTranslation('save.success.message')]: ${name}`;
 
-// ❌ evite — template string envolvendo i18n em .js minificado pelo Closure
-// Compiler (a minificação conflita com template strings que contêm i18n)
-const risky = `[=i18n.getTranslation('save.success.message')]: ${name}`;
+// ⚠️ legado — com ${...}, em .js minificado pelo Closure Compiler, use
+// concatenação clássica (+) em vez de template literal
+const translatedPart = "${i18n.getTranslation('save.success.message')}";
+const legacyMessage = translatedPart + ': ' + name;
+
+// ❌ evite — template string envolvendo ${i18n...} em .js minificado pelo
+// Closure Compiler (a minificação conflita com essa combinação)
+const risky = `${i18n.getTranslation('save.success.message')}: ${name}`;
 ```
 
 Regras gerais:
@@ -1660,30 +1665,37 @@ padrão do pacote é `[=i18n.getTranslation('key')]` (ver
 Arquivos legados que já usam `${i18n...}` mantêm essa sintaxe, sem misturar as
 duas no mesmo arquivo.
 
-O ponto de atenção adicional: a minificação de um `.js` pelo
-`closure-compiler-maven-plugin` (ver a documentação oficial ["Closure Compiler Maven
-Plugin"](https://tdn.totvs.com/display/public/fluig/Closure+Compiler+Maven+Plugin))
-conflita com o mecanismo de i18n quando
-esse arquivo usa template strings, gerando inconsistências. Se o `.js` **não**
-usa i18n, o template string funciona normalmente. A mitigação prática é
-preferir concatenação clássica (`+`) a template literals ao montar textos com
-`[=i18n.getTranslation(...)]` em um `.js` que usa i18n:
+Com `[=i18n.getTranslation('key')]`, a tradução é resolvida pelo FreeMarker mesmo
+dentro de backticks, sem qualquer conflito com a interpolação do JavaScript nem
+com a minificação do Closure Compiler:
 
 ```javascript
-// ✅ mitigação prudente — concatenação clássica (+) em vez de template
-// literal, em .js que usa i18n e é minificado pelo Closure Compiler
-const translatedPart = "[=i18n.getTranslation('save.success.message')]";
-const fullMessage = translatedPart + ': ' + name;
-
-// ❌ evite — template string envolvendo i18n em .js minificado pelo Closure
-// Compiler (a minificação conflita com template strings que contêm i18n)
-const risky = `[=i18n.getTranslation('save.success.message')]: ${name}`;
+// ✅ recomendado em .js — [=...] resolve server-side mesmo dentro de backticks
+const fullMessage = `[=i18n.getTranslation('save.success.message')]: ${name}`;
 ```
 
-> Essa regra vale para o **arquivo `.js` inteiro** que usa i18n e passa pela
-> minificação do Closure Compiler, não apenas para um backtick específico. Um
-> `.js` sem i18n não é afetado e pode usar template literals livremente. Aplica-se
-> sobretudo a artefatos de Parceiro empacotados via Maven/EAR.
+Se um `.js` **legado** ainda usa `${i18n.getTranslation(...)}`, **não** use essa
+sintaxe diretamente dentro de backticks: declare a tradução em uma **variável
+separada** (entre aspas, resolvida server-side) e só então concatene.
+
+```javascript
+// ✅ alternativa legada com ${...}: tradução em variável separada, depois concatena
+const successMsg = "${i18n.getTranslation('save.success.message')}";
+const fullMessage = successMsg + ': ' + name;
+
+// ❌ dentro de backticks o ${...} é avaliado pelo JS, não pelo FreeMarker
+const fullMessage = `${i18n.getTranslation('save.success.message')}: ${name}`;
+```
+
+**Closure Compiler (somente sintaxe `${...}` legada).** A minificação de um `.js`
+pelo `closure-compiler-maven-plugin` (ver a documentação oficial
+["Closure Compiler Maven Plugin"](https://tdn.totvs.com/display/public/fluig/Closure+Compiler+Maven+Plugin))
+conflita com o mecanismo de i18n quando o arquivo combina template strings com
+`${i18n...}`. Por isso, nesse caso legado, prefira concatenação clássica (`+`),
+como no exemplo acima. A restrição vale para o **arquivo `.js` inteiro**, não para
+um backtick específico, e se aplica sobretudo a artefatos de Parceiro empacotados
+via Maven/EAR. Com `[=i18n...]` ou num `.js` sem i18n, template literals são
+livres.
 
 > ⚠️ **Armadilha da interpolação em comentário/texto do `.js`.** Como o FreeMarker
 > processa o **`.js` inteiro** antes de servir, ele interpreta **qualquer**

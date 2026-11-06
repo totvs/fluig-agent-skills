@@ -54,7 +54,7 @@ Leia antes de executar — não reproduza o conteúdo aqui:
 
 - [conventions.md](../../context/conventions.md) — ES6+ (`const`/`let`, arrow functions, template literals), DOM nativo, REST via `fetch()`, bindings de widget, i18n e segurança.
 - [technologies.md](../../context/technologies.md) — jQuery **3.7.1 é embutido e suportado** pela plataforma (não é "legado"); ES6+ é o padrão para **código novo de aplicação**, mas o jQuery dos **plugins embutidos** (jQuery UI, Mustache, `fluig.datatable.*`) permanece válido. Só o plugin **jQuery Migrate** está em descontinuação. Bibliotecas client-side disponíveis listadas aqui.
-- [platform-constitution.md](../../context/platform-constitution.md) — regras invioláveis de i18n (`${i18n.getTranslation(...)}` em `.js` e `.ftl`) e HTTP (`fetch`).
+- [platform-constitution.md](../../context/platform-constitution.md) — regras invioláveis de i18n (`[=i18n.getTranslation(...)]` em `.js`, `${i18n.getTranslation(...)}` em `.ftl`) e HTTP (`fetch`).
 
 ## Regras Aplicáveis (Resumo Executivo)
 
@@ -65,9 +65,9 @@ Somente o mínimo para orientar a migração; o detalhe está no contexto. Equiv
 - `$.ajax()` → `fetch()` + `async/await` + `try/catch` para qualquer chamada; domínio do próprio Fluig só com API pública, URL via `WCMAPI.getServerURL()` → ver `platform-constitution.md`.
 - `var` → `const` por padrão, `let` quando há reatribuição → ver `conventions.md`. **Exceção que permanece `var` (regra 3 da constituição):** apenas a **variável raiz** que recebe `SuperWidget.extend({...})` (ex.: `var MyWidget = SuperWidget.extend(...)`). **Não** converta essa para `const` → ver `platform-constitution.md` e `conventions.md`.
 - **Dentro de `.extend({})` (regra 3):** manter métodos como `nome: function() {}` (nunca method shorthand nem arrow como método). **Remover** `var ctx = this;` / `var that = this;` (usar `this` direto no método) e **converter** os callbacks `function() {}` para Arrow Functions `() => {}` — a migração nunca ensina ES5 → ver `platform-constitution.md`.
-- Concatenação de strings → template literals, **exceto** em `.js` que usa i18n e é minificado pelo Closure Compiler: nesse caso **manter concatenação (`+`)**, não converter para template literal (a minificação conflita com template strings que contêm i18n) → ver `conventions.md` e `platform-constitution.md`.
+- Concatenação de strings → template literals, **exceto** em `.js` **legado** que usa `${i18n...}` e é minificado pelo Closure Compiler: nesse caso **manter concatenação (`+`)**, não converter para template literal (a minificação conflita com template strings que contêm `${i18n...}`). Com `[=i18n...]` não há restrição: converta normalmente → ver `conventions.md` e `platform-constitution.md`.
 - `.each()` → `for...of` ou `Array.prototype.forEach` → ver `conventions.md`.
-- Preservar **comportamento** e **i18n** (`${i18n.getTranslation('chave')}`, mesma sintaxe em `.js` e em `.ftl`) → ver `platform-constitution.md`.
+- Preservar **comportamento** e **i18n**: manter a sintaxe já usada no arquivo (`[=i18n.getTranslation('chave')]` em `.js` novo, `${i18n.getTranslation('chave')}` em `.ftl` ou em `.js` legado), sem misturar as duas e sem trocá-la a menos que solicitado → ver `platform-constitution.md`.
 
 ## Procedimento
 
@@ -96,8 +96,9 @@ $list.on('click', '.item', function () {
 
 ```javascript
 // Depois (ES6+) — este trecho NÃO usa i18n, então o template literal é seguro.
-// ⚠️ Se o arquivo usar i18n e for minificado pelo Closure Compiler, prefira
-// concatenação (`+`) a template literal ao montar textos com a tradução.
+// ⚠️ Se o arquivo for legado, usar `${i18n...}` e for minificado pelo Closure
+// Compiler, prefira concatenação (`+`) a template literal ao montar textos com
+// a tradução. Com `[=i18n...]` o template literal é liberado.
 // Obs.: este é um listener de DOM comum (arrow é ok aqui). Dentro de
 // SuperWidget.extend({}) os MÉTODOS continuam `nome: function() {}`, com `this` direto (sem `var ctx = this;`).
 const list = document.querySelector('#MyWidget_' + this.instanceId + ' .items');
@@ -115,4 +116,4 @@ list.addEventListener('click', (event) => {
 - [ ] Dentro de `.extend({})`: métodos como `nome: function() {}` (sem shorthand/arrow como método), `this` direto (sem `var ctx = this;`) e callbacks em Arrow Functions `() => {}`.
 - [ ] Chamadas REST via `fetch()` + `async/await` + `try/catch`; domínio do próprio Fluig só com API pública via `WCMAPI.getServerURL()`.
 - [ ] Comportamento original preservado (mesma lógica e efeitos).
-- [ ] i18n preservada (`${i18n.getTranslation('...')}`, mesma sintaxe em `.js` e em `.ftl`).
+- [ ] i18n preservada com a sintaxe do arquivo (`[=i18n.getTranslation('...')]` em `.js` novo; `${i18n.getTranslation('...')}` em `.ftl` ou `.js` legado), sem misturar as duas.

@@ -43,7 +43,7 @@ Leia antes de executar — não reproduza o conteúdo aqui:
 
 - [conventions.md](../../context/conventions.md) — manipulação de DOM, ES6+ e `async/await`, REST via `fetch()` ao domínio do próprio Fluig (API pública, `WCMAPI.getServerURL()`) ou a terceiro, bindings de widget, i18n, segurança e **CSS responsivo e funções CSS modernas** (`calc`/`var`/`rgba`/`hsla`/`min`/`max`/`clamp`/`minmax`, media e container queries).
 - [style-guide.md](../../context/style-guide.md) — reutilização de componentes/helpers/grid do Fluig Style Guide em vez de soluções próprias mais custosas.
-- [platform-constitution.md](../../context/platform-constitution.md) — regras invioláveis de i18n (`${i18n.getTranslation(...)}` em `.js` e `.ftl`) e HTTP (`fetch`).
+- [platform-constitution.md](../../context/platform-constitution.md) — regras invioláveis de i18n (`[=i18n.getTranslation(...)]` em `.js`, `${i18n.getTranslation(...)}` em `.ftl`) e HTTP (`fetch`).
 
 ## Regras Aplicáveis (Resumo Executivo)
 
@@ -66,7 +66,7 @@ Somente o mínimo para orientar a otimização; o detalhe está no contexto. Boa
 
 1. Medir/identificar o gargalo a partir do sintoma e da leitura do código (DOM em laço, seletores repetidos, excesso de listeners, requisições redundantes, evento de alta frequência sem controle).
 2. Selecionar a otimização adequada do catálogo acima para cada gargalo encontrado.
-3. Aplicar a otimização **preservando o comportamento observável** e a i18n (`${i18n.getTranslation('chave')}`, mesma sintaxe em `.js` e em `.ftl`).
+3. Aplicar a otimização **preservando o comportamento observável** e a i18n com a sintaxe já usada no arquivo (`[=i18n.getTranslation('chave')]` em `.js` novo; `${i18n.getTranslation('chave')}` em `.ftl` ou `.js` legado).
 4. Garantir que chamadas REST continuem via `fetch()`, com o domínio do próprio Fluig pela API pública (`WCMAPI.getServerURL()`), e que o assíncrono seja tratado com `try/catch`.
 5. Validar o resultado com o checklist abaixo antes de entregar, anotando as otimizações aplicadas.
 
