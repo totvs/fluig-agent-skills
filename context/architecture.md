@@ -897,8 +897,8 @@ funções — **não** uma função solta:
 
 ```javascript
 {
-  success: function (content) { /* content.values / content.columns */ },
-  error:   function (jqXHR, textStatus, errorThrown) { /* trata a falha */ }
+  success: (content) => { /* content.values / content.columns */ },
+  error:   (jqXHR, textStatus, errorThrown) => { /* trata a falha */ }
 }
 ```
 
@@ -921,10 +921,10 @@ conteúdo do dataset. ⚠️ **A forma de LER o retorno difere por contexto:**
 
 ```javascript
 // Cliente — ✅ ÚNICO padrão permitido: assíncrono (com callback), resultado em success
-var constraints = [DatasetFactory.createConstraint('active', 'true', 'true', ConstraintType.MUST)];
+const constraints = [DatasetFactory.createConstraint('active', 'true', 'true', ConstraintType.MUST)];
 DatasetFactory.getDataset('branches', ['code', 'name'], constraints, ['name'], {
-  success: function (content) { /* content.values */ },
-  error: function (jqXHR, textStatus, errorThrown) { /* trata falha */ }
+  success: (content) => { /* content.values */ },
+  error: (jqXHR, textStatus, errorThrown) => { /* trata falha */ }
 });
 
 // Cliente — ❌ PROIBIDO: chamada síncrona (sem callback) — bloqueia a thread e trava a UI

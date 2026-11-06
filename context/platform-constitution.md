@@ -11,7 +11,7 @@
 
 | # | Regra | Detalhe (fonte de verdade) |
 |---|-------|----------------------------|
-| 1 | i18n em `.js` e `.ftl` = mesma sintaxe `${i18n.getTranslation('key')}` (fonte oficial TDN) | [conventions.md — i18n — Widgets e Layouts](conventions.md#internacionalização-i18n--widgets-e-layouts) |
+| 1 | i18n via FreeMarker: em `.js`, preferir `[=i18n.getTranslation('key')]` (sem colidir com template literals ES6); `.ftl` mantém a sintaxe FreeMarker do arquivo | [conventions.md — i18n — Widgets e Layouts](conventions.md#internacionalização-i18n--widgets-e-layouts) |
 | 2 | HTTP = `fetch()` + `async/await` + `try/catch` para qualquer endpoint; nunca síncrono | [conventions.md — Chamadas REST e Integrações](conventions.md#chamadas-rest-e-integrações) |
 | 3 | Dentro de `SuperWidget.extend({})`, métodos sempre como `nome: function() {}` | [conventions.md — Sintaxe de métodos dentro de `.extend({})`](conventions.md#sintaxe-de-métodos-dentro-de-extend) |
 
@@ -20,13 +20,17 @@ três regras, **a constituição prevalece**.
 
 ## 1. Internacionalização em arquivos `.js`
 
-- Em arquivos `.js` **e** `.ftl` de widgets e layouts, use **sempre**
-  `${i18n.getTranslation('key')}`. A expressão é resolvida server-side pelo
-  FreeMarker, antes de o `.js` chegar ao navegador. Em `.js` minificado pelo
+- Todo texto visível em widgets e layouts vem de i18n, resolvido server-side pelo
+  FreeMarker antes de o `.js` chegar ao navegador. Em `.js`, **prefira**
+  `[=i18n.getTranslation('key')]`: a sintaxe `${...}` colide com template literals
+  do ES6, e os colchetes evitam esse conflito. Respeite o padrão do arquivo: um
+  `.js` legado que já usa `${i18n...}` mantém essa sintaxe; **não misture** as duas
+  no mesmo arquivo. Nunca acesse `i18n` como objeto (`i18n.key`) e coloque a
+  expressão entre aspas ao atribuí-la a uma variável. Em `.js` minificado pelo
   Closure Compiler, evite template literals (backticks) quando usar i18n — prefira
   concatenação clássica (`+`) para evitar conflitos confirmados pela TOTVS (TDN
   "Closure Compiler Maven Plugin"). Formulários/processos usam mecanismo próprio
-  (`i18n.translate("chave")`).
+  (`i18n.translate("chave")`) e **não** seguem esta regra.
 - Detalhe completo, incluindo exemplos `✅`/`❌` e a cautela da TOTVS:
   [conventions.md — i18n — Widgets e Layouts](conventions.md#internacionalização-i18n--widgets-e-layouts).
 
@@ -50,10 +54,13 @@ três regras, **a constituição prevalece**.
 
 - Dentro do objeto passado a `SuperWidget.extend({})`, declare os métodos
   **sempre** como `nomeDoMetodo: function() {}` (ou
-  `nomeDoMetodo: async function() {}`), capturando o contexto com
-  `var ctx = this;`. **Nunca** use method shorthand do ES6 (`nomeDoMetodo() {}`)
-  nem arrow function como método (`nomeDoMetodo: () => {}`). Fora do
-  `.extend({})`, o ES6+ segue como padrão.
+  `nomeDoMetodo: async function() {}`), usando `this` direto — **sem** cache de
+  escopo (`var ctx = this;` / `var that = this;` são proibidos) — e Arrow Functions
+  `() => {}` em todos os callbacks (success, fail, eventos) para manter o `this`.
+  **Nunca** use method shorthand do ES6 (`nomeDoMetodo() {}`) nem arrow function
+  como método (`nomeDoMetodo: () => {}`). Nos `.js` de widgets e layouts, `var` é
+  proibido (use `const`/`let`); a única exceção é a variável raiz que recebe
+  `SuperWidget.extend(...)`. Fora do `.extend({})`, o ES6+ segue como padrão.
 - Detalhe completo, incluindo exemplos `✅`/`❌`:
   [conventions.md — Sintaxe de métodos dentro de `.extend({})`](conventions.md#sintaxe-de-métodos-dentro-de-extend).
 

@@ -94,12 +94,11 @@ var MinhaWidget = SuperWidget.extend({
         this.types = 'gif|jpg|jpeg|tiff|png';
     },
     updateDocument: function (el, ev) {
-        var ctx = this;
         ECMBC.updateDocument(
-            { id: ctx.id, version: ctx.version, types: ctx.types },
-            function (err, data) {
+            { id: this.id, version: this.version, types: this.types },
+            (err, data) => {
                 if (err) { return FLUIGC.toast({ message: err.responseText, type: 'danger' }); }
-                ctx.aoAtualizar(data);
+                this.aoAtualizar(data);
             }
         );
     }
@@ -136,7 +135,7 @@ componente PÚBLICO** — `ECMBC.searchDocument` NÃO é API interna.
 ```javascript
 ECMBC.searchDocument(
     { docTypeId: '1-2', title: 'Selecione um documento' },
-    function (err, data) {
+    (err, data) => {
         if (err) { return FLUIGC.toast({ message: err.responseText, type: 'danger' }); }
         // data = documento/pasta selecionado
     }
@@ -160,7 +159,7 @@ plataforma. Abre o modal de seleção de documento no contexto de uma comunidade
 ```javascript
 ECMBC.sharingDocument(
     { alias: 'minha-comunidade', title: 'Selecionar documento para a comunidade' },
-    function (err, data) {
+    (err, data) => {
         if (err) { return FLUIGC.toast({ message: err.responseText, type: 'danger' }); }
         // data = documento/pasta selecionado
     }
@@ -182,7 +181,7 @@ Abre o modal de renomear um documento/pasta existente.
 ```javascript
 ECMBC.renameDocument(
     { id: 10, version: 1000, title: 'Renomear documento' },
-    function (err, data) {
+    (err, data) => {
         if (err) { return FLUIGC.toast({ message: err.responseText, type: 'danger' }); }
     }
 );
@@ -213,7 +212,7 @@ Encapsula a atualização/recorte de imagens (foto de usuário ou comunidade).
 ```javascript
 WCMBC.cropImage(
     { alias: this.alias, types: 'gif|jpg|jpeg|png', imageShape: 'circle' },
-    function (err, data) {
+    (err, data) => {
         if (err) { return FLUIGC.toast({ message: err.responseText, type: 'danger' }); }
     }
 );
@@ -235,8 +234,8 @@ Modal de seleção de um ou mais usuários. Retorna array em `data` (cada item t
 ```javascript
 WCMBC.selectUser(
     { multiselect: true, required: true, onlyActiveUsers: true },
-    function (data) { /* data = array de usuários selecionados */ },
-    function () { /* usuário cancelou */ }
+    (data) => { /* data = array de usuários selecionados */ },
+    () => { /* usuário cancelou */ }
 );
 ```
 
@@ -271,8 +270,8 @@ utiliza `WCMBC.selectUser` recebendo o parâmetro adicional `group`.
 ```javascript
 WCMBC.selectUser(
     { group: 'Administradores', multiselect: true, required: true },
-    function (data) { /* sub grupos selecionados */ },
-    function () { /* cancelado */ }
+    (data) => { /* sub grupos selecionados */ },
+    () => { /* cancelado */ }
 );
 ```
 
@@ -391,12 +390,12 @@ métodos de leitura.
 - **Dependência:** `application.resource.component.N=lms/elearningsecurity`
 
 ```javascript
-var options = { containerId: '#elearning-security', itemType: 'CatalogItem' };
-this.elearningSecurity = LMSBC.elearningsecurity(options, function (err) {
+const options = { containerId: '#elearning-security', itemType: 'CatalogItem' };
+this.elearningSecurity = LMSBC.elearningsecurity(options, (err) => {
     FLUIGC.toast({ message: 'Erro ao carregar dados de permissão', type: 'danger' });
 });
 // ...
-var permissoes = this.elearningSecurity.getPermissions();
+const permissoes = this.elearningSecurity.getPermissions();
 ```
 
 > **Descontinuação (LMS).** A partir da atualização **1.6.5-190219**, o LMS não

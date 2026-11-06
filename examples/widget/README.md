@@ -6,7 +6,7 @@
 ## Arquivos
 - `view.ftl` — view FreeMarker do widget: elemento raiz com `fluig-style-guide`, `id` com `instanceId`, `data-params` chamando `instance()` sem `instanceId`, elementos interativos com `data-*` e texto via i18n.
 - `edit.ftl` — view de edição do widget: pode ser vazia, mas o arquivo precisa existir (o descritor a referencia via `edit.file=edit.ftl`).
-- `notifications.js` — `SuperWidget.extend` com `init` e `bindings` (local/global): a variável raiz usa `var` (exceção controlada) e os métodos dentro de `.extend({})` usam `nome: function() {}` com `var ctx = this;` (sintaxe padronizada e segura na minificação), chamando endpoints internos via `fetch()` + `async/await` + `try/catch`, com a URL montada a partir de `WCMAPI.getServerURL()`. O nome do arquivo (`notifications.js`) casa com `application.code=notifications` e com `application.resource.js.1`.
+- `notifications.js` — `SuperWidget.extend` com `init` e `bindings` (local/global): a variável raiz usa `var` (exceção controlada) e os métodos dentro de `.extend({})` usam `nome: function() {}` sem `var ctx = this;` (callbacks em Arrow Functions mantêm o `this`), chamando endpoints internos via `fetch()` + `async/await` + `try/catch`, com a URL montada a partir de `WCMAPI.getServerURL()`. O nome do arquivo (`notifications.js`) casa com `application.code=notifications` e com `application.resource.js.1`.
 - `notifications.properties` — bundle base de i18n (fallback, em Português, com acentuação direta permitida).
 - `notifications_pt_BR.properties` — bundle de i18n em Português (Brasil), com escapes `\uXXXX`.
 - `notifications_en_US.properties` — bundle de i18n em Inglês (EUA).
@@ -23,8 +23,8 @@
 - `instanceId` usado **apenas** em atributos `id`, com separador `_` (ex.: `notifications_${instanceId}`).
 - `.instance()` chamado **sem** `instanceId` no `data-params`; no JS, uso de `this.instanceId`.
 - Bindings declarativos com a chave **sem** o prefixo `data-` (escopo `local` e `global`).
-- Todo texto visível via i18n — sem strings fixas: `${i18n.getTranslation('chave')}`, mesma sintaxe na `view.ftl`/`edit.ftl` e em `notifications.js` (ver `context/platform-constitution.md`).
-- **Sintaxe dentro de `.extend({})`:** métodos como `nome: function() {}` com `var ctx = this;` no topo e callbacks internos em `function() {}` acessando `ctx` — evitando method shorthand ES6 e arrow functions (que não vinculam `this` e podem quebrar na minificação do build). A **variável raiz da SuperWidget** usa `var` (exceção controlada). Fora do objeto `.extend({})`, ES6+ segue como padrão.
+- Todo texto visível via i18n — sem strings fixas: `[=i18n.getTranslation('chave')]` em `notifications.js` (código novo; resolvido server-side e sem colidir com template literals ES6) e a sintaxe FreeMarker já usada nas `view.ftl`/`edit.ftl` (ver `context/platform-constitution.md`).
+- **Sintaxe dentro de `.extend({})`:** métodos como `nome: function() {}` sem `var ctx = this;` (usa-se `this` direto) e callbacks (success, fail, eventos) em Arrow Functions `() => {}` para manter o `this` do widget — evitando method shorthand ES6 e arrow function como método (que não vincula `this`). Sem `var` (use `const`/`let`). A **variável raiz da SuperWidget** usa `var` (exceção controlada). Fora do objeto `.extend({})`, ES6+ segue como padrão.
 - **i18n do widget:** 4 arquivos `.properties` (base `notifications.properties` + `_pt_BR`/`_en_US`/`_es`); o base em Português admite acentos diretos e os locales usam escapes `\uXXXX`.
 - View de edição (`edit.ftl`) obrigatória, podendo ser vazia; o descritor a referencia via `edit.file=edit.ftl`.
 - Chamadas REST a endpoints internos via `fetch()` + `async/await` + `try/catch`, com a URL pública montada a partir de `WCMAPI.getServerURL()` (ver `context/platform-constitution.md`).

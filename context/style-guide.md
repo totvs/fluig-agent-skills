@@ -104,11 +104,11 @@ e recebem um objeto de settings + callback). Fonte oficial:
 
 ```javascript
 FLUIGC.message.confirm({
-    message: i18n.getTranslation('card.remove.confirm'),
-    title: i18n.getTranslation('card.remove.title'),
-    labelYes: i18n.getTranslation('label.remove'),
-    labelNo: i18n.getTranslation('label.cancel')
-}, function (result) {
+    message: "[=i18n.getTranslation('card.remove.confirm')]",
+    title: "[=i18n.getTranslation('card.remove.title')]",
+    labelYes: "[=i18n.getTranslation('label.remove')]",
+    labelNo: "[=i18n.getTranslation('label.cancel')]"
+}, (result) => {
     if (result) { /* ação confirmada */ }
 });
 ```
@@ -613,7 +613,7 @@ O padrão correto para cor dinâmica é uma **CSS custom property própria** (ex
 
 ```javascript
 // JS aplica a cor escolhida (preferência/param) na raiz, via setProperty.
-var root = document.getElementById('MyWidget_' + this.instanceId);
+const root = document.getElementById('MyWidget_' + this.instanceId);
 root.style.setProperty('--highlight', this.highlightColor || '#2196f3');
 ```
 

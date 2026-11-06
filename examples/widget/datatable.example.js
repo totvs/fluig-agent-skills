@@ -10,12 +10,17 @@
 //
 // Sintaxe obrigatória dentro de .extend({}) (ver
 // context/conventions.md#sintaxe-de-métodos-dentro-de-extend): métodos
-// declarados como `nome: function() {}`, com `var ctx = this;` no topo.
+// declarados como `nome: function() {}` (nunca arrow como método) e SEM
+// `var ctx = this;`. Os callbacks (onSearch, success, fail, eventos) são
+// Arrow Functions, que mantêm o `this` do widget sem cache de escopo.
 //
-// i18n em .js (ver context/platform-constitution.md#1-internacionalização-em-arquivos-js): mesma sintaxe do .ftl —
-// i18n.getTranslation('chave') interpolado por FreeMarker (com ${...} no CÓDIGO,
-// nunca em comentário: o FreeMarker processa o .js inteiro e um ${...} mal-formado
-// em comentário quebra o deploy do i18n).
+// i18n em .js (ver context/platform-constitution.md#1-internacionalização-em-arquivos-js):
+// usa-se a interpolação em colchetes do FreeMarker (alternativa à sintaxe de
+// cifrão e chaves), resolvida server-side e sem colidir com template literals
+// ES6. Sempre entre aspas ao atribuir a uma variável. Não misture as duas
+// sintaxes no mesmo arquivo e nunca escreva a interpolação em comentário: o
+// FreeMarker processa o .js inteiro e uma expressão em comentário quebra o
+// deploy do i18n.
 
 // Exceção controlada à convenção ES6+: a variável raiz que recebe
 // SuperWidget.extend(...) usa `var`.
@@ -27,13 +32,12 @@ var DatatableExample = SuperWidget.extend({
   currentPage: 0,
 
   init: function() {
-    var ctx = this;
-    ctx.dataInit = [
+    this.dataInit = [
       { id: '1', name: 'Acre', uf: 'AC' },
       { id: '2', name: 'Alagoas', uf: 'AL' },
       { id: '3', name: 'Amazonas', uf: 'AM' }
     ];
-    ctx.initDatatable();
+    this.initDatatable();
   },
 
   bindings: {
@@ -49,10 +53,8 @@ var DatatableExample = SuperWidget.extend({
   },
 
   initDatatable: function() {
-    var ctx = this;
-
-    ctx.myTable = FLUIGC.datatable('#targetDatatable_' + ctx.instanceId, {
-      dataRequest: ctx.paginateData(),
+    this.myTable = FLUIGC.datatable('#targetDatatable_' + this.instanceId, {
+      dataRequest: this.paginateData(),
       renderContent: ['id', 'name', 'uf'],
       header: [
         { 'title': 'Código' },
@@ -61,7 +63,7 @@ var DatatableExample = SuperWidget.extend({
       ],
       actions: {
         enabled: true,
-        template: '#datatable-actions_' + ctx.instanceId,
+        template: '#datatable-actions_' + this.instanceId,
         actionAreaStyle: 'col-md-6'
       },
       draggable: {
@@ -70,89 +72,84 @@ var DatatableExample = SuperWidget.extend({
       search: {
         enabled: true,
         onlyEnterkey: false,
-        onSearch: function(text) {
+        onSearch: (text) => {
           if (!text) {
-            ctx.myTable.reload(ctx.dataInit);
+            this.myTable.reload(this.dataInit);
             return;
           }
-          var filtered = ctx.dataInit.filter(function(item) {
+          const filtered = this.dataInit.filter((item) => {
             return item.name.toUpperCase().includes(text.toUpperCase());
           });
-          ctx.myTable.reload(filtered);
+          this.myTable.reload(filtered);
         }
       }
-    }, function(err, data) {
+    }, (err, data) => {
       if (err) {
-        var message = "${i18n.getTranslation('datatableExample.loadError')}";
+        const message = "[=i18n.getTranslation('datatableExample.loadError')]";
         FLUIGC.toast({ message: message, type: 'danger' });
       }
     });
 
-    ctx.myTable.on('fluig.datatable.drag.end', function() {
+    this.myTable.on('fluig.datatable.drag.end', () => {
       // Mescla a página atual (reordenada) no array completo e persiste via
       // preferências — ver context/conventions.md#preferências-de-widget-persistência-por-instância (Preferências de Widget).
-      var reorderedPage = ctx.myTable.getData();
-      var start = ctx.currentPage * ctx.pageSize;
-      ctx.dataInit.splice.apply(ctx.dataInit, [start, reorderedPage.length].concat(reorderedPage));
+      const reorderedPage = this.myTable.getData();
+      const start = this.currentPage * this.pageSize;
+      this.dataInit.splice.apply(this.dataInit, [start, reorderedPage.length].concat(reorderedPage));
 
-      var preferences = {
-        orderedData: encodeURIComponent(JSON.stringify(ctx.dataInit))
+      const preferences = {
+        orderedData: encodeURIComponent(JSON.stringify(this.dataInit))
       };
 
       WCMSpaceAPI.PageService.UPDATEPREFERENCES({
         async: true,
-        success: function(result) {
-          var message = "${i18n.getTranslation('datatableExample.orderSaved')}";
+        success: (result) => {
+          const message = "[=i18n.getTranslation('datatableExample.orderSaved')]";
           FLUIGC.toast({ message: message, type: 'success' });
         },
-        fail: function(xhr, message, errorData) {
-          var errorMessage = "${i18n.getTranslation('datatableExample.saveError')}";
+        fail: (xhr, message, errorData) => {
+          const errorMessage = "[=i18n.getTranslation('datatableExample.saveError')]";
           FLUIGC.toast({ message: errorMessage, type: 'danger' });
         }
-      }, ctx.instanceId, preferences);
+      }, this.instanceId, preferences);
     });
 
-    ctx.myTable.on('fluig.datatable.forward', function() {
-      var ctx2 = ctx;
-      var maxPage = Math.ceil(ctx2.dataInit.length / ctx2.pageSize) - 1;
-      if (ctx2.currentPage < maxPage) {
-        ctx2.currentPage++;
-        ctx2.myTable.reload(ctx2.paginateData());
+    this.myTable.on('fluig.datatable.forward', () => {
+      const maxPage = Math.ceil(this.dataInit.length / this.pageSize) - 1;
+      if (this.currentPage < maxPage) {
+        this.currentPage++;
+        this.myTable.reload(this.paginateData());
       }
     });
 
-    ctx.myTable.on('fluig.datatable.backward', function() {
-      if (ctx.currentPage > 0) {
-        ctx.currentPage--;
-        ctx.myTable.reload(ctx.paginateData());
+    this.myTable.on('fluig.datatable.backward', () => {
+      if (this.currentPage > 0) {
+        this.currentPage--;
+        this.myTable.reload(this.paginateData());
       }
     });
   },
 
   paginateData: function() {
-    var ctx = this;
-    var start = ctx.currentPage * ctx.pageSize;
-    return ctx.dataInit.slice(start, start + ctx.pageSize);
+    const start = this.currentPage * this.pageSize;
+    return this.dataInit.slice(start, start + this.pageSize);
   },
 
   onAddRow: function() {
-    var ctx = this;
-    var row = { id: '99', name: 'New State', uf: 'XX' };
-    ctx.myTable.addRow(0, row);
+    const row = { id: '99', name: 'New State', uf: 'XX' };
+    this.myTable.addRow(0, row);
   },
 
   onRemoveRow: function() {
-    var ctx = this;
-    var selected = ctx.myTable.selectedRows();
+    const selected = this.myTable.selectedRows();
     if (selected.length > 0) {
-      ctx.myTable.removeRow(selected[0]);
+      this.myTable.removeRow(selected[0]);
     }
   },
 
   onSelectRow: function() {
-    var ctx = this;
-    var selected = ctx.myTable.getRow(ctx.myTable.selectedRows()[0]);
-    var message = "${i18n.getTranslation('datatableExample.selected')}";
+    const selected = this.myTable.getRow(this.myTable.selectedRows()[0]);
+    const message = "[=i18n.getTranslation('datatableExample.selected')]";
     FLUIGC.toast({ message: message + ' ' + selected.name, type: 'success' });
   }
 });

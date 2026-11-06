@@ -7,21 +7,23 @@
 // (Templating com Mustache).
 //
 // Sintaxe obrigatória dentro de .extend({}) — ver
-// context/conventions.md#sintaxe-de-métodos-dentro-de-extend (Sintaxe de métodos dentro de .extend).
+// context/conventions.md#sintaxe-de-métodos-dentro-de-extend (Sintaxe de métodos dentro de .extend):
+// métodos como `nome: function() {}`, SEM `var ctx = this;` (use `this`
+// direto e Arrow Functions nos callbacks).
 //
-// i18n em .js (ver context/platform-constitution.md#1-internacionalização-em-arquivos-js): mesma sintaxe do .ftl —
-// i18n.getTranslation('chave') interpolado por FreeMarker (com ${...} no CÓDIGO,
-// nunca em comentário: o FreeMarker processa o .js inteiro e um ${...} mal-formado
-// em comentário quebra o deploy do i18n).
+// i18n em .js (ver context/platform-constitution.md#1-internacionalização-em-arquivos-js):
+// este arquivo não possui textos visíveis; ao incluir, use a interpolação em
+// colchetes do FreeMarker (alternativa à sintaxe de cifrão e chaves, sem
+// colidir com template literals ES6), sempre entre aspas ao atribuir a uma
+// variável, sem misturar as duas sintaxes e nunca em comentário.
 
 // Exceção controlada à convenção ES6+: a variável raiz que recebe
 // SuperWidget.extend(...) usa `var`.
 var MustacheTemplatesExample = SuperWidget.extend({
 
   init: function() {
-    var ctx = this;
-    ctx.renderSimpleExample();
-    ctx.renderListExample();
+    this.renderSimpleExample();
+    this.renderListExample();
   },
 
   bindings: {
@@ -31,31 +33,29 @@ var MustacheTemplatesExample = SuperWidget.extend({
 
   // 1) Interpolação simples + valor computado (função no objeto view).
   renderSimpleExample: function() {
-    var ctx = this;
-    var view = {
+    const view = {
       title: 'Joe',
-      calc: function() { return 2 + 4; } // valor computado
+      calc: () => 2 + 4 // valor computado
     };
 
-    var template = document.getElementById('tplSimple_' + ctx.instanceId).innerHTML;
-    var output = Mustache.render(template, view);
+    const template = document.getElementById('tplSimple_' + this.instanceId).innerHTML;
+    const output = Mustache.render(template, view);
 
-    document.getElementById('targetSimple_' + ctx.instanceId).innerHTML = output;
+    document.getElementById('targetSimple_' + this.instanceId).innerHTML = output;
   },
 
   // 2) Iteração ({{#items}}) + seção invertida ({{^rating}}) para fallback.
   renderListExample: function() {
-    var ctx = this;
-    var view = {
+    const view = {
       items: [
         { name: 'Item A', rating: '5' },
         { name: 'Item B', rating: null }
       ]
     };
 
-    var template = document.getElementById('tplList_' + ctx.instanceId).innerHTML;
-    var output = Mustache.render(template, view);
+    const template = document.getElementById('tplList_' + this.instanceId).innerHTML;
+    const output = Mustache.render(template, view);
 
-    document.getElementById('targetList_' + ctx.instanceId).innerHTML = output;
+    document.getElementById('targetList_' + this.instanceId).innerHTML = output;
   }
 });

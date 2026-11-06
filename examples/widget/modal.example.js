@@ -8,12 +8,17 @@
 //
 // Sintaxe obrigatória dentro de .extend({}) (ver
 // context/conventions.md#sintaxe-de-métodos-dentro-de-extend): métodos
-// declarados como `nome: function() {}`, com `var ctx = this;` no topo.
+// declarados como `nome: function() {}` (nunca arrow como método) e SEM
+// `var ctx = this;`. Os callbacks são Arrow Functions, que mantêm o `this`
+// do widget sem cache de escopo.
 //
-// i18n em .js (ver context/platform-constitution.md#1-internacionalização-em-arquivos-js): mesma sintaxe do .ftl —
-// i18n.getTranslation('chave') interpolado por FreeMarker (com ${...} no CÓDIGO,
-// nunca em comentário: o FreeMarker processa o .js inteiro e um ${...} mal-formado
-// em comentário quebra o deploy do i18n).
+// i18n em .js (ver context/platform-constitution.md#1-internacionalização-em-arquivos-js):
+// usa-se a interpolação em colchetes do FreeMarker (alternativa à sintaxe de
+// cifrão e chaves), resolvida server-side e sem colidir com template literals
+// ES6. Sempre entre aspas ao atribuir a uma variável. Não misture as duas
+// sintaxes no mesmo arquivo e nunca escreva a interpolação em comentário: o
+// FreeMarker processa o .js inteiro e uma expressão em comentário quebra o
+// deploy do i18n.
 
 // Exceção controlada à convenção ES6+: a variável raiz que recebe
 // SuperWidget.extend(...) usa `var`.
@@ -42,16 +47,14 @@ var ModalExample = SuperWidget.extend({
   },
 
   onSaveModalData: function() {
-    var ctx = this;
-    var message = "${i18n.getTranslation('modalExample.saved')}";
+    const message = "[=i18n.getTranslation('modalExample.saved')]";
     FLUIGC.toast({ message: message, type: 'success' });
-    ctx.myModal.remove();
+    this.myModal.remove();
   },
 
   // 1) Conteúdo estático — HTML fixo, sem dados dinâmicos.
   openStaticModal: function() {
-    var ctx = this;
-    ctx.myModal = FLUIGC.modal({
+    this.myModal = FLUIGC.modal({
       title: 'Title',
       content: '<h1>Modal Content</h1>',
       id: 'fluig-modal',
@@ -63,7 +66,7 @@ var ModalExample = SuperWidget.extend({
         'label': 'Close',
         'autoClose': true
       }]
-    }, function(err, data) {
+    }, (err, data) => {
       if (err) {
         // tratamento de erro
       }
@@ -74,13 +77,12 @@ var ModalExample = SuperWidget.extend({
   // Mustache.render (já embutido pela plataforma; ver
   // context/style-guide.md#plugins-embutidos-jquery-jquery-ui-mustache).
   openMustacheModal: function() {
-    var ctx = this;
-    var view = {
-      param1: "${i18n.getTranslation('modalExample.mustacheParam')}"
+    const view = {
+      param1: "[=i18n.getTranslation('modalExample.mustacheParam')]"
     };
-    var content = Mustache.render($('#tpl-modal_' + ctx.instanceId).html(), view);
+    const content = Mustache.render($('#tpl-modal_' + this.instanceId).html(), view);
 
-    ctx.myModal = FLUIGC.modal({
+    this.myModal = FLUIGC.modal({
       title: 'Title',
       content: content,
       id: 'fluig-modal',
@@ -98,14 +100,13 @@ var ModalExample = SuperWidget.extend({
   // 3) Conteúdo de OUTRA widget — carrega a view de "ModalTargetExample"
   // dentro do modal, enviando dados via `data`.
   openWidgetModal: function() {
-    var ctx = this;
-    ctx.myModal = FLUIGC.modal({
+    this.myModal = FLUIGC.modal({
       title: 'Title',
       content: {
         'widgetCode': 'modalTargetExample', // application.code da widget alvo
         'ftl': 'view.ftl',
         'data': {
-          'receivedParam': "${i18n.getTranslation('modalExample.widgetParam')}"
+          'receivedParam': "[=i18n.getTranslation('modalExample.widgetParam')]"
         }
       },
       id: 'fluig-modal',
@@ -122,13 +123,13 @@ var ModalExample = SuperWidget.extend({
 
   // 4) Conteúdo via WCMAPI.convertFtlAsync — pré-renderiza o FTL da widget
   // alvo de forma assíncrona antes de montar o modal (equivalente à variação
-  // 3, mas com callback explícito).
+  // 3, mas com callback explícito). O callback é Arrow Function para manter
+  // o `this` do widget.
   openConvertFtlModal: function() {
-    var ctx = this;
     WCMAPI.convertFtlAsync('modalTargetExample', 'view.ftl', JSON.stringify({
-      'receivedParam': "${i18n.getTranslation('modalExample.convertFtlParam')}"
-    }), function(data) {
-      ctx.myModal = FLUIGC.modal({
+      'receivedParam': "[=i18n.getTranslation('modalExample.convertFtlParam')]"
+    }), (data) => {
+      this.myModal = FLUIGC.modal({
         title: 'Title',
         content: data,
         id: 'fluig-modal',

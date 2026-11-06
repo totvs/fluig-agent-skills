@@ -9,16 +9,19 @@
  *
  * Sintaxe obrigatória dentro de .extend({}) (ver
  * context/conventions.md#sintaxe-de-métodos-dentro-de-extend): métodos declarados como
- * `nome: function() {}`, com `var ctx = this;` no topo, e callbacks internos em
- * `function() {}` acessando `ctx` via closure — evitando method shorthand ES6 e
- * arrow functions (que não vinculam `this` e podem quebrar na minificação do build).
+ * `nome: function() {}` (nunca method shorthand ES6 nem arrow como método) e SEM
+ * `var ctx = this;`. Os callbacks (eventos, verificação, instalação) são Arrow
+ * Functions, que mantêm o `this` do widget sem cache de escopo.
  *
  * Chamadas REST internas usam fetch() + async/await + try/catch, com a URL
  * pública montada a partir de WCMAPI.getServerURL() — ver
  * context/platform-constitution.md#2-integrações-http (Integrações HTTP).
  *
- * i18n em .js (ver context/platform-constitution.md#1-internacionalização-em-arquivos-js): mesma sintaxe do .ftl —
- * `${i18n.getTranslation('chave')}`.
+ * i18n em .js (ver context/platform-constitution.md#1-internacionalização-em-arquivos-js):
+ * usa-se a interpolação em colchetes do FreeMarker (alternativa à sintaxe de
+ * cifrão e chaves), resolvida server-side e sem colidir com template literals
+ * ES6. Atribuída a variável/propriedade, fica sempre entre aspas. Não misture
+ * as duas sintaxes no mesmo arquivo e nunca escreva a interpolação em comentário.
  *
  * Fonte de verdade: context/conventions.md#visão-geral (Visão Geral);
  * context/platform-constitution.md#visão-geral (Visão Geral);
@@ -43,28 +46,28 @@ var MeuAppWizard = SuperWidget.extend({
             id: 'terms',
             phase: 'terms',
             icon: 'file',
-            title: '${i18n.getTranslation("wizard.step.terms")}'
+            title: '[=i18n.getTranslation("wizard.step.terms")]'
         },
         {
             id: 'install',
             phase: 'install',
             icon: 'download',
-            title: '${i18n.getTranslation("wizard.step.install")}',
+            title: '[=i18n.getTranslation("wizard.step.install")]',
             items: [
                 {
                     id: 'root-folder',
                     type: 'folder',
                     icon: 'folder',
-                    title: '${i18n.getTranslation("item.folder")}',
-                    description: '${i18n.getTranslation("item.folder.desc")}',
+                    title: '[=i18n.getTranslation("item.folder")]',
+                    description: '[=i18n.getTranslation("item.folder.desc")]',
                     config: { name: 'Meu App', parentId: '0' }
                 },
                 {
                     id: 'form-categorias',
                     type: 'cardindex',
                     icon: 'file',
-                    title: '${i18n.getTranslation("item.form")}',
-                    description: '${i18n.getTranslation("item.form.desc")}',
+                    title: '[=i18n.getTranslation("item.form")]',
+                    description: '[=i18n.getTranslation("item.form.desc")]',
                     config: {
                         datasetName: 'meuapp_categorias',
                         formName: 'meuapp_categorias',
@@ -78,7 +81,7 @@ var MeuAppWizard = SuperWidget.extend({
             id: 'complete',
             phase: 'complete',
             icon: 'check-circle',
-            title: '${i18n.getTranslation("wizard.step.complete")}'
+            title: '[=i18n.getTranslation("wizard.step.complete")]'
         }
     ],
 
@@ -100,19 +103,20 @@ var MeuAppWizard = SuperWidget.extend({
      * ═══════════════════════════════════════════════════════════════ */
 
     init: function() {
-        var ctx = this;
-        ctx._currentStep = 0;
-        ctx._installResults = {};
-        ctx._termsAccepted = false;
+        this._currentStep = 0;
+        this._installResults = {};
+        this._termsAccepted = false;
 
         // Cacheia templates Mustache da view.ftl
-        ctx.templates = {};
-        ctx.DOM.find('script[type="text/template"]').each(function() {
-            var className = this.className.replace('template-', '');
-            ctx.templates[className] = this.innerHTML;
+        this.templates = {};
+        // Arrow Function: o `this` do widget é preservado; o elemento corrente
+        // do .each() vem pelo 2º parâmetro (em arrow, o `this` do jQuery não existe).
+        this.DOM.find('script[type="text/template"]').each((index, element) => {
+            const className = element.className.replace('template-', '');
+            this.templates[className] = element.innerHTML;
         });
 
-        ctx._render();
+        this._render();
     },
 
     /* ═══════════════════════════════════════════════════════════════
@@ -120,71 +124,68 @@ var MeuAppWizard = SuperWidget.extend({
      * ═══════════════════════════════════════════════════════════════ */
 
     _render: function() {
-        var ctx = this;
-        var id = ctx.instanceId;
-        var container = document.getElementById('wizard-content_' + id);
+        const id = this.instanceId;
+        const container = document.getElementById('wizard-content_' + id);
 
         // Layout principal
-        container.innerHTML = Mustache.render(ctx.templates['wizard-main'], { instanceId: id });
+        container.innerHTML = Mustache.render(this.templates['wizard-main'], { instanceId: id });
 
         // Stepper
-        ctx._renderStepper();
+        this._renderStepper();
 
         // Steps content
-        var stepsContainer = document.getElementById('wizard-steps-container_' + id);
-        var html = '';
+        const stepsContainer = document.getElementById('wizard-steps-container_' + id);
+        let html = '';
 
-        for (var i = 0; i < ctx.steps.length; i++) {
-            var step = ctx.steps[i];
+        for (let i = 0; i < this.steps.length; i++) {
+            const step = this.steps[i];
             if (step.phase === 'terms') {
-                html += Mustache.render(ctx.templates['step-terms'], { instanceId: id });
+                html += Mustache.render(this.templates['step-terms'], { instanceId: id });
             } else if (step.phase === 'install') {
-                html += Mustache.render(ctx.templates['step-install'], { instanceId: id });
+                html += Mustache.render(this.templates['step-install'], { instanceId: id });
             } else if (step.phase === 'complete') {
-                html += Mustache.render(ctx.templates['step-complete'], { instanceId: id, ctaUrl: ctx.ctaUrl });
+                html += Mustache.render(this.templates['step-complete'], { instanceId: id, ctaUrl: this.ctaUrl });
             }
         }
         stepsContainer.innerHTML = html;
 
         // Renderiza items do step install
-        ctx._renderInstallItems();
+        this._renderInstallItems();
 
         // Mostra o step atual
-        ctx._showCurrentStep();
+        this._showCurrentStep();
 
         // Inicia verificação
-        ctx._verifyAll();
+        this._verifyAll();
     },
 
     _renderStepper: function() {
-        var ctx = this;
-        var stepper = document.getElementById('wizard-stepper_' + ctx.instanceId);
-        var html = '';
+        const stepper = document.getElementById('wizard-stepper_' + this.instanceId);
+        let html = '';
 
-        for (var i = 0; i < ctx.steps.length; i++) {
-            html += Mustache.render(ctx.templates['step-indicator'], {
-                title: ctx.steps[i].title,
-                done: i < ctx._currentStep,
-                active: i === ctx._currentStep
+        for (let i = 0; i < this.steps.length; i++) {
+            html += Mustache.render(this.templates['step-indicator'], {
+                title: this.steps[i].title,
+                done: i < this._currentStep,
+                active: i === this._currentStep
             });
         }
         stepper.innerHTML = html;
     },
 
     _renderInstallItems: function() {
-        var ctx = this;
-        var id = ctx.instanceId;
-        var step = ctx._findInstallStep();
+        const id = this.instanceId;
+        const step = this._findInstallStep();
         if (!step || !step.items) {
             return;
         }
 
-        var container = document.getElementById('install-items_' + id);
-        var html = '<div class="list-group">';
+        const container = document.getElementById('install-items_' + id);
+        let html = '<div class="list-group">';
 
-        for (var i = 0; i < step.items.length; i++) {
-            var item = step.items[i];
-            html += Mustache.render(ctx.templates['resource-card'], {
+        for (let i = 0; i < step.items.length; i++) {
+            const item = step.items[i];
+            html += Mustache.render(this.templates['resource-card'], {
                 id: item.id,
                 icon: item.icon,
                 title: item.title,
@@ -196,16 +197,15 @@ var MeuAppWizard = SuperWidget.extend({
         container.innerHTML = html;
 
         // Botão instalar
-        var btnArea = document.getElementById('install-btn-area_' + id);
-        btnArea.innerHTML = Mustache.render(ctx.templates['btn-install'], {});
+        const btnArea = document.getElementById('install-btn-area_' + id);
+        btnArea.innerHTML = Mustache.render(this.templates['btn-install'], {});
     },
 
-    // Helper: localiza o step de instalação sem depender de arrow function.
+    // Helper: localiza o step de instalação.
     _findInstallStep: function() {
-        var ctx = this;
-        for (var i = 0; i < ctx.steps.length; i++) {
-            if (ctx.steps[i].phase === 'install') {
-                return ctx.steps[i];
+        for (let i = 0; i < this.steps.length; i++) {
+            if (this.steps[i].phase === 'install') {
+                return this.steps[i];
             }
         }
         return null;
@@ -216,48 +216,44 @@ var MeuAppWizard = SuperWidget.extend({
      * ═══════════════════════════════════════════════════════════════ */
 
     prev: function() {
-        var ctx = this;
-        if (ctx._currentStep > 0) {
-            ctx._currentStep--;
-            ctx._showCurrentStep();
-            ctx._renderStepper();
+        if (this._currentStep > 0) {
+            this._currentStep--;
+            this._showCurrentStep();
+            this._renderStepper();
         }
     },
 
     next: function() {
-        var ctx = this;
-        var step = ctx.steps[ctx._currentStep];
+        const step = this.steps[this._currentStep];
 
         // Validação: termos precisam ser aceitos
-        if (step.phase === 'terms' && !ctx._termsAccepted) {
-            FLUIGC.toast({ message: '${i18n.getTranslation("msg.accept.terms")}', type: 'warning' });
+        if (step.phase === 'terms' && !this._termsAccepted) {
+            FLUIGC.toast({ message: '[=i18n.getTranslation("msg.accept.terms")]', type: 'warning' });
             return;
         }
 
-        if (ctx._currentStep < ctx.steps.length - 1) {
-            ctx._currentStep++;
-            ctx._showCurrentStep();
-            ctx._renderStepper();
+        if (this._currentStep < this.steps.length - 1) {
+            this._currentStep++;
+            this._showCurrentStep();
+            this._renderStepper();
         }
     },
 
     _showCurrentStep: function() {
-        var ctx = this;
-        var id = ctx.instanceId;
-        var steps = ['step-terms_' + id, 'step-install_' + id, 'step-complete_' + id];
+        const id = this.instanceId;
+        const steps = ['step-terms_' + id, 'step-install_' + id, 'step-complete_' + id];
 
-        for (var i = 0; i < steps.length; i++) {
-            var el = document.getElementById(steps[i]);
+        for (let i = 0; i < steps.length; i++) {
+            const el = document.getElementById(steps[i]);
             if (el) {
-                el.style.display = (i === ctx._currentStep) ? '' : 'none';
+                el.style.display = (i === this._currentStep) ? '' : 'none';
             }
         }
     },
 
     onTermsChange: function() {
-        var ctx = this;
-        var checkbox = document.getElementById('terms-accept_' + ctx.instanceId);
-        ctx._termsAccepted = checkbox && checkbox.checked;
+        const checkbox = document.getElementById('terms-accept_' + this.instanceId);
+        this._termsAccepted = checkbox && checkbox.checked;
     },
 
     /* ═══════════════════════════════════════════════════════════════
@@ -265,34 +261,33 @@ var MeuAppWizard = SuperWidget.extend({
      * ═══════════════════════════════════════════════════════════════ */
 
     _verifyAll: function() {
-        var ctx = this;
-        var step = ctx._findInstallStep();
+        const step = this._findInstallStep();
         if (!step || !step.items) {
             return;
         }
 
         // Encadeia a verificação de cada item preservando a ordem, sem async/await
-        // (mantém callbacks em function() acessando ctx via closure).
-        var index = 0;
+        // (callbacks em Arrow Functions, que mantêm o `this` do widget).
+        let index = 0;
 
-        function verifyNext() {
+        const verifyNext = () => {
             if (index >= step.items.length) {
-                ctx._updateInstallButton();
+                this._updateInstallButton();
                 return;
             }
 
-            var item = step.items[index];
+            const item = step.items[index];
             index++;
-            ctx._showStatus(item.id, 'checking');
+            this._showStatus(item.id, 'checking');
 
-            ctx._verify(item, function(exists) {
-                ctx._showStatus(item.id, exists ? 'installed' : 'pending');
+            this._verify(item, (exists) => {
+                this._showStatus(item.id, exists ? 'installed' : 'pending');
                 if (exists) {
-                    ctx._installResults[item.id] = { exists: true };
+                    this._installResults[item.id] = { exists: true };
                 }
                 verifyNext();
-            }, function(errorMsg) {
-                ctx._showStatus(item.id, 'error', errorMsg);
+            }, (errorMsg) => {
+                this._showStatus(item.id, 'error', errorMsg);
                 verifyNext();
             });
         }
@@ -301,13 +296,12 @@ var MeuAppWizard = SuperWidget.extend({
     },
 
     _verify: function(item, onDone, onError) {
-        var ctx = this;
         switch (item.type) {
             case 'folder':
-                ctx._verifyFolder(item.config, onDone, onError);
+                this._verifyFolder(item.config, onDone, onError);
                 break;
             case 'cardindex':
-                ctx._verifyCardIndex(item.config, onDone, onError);
+                this._verifyCardIndex(item.config, onDone, onError);
                 break;
             default:
                 onDone(false);
@@ -319,39 +313,38 @@ var MeuAppWizard = SuperWidget.extend({
      * ═══════════════════════════════════════════════════════════════ */
 
     onInstall: function() {
-        var ctx = this;
-        var step = ctx._findInstallStep();
+        const step = this._findInstallStep();
         if (!step || !step.items) {
             return;
         }
 
-        var index = 0;
+        let index = 0;
 
-        function installNext() {
+        const installNext = () => {
             if (index >= step.items.length) {
-                FLUIGC.toast({ message: '${i18n.getTranslation("msg.success")}', type: 'success' });
-                ctx._updateInstallButton();
+                FLUIGC.toast({ message: '[=i18n.getTranslation("msg.success")]', type: 'success' });
+                this._updateInstallButton();
                 return;
             }
 
-            var item = step.items[index];
+            const item = step.items[index];
             index++;
 
             // Skip se já instalado
-            if (ctx._installResults[item.id] && ctx._installResults[item.id].exists) {
+            if (this._installResults[item.id] && this._installResults[item.id].exists) {
                 installNext();
                 return;
             }
 
-            ctx._showStatus(item.id, 'checking');
+            this._showStatus(item.id, 'checking');
 
-            ctx._install(item, function(result) {
-                ctx._installResults[item.id] = result;
-                ctx._showStatus(item.id, 'installed');
+            this._install(item, (result) => {
+                this._installResults[item.id] = result;
+                this._showStatus(item.id, 'installed');
                 installNext();
-            }, function(errorMsg) {
-                ctx._showStatus(item.id, 'error', errorMsg);
-                FLUIGC.toast({ message: '${i18n.getTranslation("msg.error")}' + ': ' + errorMsg, type: 'danger' });
+            }, (errorMsg) => {
+                this._showStatus(item.id, 'error', errorMsg);
+                FLUIGC.toast({ message: '[=i18n.getTranslation("msg.error")]' + ': ' + errorMsg, type: 'danger' });
                 // Para se dependência falhou (Regra 2)
             });
         }
@@ -360,13 +353,12 @@ var MeuAppWizard = SuperWidget.extend({
     },
 
     _install: function(item, onDone, onError) {
-        var ctx = this;
         switch (item.type) {
             case 'folder':
-                ctx._installFolder(item.config, onDone, onError);
+                this._installFolder(item.config, onDone, onError);
                 break;
             case 'cardindex':
-                ctx._installCardIndex(item.config, onDone, onError);
+                this._installCardIndex(item.config, onDone, onError);
                 break;
             default:
                 onError('Tipo desconhecido: ' + item.type);
@@ -380,8 +372,7 @@ var MeuAppWizard = SuperWidget.extend({
      * ═══════════════════════════════════════════════════════════════ */
 
     _verifyFolder: async function(config, onDone, onError) {
-        var ctx = this;
-        var url = WCMAPI.getServerURL() + '/dataset/api/v2/dataset-handle/search'
+        const url = WCMAPI.getServerURL() + '/dataset/api/v2/dataset-handle/search'
             + '?datasetId=document'
             + '&field=documentPK.documentId&field=documentDescription'
             + '&constraintsField=documentDescription&constraintsInitialValue=' + encodeURIComponent(config.name)
@@ -390,16 +381,16 @@ var MeuAppWizard = SuperWidget.extend({
             + '&limit=1';
 
         try {
-            var response = await fetch(url, { method: 'GET' });
+            const response = await fetch(url, { method: 'GET' });
             if (!response.ok) throw new Error('HTTP ' + response.status);
 
-            var data = await response.json();
-            var items = (data && data.values) || [];
-            for (var i = 0; i < items.length; i++) {
+            const data = await response.json();
+            const items = (data && data.values) || [];
+            for (let i = 0; i < items.length; i++) {
                 if (items[i].documentDescription === config.name) {
-                    var id = items[i]['documentPK.documentId'];
+                    const id = items[i]['documentPK.documentId'];
                     if (id) {
-                        ctx._installResults['root-folder'] = { folderId: String(id) };
+                        this._installResults['root-folder'] = { folderId: String(id) };
                     }
                     onDone(true);
                     return;
@@ -412,11 +403,10 @@ var MeuAppWizard = SuperWidget.extend({
     },
 
     _installFolder: async function(config, onDone, onError) {
-        var ctx = this;
-        var parentId = config.parentId || '0';
+        const parentId = config.parentId || '0';
 
         try {
-            var response = await fetch(WCMAPI.getServerURL() + '/api/public/ecm/document/createFolder', {
+            const response = await fetch(WCMAPI.getServerURL() + '/api/public/ecm/document/createFolder', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ description: config.name, parentId: parentId })
@@ -424,16 +414,16 @@ var MeuAppWizard = SuperWidget.extend({
 
             if (response.status === 409) {
                 // Regra 4: 409 = já existe = sucesso
-                ctx._verifyFolder(config, function() {
-                    onDone(ctx._installResults['root-folder'] || { folderId: '0' });
-                }, function() {
+                this._verifyFolder(config, () => {
+                    onDone(this._installResults['root-folder'] || { folderId: '0' });
+                }, () => {
                     onDone({ folderId: '0' });
                 });
                 return;
             }
             if (!response.ok) throw new Error('HTTP ' + response.status);
 
-            var data = await response.json();
+            const data = await response.json();
             onDone({ folderId: String(data.content.id) });
         } catch (error) {
             onError('Falha ao criar pasta: ' + error.message);
@@ -447,14 +437,14 @@ var MeuAppWizard = SuperWidget.extend({
      * ═══════════════════════════════════════════════════════════════ */
 
     _verifyCardIndex: async function(config, onDone, onError) {
-        var url = WCMAPI.getServerURL() + '/dataset/api/v2/datasets?datasetId=' + encodeURIComponent(config.datasetName);
+        const url = WCMAPI.getServerURL() + '/dataset/api/v2/datasets?datasetId=' + encodeURIComponent(config.datasetName);
 
         try {
-            var response = await fetch(url, { method: 'GET' });
+            const response = await fetch(url, { method: 'GET' });
             if (!response.ok) throw new Error('HTTP ' + response.status);
 
-            var data = await response.json();
-            var active = data && data.items && data.items.length > 0 && data.items[0].active === true;
+            const data = await response.json();
+            const active = data && data.items && data.items.length > 0 && data.items[0].active === true;
             onDone(!!active);
         } catch (error) {
             onDone(false);
@@ -462,23 +452,22 @@ var MeuAppWizard = SuperWidget.extend({
     },
 
     _installCardIndex: async function(config, onDone, onError) {
-        var ctx = this;
 
         // Resolve dependência: folderId da pasta (Regra 2)
-        var folderId = '0';
-        if (config.folderRef && ctx._installResults[config.folderRef]) {
-            folderId = ctx._installResults[config.folderRef].folderId || '0';
+        let folderId = '0';
+        if (config.folderRef && this._installResults[config.folderRef]) {
+            folderId = this._installResults[config.folderRef].folderId || '0';
         }
 
         try {
             // Download do ZIP embarcado no WAR do wizard.
-            var zipResponse = await fetch(WCMAPI.getServerURL() + '/meuappwizard/resources/form/' + config.zipFile, {
+            const zipResponse = await fetch(WCMAPI.getServerURL() + '/meuappwizard/resources/form/' + config.zipFile, {
                 method: 'GET'
             });
             if (!zipResponse.ok) throw new Error('ZIP não encontrado: ' + config.zipFile);
 
-            var zipBlob = await zipResponse.blob();
-            var formData = new FormData();
+            const zipBlob = await zipResponse.blob();
+            const formData = new FormData();
             formData.append('mainFile', config.formName + '.html');
             formData.append('formName', config.formName);
             formData.append('descriptorField', config.descriptorField || '');
@@ -487,7 +476,7 @@ var MeuAppWizard = SuperWidget.extend({
             formData.append('persistenceType', '1');
             formData.append('file', zipBlob, config.zipFile);
 
-            var response = await fetch(WCMAPI.getServerURL() + '/ecm-forms/api/v2/cardindex', {
+            const response = await fetch(WCMAPI.getServerURL() + '/ecm-forms/api/v2/cardindex', {
                 method: 'POST',
                 body: formData
             });
@@ -499,7 +488,7 @@ var MeuAppWizard = SuperWidget.extend({
             }
             if (!response.ok) throw new Error('HTTP ' + response.status);
 
-            var data = await response.json();
+            const data = await response.json();
             onDone({ documentId: String(data.documentId || data.id || '0') });
         } catch (error) {
             onError('Falha ao criar formulário: ' + error.message);
@@ -512,44 +501,42 @@ var MeuAppWizard = SuperWidget.extend({
      * ═══════════════════════════════════════════════════════════════ */
 
     _showStatus: function(itemId, status, errorMsg) {
-        var ctx = this;
-        var el = document.getElementById('status-' + itemId + '_' + ctx.instanceId);
+        const el = document.getElementById('status-' + itemId + '_' + this.instanceId);
         if (!el) {
             return;
         }
 
-        var labels = {
+        const labels = {
             checking: '<span class="label label-default"><i class="flaticon flaticon-refresh icon-xs"></i></span>',
-            installed: '<span class="label label-success">${i18n.getTranslation("label.installed")}</span>',
-            pending: '<span class="label label-warning">${i18n.getTranslation("label.pending")}</span>',
-            error: '<span class="label label-danger" title="' + (errorMsg || '') + '">${i18n.getTranslation("label.error")}</span>'
+            installed: '<span class="label label-success">[=i18n.getTranslation("label.installed")]</span>',
+            pending: '<span class="label label-warning">[=i18n.getTranslation("label.pending")]</span>',
+            error: '<span class="label label-danger" title="' + (errorMsg || '') + '">[=i18n.getTranslation("label.error")]</span>'
         };
 
         el.innerHTML = labels[status] || '';
     },
 
     _updateInstallButton: function() {
-        var ctx = this;
-        var step = ctx._findInstallStep();
+        const step = this._findInstallStep();
         if (!step || !step.items) {
             return;
         }
 
-        var allDone = true;
-        for (var i = 0; i < step.items.length; i++) {
-            if (!ctx._installResults[step.items[i].id]) {
+        let allDone = true;
+        for (let i = 0; i < step.items.length; i++) {
+            if (!this._installResults[step.items[i].id]) {
                 allDone = false;
                 break;
             }
         }
 
-        var btnArea = document.getElementById('install-btn-area_' + ctx.instanceId);
+        const btnArea = document.getElementById('install-btn-area_' + this.instanceId);
         if (!btnArea) {
             return;
         }
 
         if (allDone) {
-            btnArea.innerHTML = Mustache.render(ctx.templates['btn-installed'], {});
+            btnArea.innerHTML = Mustache.render(this.templates['btn-installed'], {});
         }
     }
 });

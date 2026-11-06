@@ -79,7 +79,7 @@ Integrações". Não as duplique.
 A camada de view de widgets e layouts usa **FreeMarker** (arquivos `.ftl`),
 renderizado no servidor antes de chegar ao navegador. É o mecanismo público para
 montar a marcação e, principalmente, para resolver **internacionalização (i18n)**
-server-side via `${i18n.getTranslation('chave')}`. As regras completas de i18n e
+server-side via `i18n.getTranslation('chave')` (em `.js`, preferir `[=i18n.getTranslation('chave')]`). As regras completas de i18n e
 escaping em FreeMarker estão em [conventions.md](conventions.md).
 
 ## Scripting server-side de customização

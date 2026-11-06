@@ -7,7 +7,8 @@
 // Não é um projeto completo.
 //
 // Sintaxe obrigatória dentro de .extend({}) — ver
-// context/conventions.md#sintaxe-de-métodos-dentro-de-extend (Sintaxe de métodos dentro de .extend).
+// context/conventions.md#sintaxe-de-métodos-dentro-de-extend (Sintaxe de métodos dentro de .extend):
+// métodos como `nome: function() {}`, SEM `var ctx = this;`.
 
 // Exceção controlada à convenção ES6+: a variável raiz que recebe
 // SuperWidget.extend(...) usa `var`.

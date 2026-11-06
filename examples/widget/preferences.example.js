@@ -19,13 +19,16 @@
 //
 // Sintaxe obrigatória dentro de .extend({}) (ver
 // context/conventions.md#sintaxe-de-métodos-dentro-de-extend): métodos declarados como
-// `nome: function() {}`, com `var ctx = this;` no topo, evitando method
-// shorthand ES6 e arrow functions como método.
+// `nome: function() {}` (nunca method shorthand ES6 nem arrow como método) e SEM
+// `var ctx = this;`. Os callbacks (success, fail, forEach, Promise) são Arrow
+// Functions, que mantêm o `this` do widget.
 //
-// i18n em .js (ver context/platform-constitution.md#1-internacionalização-em-arquivos-js): mesma sintaxe do .ftl —
-// i18n.getTranslation('chave') interpolado por FreeMarker (com ${...} no CÓDIGO,
-// nunca em comentário: o FreeMarker processa o .js inteiro e um ${...} mal-formado
-// em comentário quebra o deploy do i18n).
+// i18n em .js (ver context/platform-constitution.md#1-internacionalização-em-arquivos-js):
+// usa-se a interpolação em colchetes do FreeMarker (alternativa à sintaxe de
+// cifrão e chaves), resolvida server-side e sem colidir com template literals
+// ES6. Sempre entre aspas ao atribuir a uma variável. Não misture as duas
+// sintaxes de i18n no mesmo arquivo e nunca escreva a interpolação em
+// comentário: o FreeMarker processa o .js inteiro.
 
 // Exceção controlada à convenção ES6+: a variável raiz que recebe
 // SuperWidget.extend(...) usa `var`.
@@ -36,19 +39,17 @@ var NewsPreferences = SuperWidget.extend({
   numberOfArticles: null,
 
   init: function() {
-    var ctx = this;
-
     // Detecção de modo: getIsEditMode() retorna STRING ('true'/'false') —
     // compare com 'true'. Nunca this.isEditMode (inexistente) nem o retorno
     // direto num if (a string 'false' é truthy).
     if (WCMAPI.getIsEditMode() === 'true') {
       // Modo edição: popula o formulário de configuração com o valor atual,
       // convertendo para número ao exibir.
-      ctx.renderSettingsForm();
+      this.renderSettingsForm();
     } else {
       // Modo view: usa this.numberOfArticles (recebido via data-params) para
       // montar a consulta de dataset.
-      ctx.loadNews();
+      this.loadNews();
     }
   },
 
@@ -60,11 +61,10 @@ var NewsPreferences = SuperWidget.extend({
   },
 
   renderSettingsForm: function() {
-    var ctx = this;
-    var input = document.getElementById('numberOfArticles_' + ctx.instanceId);
+    const input = document.getElementById('numberOfArticles_' + this.instanceId);
     if (input) {
       // Tudo é persistido como string — converte ao exibir no formulário.
-      input.value = parseInt(ctx.numberOfArticles, 10) || 5;
+      input.value = parseInt(this.numberOfArticles, 10) || 5;
     }
   },
 
@@ -79,12 +79,11 @@ var NewsPreferences = SuperWidget.extend({
   // interface). O padrão canônico é encapsular em `new Promise` e consumir com
   // `await` — nunca callback cru.
   loadNews: async function() {
-    var ctx = this;
     try {
-      var dataset = await ctx.getNewsPromise();
-      ctx.renderList(dataset);
+      const dataset = await this.getNewsPromise();
+      this.renderList(dataset);
     } catch (error) {
-      var message = "${i18n.getTranslation('preferences.loadError')}";
+      const message = "[=i18n.getTranslation('preferences.loadError')]";
       FLUIGC.toast({ message: message, type: 'danger' });
     }
   },
@@ -93,9 +92,8 @@ var NewsPreferences = SuperWidget.extend({
   // error: reject), tornando a chamada assíncrona de forma consumível por
   // async/await. Requer importar /webdesk/vcXMLRPC.js na view.
   getNewsPromise: function() {
-    var ctx = this;
-    var limit = parseInt(ctx.numberOfArticles, 10) || 5;
-    return new Promise(function(resolve, reject) {
+    const limit = parseInt(this.numberOfArticles, 10) || 5;
+    return new Promise((resolve, reject) => {
       DatasetFactory.getDataset('news', ['title', 'publishDate'], [
         DatasetFactory.createConstraint('sqlLimit', limit, limit, ConstraintType.MUST)
       ], null, {
@@ -106,8 +104,7 @@ var NewsPreferences = SuperWidget.extend({
   },
 
   renderList: function(dataset) {
-    var ctx = this;
-    var list = document.getElementById('newsList_' + ctx.instanceId);
+    const list = document.getElementById('newsList_' + this.instanceId);
     if (!list) {
       return;
     }
@@ -116,9 +113,9 @@ var NewsPreferences = SuperWidget.extend({
     // `dataset` é o objeto resolvido pela Promise (retorno do getDataset no
     // cliente). O acesso aos registros segue o formato devolvido por esse
     // retorno; aqui iteramos as linhas e lemos cada campo pelo nome.
-    var rows = dataset ? dataset.values : [];
-    rows.forEach(function(row) {
-      var li = document.createElement('li');
+    const rows = dataset ? dataset.values : [];
+    rows.forEach((row) => {
+      const li = document.createElement('li');
       // Dado vindo de dataset: usar textContent (evita XSS).
       li.textContent = row.title;
       list.appendChild(li);
@@ -126,10 +123,9 @@ var NewsPreferences = SuperWidget.extend({
   },
 
   onSavePreferences: function() {
-    var ctx = this;
-    var input = document.getElementById('numberOfArticles_' + ctx.instanceId);
-    var rawValue = input ? input.value : '';
-    var parsedValue = parseInt(rawValue, 10);
+    const input = document.getElementById('numberOfArticles_' + this.instanceId);
+    const rawValue = input ? input.value : '';
+    const parsedValue = parseInt(rawValue, 10);
 
     // Validação: número inválido não chama UPDATEPREFERENCES.
     if (isNaN(parsedValue) || parsedValue <= 0) {
@@ -147,20 +143,20 @@ var NewsPreferences = SuperWidget.extend({
     // acima em .extend({}). Na próxima renderização, a plataforma reinjeta o
     // valor como variável FreeMarker (${numberOfArticles}); a view o repassa ao
     // JS via data-params (ver cabeçalho).
-    var preferences = {
+    const preferences = {
       numberOfArticles: parsedValue
     };
 
     WCMSpaceAPI.PageService.UPDATEPREFERENCES({
       async: true,
-      success: function(data) {
-        var message = "${i18n.getTranslation('preferences.saved')}";
+      success: (data) => {
+        const message = "[=i18n.getTranslation('preferences.saved')]";
         FLUIGC.toast({ message: message, type: 'success' });
       },
-      fail: function(xhr, message, errorData) {
-        var errorMessage = "${i18n.getTranslation('preferences.saveError')}";
+      fail: (xhr, message, errorData) => {
+        const errorMessage = "[=i18n.getTranslation('preferences.saveError')]";
         FLUIGC.toast({ message: errorMessage, type: 'danger' });
       }
-    }, ctx.instanceId, preferences);
+    }, this.instanceId, preferences);
   }
 });

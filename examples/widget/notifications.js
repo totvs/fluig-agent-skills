@@ -7,14 +7,17 @@
 //
 // Sintaxe obrigatória dentro de .extend({}) (ver
 // context/conventions.md#sintaxe-de-métodos-dentro-de-extend): métodos declarados como
-// `nome: function() {}`, com `var ctx = this;` no topo, e callbacks internos em
-// `function() {}` acessando `ctx` via closure — evitando method shorthand ES6 e
-// arrow functions (que não vinculam `this` e podem quebrar na minificação do build).
+// `nome: function() {}` (nunca method shorthand ES6 nem arrow como método) e SEM
+// `var ctx = this;`. Os callbacks (eventos, forEach, success, fail) são Arrow
+// Functions, que mantêm o `this` do widget.
 //
-// i18n em .js (ver context/platform-constitution.md#1-internacionalização-em-arquivos-js): mesma sintaxe do .ftl —
-// i18n.getTranslation('chave') interpolado por FreeMarker (com ${...} no CÓDIGO,
-// nunca em comentário: o FreeMarker processa o .js inteiro e um ${...} mal-formado
-// em comentário quebra o deploy do i18n).
+// i18n em .js (ver context/platform-constitution.md#1-internacionalização-em-arquivos-js):
+// usa-se a interpolação em colchetes do FreeMarker (alternativa à sintaxe de
+// cifrão e chaves), resolvida server-side e sem colidir com template literals
+// ES6. Sempre entre aspas ao atribuir a uma variável. Não misture as duas
+// sintaxes no mesmo arquivo e nunca escreva a interpolação em comentário: o
+// FreeMarker processa o .js inteiro e uma expressão em comentário quebra o
+// deploy do i18n.
 
 // Exceção controlada à convenção ES6+: a variável raiz que recebe
 // SuperWidget.extend(...) usa `var`.
@@ -22,8 +25,7 @@ var Notifications = SuperWidget.extend({
 
   // Ciclo de vida: ponto de entrada invocado pela plataforma ao montar o widget.
   init: function() {
-    var ctx = this;
-    ctx.loadNotifications();
+    this.loadNotifications();
   },
 
   // Bindings declarativos: a chave é o valor do data-* SEM o prefixo "data-".
@@ -36,59 +38,55 @@ var Notifications = SuperWidget.extend({
   },
 
   onRefreshList: function() {
-    var ctx = this;
-    ctx.loadNotifications();
+    this.loadNotifications();
   },
 
   onMarkAllRead: async function() {
-    var ctx = this;
-    var url = WCMAPI.getServerURL() + '/api/public/2.0/notification/markAllAlertsAsRead';
+    const url = WCMAPI.getServerURL() + '/api/public/2.0/notification/markAllAlertsAsRead';
 
     try {
-      var response = await fetch(url, {
+      const response = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' }
       });
       if (!response.ok) throw new Error('HTTP ' + response.status);
 
-      var message = "${i18n.getTranslation('notifications.allRead')}";
+      const message = "[=i18n.getTranslation('notifications.allRead')]";
       FLUIGC.toast({ message: message, type: 'success' });
-      ctx.loadNotifications();
+      this.loadNotifications();
     } catch (error) {
-      var errorMessage = "${i18n.getTranslation('notifications.loadError')}";
+      const errorMessage = "[=i18n.getTranslation('notifications.loadError')]";
       FLUIGC.toast({ message: errorMessage, type: 'danger' });
     }
   },
 
   loadNotifications: async function() {
-    var ctx = this;
-    var url = WCMAPI.getServerURL() + '/api/public/2.0/notification/listAllAlerts';
+    const url = WCMAPI.getServerURL() + '/api/public/2.0/notification/listAllAlerts';
 
     try {
-      var response = await fetch(url, { method: 'GET' });
+      const response = await fetch(url, { method: 'GET' });
       if (!response.ok) throw new Error('HTTP ' + response.status);
 
-      var notifications = await response.json();
-      ctx.renderList(notifications);
+      const notifications = await response.json();
+      this.renderList(notifications);
     } catch (error) {
-      var message = "${i18n.getTranslation('notifications.loadError')}";
+      const message = "[=i18n.getTranslation('notifications.loadError')]";
       FLUIGC.toast({ message: message, type: 'danger' });
     }
   },
 
   renderList: function(notifications) {
-    var ctx = this;
-    var items = notifications || [];
+    const items = notifications || [];
 
     // instanceId é usado apenas para compor o id do elemento (separador "_").
-    var list = document.getElementById('notificationsList_' + ctx.instanceId);
+    const list = document.getElementById('notificationsList_' + this.instanceId);
     if (!list) {
       return;
     }
 
     list.innerHTML = '';
-    items.forEach(function(item) {
-      var li = document.createElement('li');
+    items.forEach((item) => {
+      const li = document.createElement('li');
       // Entrada não confiável: usar textContent (evita XSS).
       li.textContent = item.title;
       list.appendChild(li);

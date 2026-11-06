@@ -14,8 +14,8 @@ estilos). O objetivo é gerar código correto, seguro, internacionalizado e
 compatível com a plataforma. Aqui não há passo a passo de execução — isso é
 responsabilidade das skills em `skills/`.
 
-As três regras invioláveis para todas as personas (i18n em `.js` e `.ftl` com
-`${i18n.getTranslation('key')}`, HTTP com `fetch()` + `async/await` e sintaxe
+As três regras invioláveis para todas as personas (i18n via FreeMarker, com
+`[=i18n.getTranslation('key')]` preferida em `.js`, HTTP com `fetch()` + `async/await` e sintaxe
 `nome: function() {}` dentro de `SuperWidget.extend({})`) estão resumidas em
 [platform-constitution.md](platform-constitution.md); este arquivo traz o detalhe
 de cada uma.
@@ -31,11 +31,50 @@ paradigmas no mesmo arquivo.
 
 | Recurso | Recomendação para código novo |
 |---------|-------------------------------|
-| Declaração de variável | `const` por padrão; `let` quando há reatribuição; evitar `var` (exceto a variável raiz da SuperWidget — ver [Convenções de Widget](#convenções-de-widget-superwidgetextend)) |
-| Funções anônimas | Arrow functions (concisão e `this` léxico) — **exceto** dentro de `SuperWidget.extend({})`, onde se usa `function()` obrigatoriamente (ver [Sintaxe de métodos dentro de `.extend({})`](#sintaxe-de-métodos-dentro-de-extend)) |
-| Concatenação de texto | Template literals — em arquivos `.js` com i18n, use `${i18n.getTranslation('key')}` (mesma sintaxe do `.ftl`); em um `.js` que usa i18n e é minificado pelo Closure Compiler, prefira concatenação clássica (`+`) a template literals (ver [i18n — Widgets e Layouts](#internacionalização-i18n--widgets-e-layouts)) — arquivos `.js` sem i18n não são afetados |
+| Declaração de variável | **Nunca** `var`; `const` por padrão; `let` única e exclusivamente quando há reatribuição (única exceção: a variável raiz da SuperWidget — ver [Convenções de Widget](#convenções-de-widget-superwidgetextend)) |
+| Funções anônimas | Arrow functions obrigatórias em todos os callbacks (concisão e `this` léxico) — **exceto** os próprios métodos do objeto de `SuperWidget.extend({})`, declarados como `nome: function() {}` (ver [Sintaxe de métodos dentro de `.extend({})`](#sintaxe-de-métodos-dentro-de-extend)) |
+| Concatenação de texto | Template literals — em arquivos `.js` com i18n, use `[=i18n.getTranslation('key')]` (não colide com `${...}` do ES6); em um `.js` que usa i18n e é minificado pelo Closure Compiler, prefira concatenação clássica (`+`) a template literals (ver [i18n — Widgets e Layouts](#internacionalização-i18n--widgets-e-layouts)) — arquivos `.js` sem i18n não são afetados |
 | Assíncrono | `async/await` em vez de cadeias longas de `.then()` |
 | Organização | Módulos ES6; funções pequenas com responsabilidade única |
+
+### Regras de modernização JavaScript (ES6+) — Widgets e Layouts
+
+### 1. Modernização Javascript (ES6+)
+
+Escopo: Todos os arquivos `.js` de Widgets e Layouts (exceto scripts Rhino de backend).
+
+O código deve ser estritamente ES6+, garantindo legibilidade e prevenindo problemas de escopo.
+
+- Variáveis: Nunca utilize `var`. Use `const` por padrão. Utilize `let` única e exclusivamente quando a variável sofrer reatribuição.
+- Contexto e Escopo (`this`): É estritamente proibido o uso de cache de escopo léxico (`var ctx = this;` ou `var that = this;`).
+- Arrow Functions: Utilize obrigatoriamente Arrow Functions (`() => {}`) em todos os callbacks (success, fail, eventos) para manter o contexto correto do `this`.
+
+> **Única exceção documentada:** a variável raiz que recebe `SuperWidget.extend({...})`
+> (`var MyWidget = SuperWidget.extend(...)`), por ser global da página — ver
+> [Variável raiz da SuperWidget (`var`)](#variável-raiz-da-superwidget-var). Os
+> métodos do objeto de `.extend({})` seguem `nome: function() {}` (não são callbacks);
+> dentro deles use `this` direto e Arrow Functions nos callbacks.
+
+```javascript
+// ✅ correto: const/let, sem cache de this, callbacks em Arrow Function
+carregar: function() {
+    let tentativas = 0;                       // let: sofre reatribuição
+    const preferences = {};
+    WCMSpaceAPI.PageService.UPDATEPREFERENCES({
+        async: true,
+        success: (data) => { this.renderizar(data); },   // this = widget
+        fail: (xhr, message, errorData) => { tentativas++; }
+    }, this.instanceId, preferences);
+}
+
+// ❌ errado: var + cache de escopo + callback com function()
+carregar: function() {
+    var ctx = this;
+    WCMSpaceAPI.PageService.UPDATEPREFERENCES({
+        success: function(data) { ctx.renderizar(data); }
+    }, ctx.instanceId, {});
+}
+```
 
 ### Strict Mode e recursos modernos
 
@@ -54,7 +93,8 @@ const buildLabel = (user) => {
 };
 ```
 
-> A exceção de sintaxe dentro de `SuperWidget.extend({})` (uso de `function()` e
+> A exceção de sintaxe dentro de `SuperWidget.extend({})` (métodos como
+> `nome: function() {}`, nunca arrow nem shorthand; contexto via `this` direto, sem
 > `var ctx = this;`) permanece válida — ver
 > [Sintaxe de métodos dentro de `.extend({})`](#sintaxe-de-métodos-dentro-de-extend).
 
@@ -99,16 +139,16 @@ fonte de bugs difíceis de rastrear em páginas com múltiplos widgets.
 
 ```javascript
 // ✅ correto: busca restrita ao DOM do próprio widget
-var el = ctx.DOM.querySelector('.mensagem');
+const el = this.DOM.querySelector('.mensagem');
 el.style.color = 'red';
 
 // ❌ errado: busca global — pode pegar elemento de outro widget na página
-var el = document.querySelector('.mensagem');
+const el = document.querySelector('.mensagem');
 ```
 
 | Regra | Detalhe |
 |-------|---------|
-| Origem da busca | `this.DOM.querySelector(...)` dentro do widget (via `ctx.DOM` nos métodos) |
+| Origem da busca | `this.DOM.querySelector(...)` dentro do widget (via `this.DOM` nos métodos) |
 | Proibido | `document.querySelector(...)` para elementos do próprio widget |
 | Benefício | Isolamento entre widgets + performance (subárvore menor) |
 
@@ -184,13 +224,13 @@ A variável raiz que recebe `SuperWidget.extend({ ... })` é declarada com **`va
 var MyWidget = SuperWidget.extend({ /* ... */ });
 ```
 
-Esta é uma **exceção explícita** à convenção de
-[JavaScript Moderno (ES6+)](#javascript-moderno-es6) que recomenda evitar `var`.
+Esta é a **única exceção explícita** à proibição de `var` em
+[JavaScript Moderno (ES6+)](#javascript-moderno-es6).
 A exceção vale **apenas** para a variável raiz do widget; o **restante do JS do
 widget permanece em ES6+** (`const`/`let`, arrow functions, template literals).
 
 > ⚠️ **Ressalva de i18n (regra 1 da constituição):** num arquivo `.js` que usa
-> i18n (`${i18n.getTranslation(...)}` / `getTranslationP1/Pn`) e passa pela
+> i18n (`[=i18n.getTranslation(...)]` / `getTranslationP1/Pn`) e passa pela
 > minificação do **Closure Compiler**, **prefira concatenação clássica (`+`) a
 > template literals** ao montar textos com a tradução — a minificação conflita
 > com template strings que contêm i18n. Template literals
@@ -202,16 +242,17 @@ widget permanece em ES6+** (`const`/`let`, arrow functions, template literals).
 Dentro do objeto literal passado a `.extend({})`, todo widget segue uma
 **convenção de sintaxe padronizada** (regra 3 de
 [platform-constitution.md](platform-constitution.md)): métodos são declarados como propriedade com
-`function()` e cada método captura o contexto no topo com `var ctx = this;`. Essa
+`function()`; dentro de cada método o contexto é acessado por `this` direto (sem
+cache de escopo como `var ctx = this;`) e os callbacks são Arrow Functions. Essa
 convenção existe por dois motivos técnicos concretos:
 
 1. **Padronização do ecossistema** — todo o código de widget do ecossistema
    Fluig segue o mesmo formato `nomeMetodo: function() {}`, o que mantém
    previsibilidade e legibilidade entre componentes de diferentes autores.
 2. **Compatibilidade no build Maven** — o empacotamento do widget passa
-   por minificação (YUI Compressor / Closure). Usar `function()` tradicional e
-   `var ctx = this;` é a forma **suportada** nesse pipeline, evitando
-   incompatibilidades de sintaxe moderna com o minificador do build.
+   por minificação (YUI Compressor / Closure). Declarar os métodos como
+   `nome: function() {}` é a forma **suportada** nesse pipeline, evitando
+   incompatibilidades de sintaxe moderna no nível do método.
 
 Por isso, **dentro do objeto passado a `.extend({})`**, valem regras de sintaxe
 distintas das convenções ES6+ gerais:
@@ -219,10 +260,10 @@ distintas das convenções ES6+ gerais:
 | Regra | Obrigatório dentro de `.extend({})` |
 |-------|-------------------------------------|
 | Declaração de método | `nomeDoMetodo: function() { }` — sintaxe de propriedade com `function` (convenção do ecossistema + segura no build/minificação) |
-| Captura de contexto | `var ctx = this;` **no início de cada método** — preserva a referência ao widget nos callbacks |
+| Captura de contexto | **Proibido** `var ctx = this;` / `var that = this;` — use `this` direto no método e Arrow Functions nos callbacks, que preservam a referência ao widget |
 | Method shorthand | **Nunca** `nomeDoMetodo() { }` — foge da convenção e não é a forma segura no build |
 | Método com arrow function | **Nunca** `nomeDoMetodo: () => { }` — arrow **não** vincula `this`, então o método não recebe a instância do widget |
-| Callbacks internos | Usar `function()` regular acessando `ctx` via closure — padrão do ecossistema |
+| Callbacks internos | **Obrigatoriamente** Arrow Functions `() => {}` (success, fail, eventos, `.then`) — mantêm o `this` do widget |
 
 **Importante:** essas restrições aplicam-se **exclusivamente** ao objeto literal
 passado a `.extend({})`. Fora dele (módulo, utilitários, constantes no topo do
@@ -233,26 +274,23 @@ literals etc.).
 // ✅ correto: sintaxe obrigatória dentro de .extend({})
 var MyWidget = SuperWidget.extend({
     init: function() {
-        var ctx = this;
-        // lógica de inicialização usando ctx
+        // lógica de inicialização usando this
     },
 
     // método async dá await; declarado com `nome: async function()`
     loadData: async function() {
-        var ctx = this;
         try {
-            const data = await ctx.fetchList();
-            ctx.renderList(data);
+            const data = await this.fetchList();
+            this.renderList(data);
         } catch (error) {
             console.error('Falha ao carregar dados:', error);
-            ctx.showError(error.message);
+            this.showError(error.message);
         }
     },
 
     // método separado devolve a Promise do fetch (sem IIFE)
     fetchList: function() {
-        var ctx = this;
-        return fetch(ctx.getApiUrl()).then(function(response) {
+        return fetch(this.getApiUrl()).then((response) => {
             if (!response.ok) throw new Error('HTTP ' + response.status);
             return response.json();
         });
@@ -287,22 +325,20 @@ var MyWidget = SuperWidget.extend({
 });
 
 // ✅ preferir: dois métodos (async + fetch) declarados com sintaxe de propriedade
-// (convenção do ecossistema + segura na minificação do build Maven);
+// (convenção do ecossistema), callbacks em Arrow Function;
 // método async dá await, o outro devolve a Promise do fetch — sem IIFE
 var MyWidget = SuperWidget.extend({
     loadData: async function() {
-        var ctx = this;
         try {
-            const data = await ctx.fetchList();
-            ctx.renderList(data);
+            const data = await this.fetchList();
+            this.renderList(data);
         } catch (error) {
             console.error('Falha ao carregar dados:', error);
         }
     },
 
     fetchList: function() {
-        var ctx = this;
-        return fetch(ctx.getApiUrl()).then(function(response) {
+        return fetch(this.getApiUrl()).then((response) => {
             return response.json();
         });
     }
@@ -371,8 +407,7 @@ var MyWidget = SuperWidget.extend({
     modo: null,   // ← recebe 'view'
     cor:  null,   // ← recebe o valor de ${cor}
     init: function() {
-        var ctx = this;
-        console.log(ctx.modo, ctx.cor); // lê via this.<prop>
+        console.log(this.modo, this.cor); // lê via this.<prop>
     }
 });
 ```
@@ -406,17 +441,16 @@ pelo administrador da página) ou no **modo de visualização**, use os **métod
 
 ```javascript
 init: function() {
-    var ctx = this;
     if (WCMAPI.getIsEditMode() === 'true') {
-        ctx.renderSettingsForm();   // modo de edição (configuração)
+        this.renderSettingsForm();   // modo de edição (configuração)
     } else {
-        ctx.renderPanel();          // modo de visualização
+        this.renderPanel();          // modo de visualização
     }
 }
 ```
 
 > ⚠️ **Três armadilhas comuns (todas quebram a detecção):**
-> 1. **`this.isEditMode` / `ctx.isEditMode`** — **não existe** na instância do
+> 1. **`this.isEditMode`** — **não existe** na instância do
 >    widget; vem `undefined` (sempre falsy → cai sempre no `else`).
 > 2. **`WCMAPI.isEditMode`** (propriedade crua) — string `"false"`, *truthy*.
 > 3. **`if (WCMAPI.getIsEditMode())`** sem comparar — o retorno `'false'` é string
@@ -495,8 +529,7 @@ chamada **assíncrona** no browser.
 // ✅ ÚNICO padrão permitido no client-side: getDataset com callback envolto em Promise
 // (métodos dentro de SuperWidget.extend({}), na sintaxe `nome: function() {}`)
 obterColleague: async function() {
-    var ctx = this;
-    const colleague = await ctx.obterColleaguePromise();
+    const colleague = await this.obterColleaguePromise();
     console.log(colleague);
 },
 
@@ -531,44 +564,42 @@ obterColleaguePromise: function() {
 > proibição de URLs legadas, preferência por API REST sobre `DatasetFactory`) são
 > fonte de verdade de [Consumo de Datasets no Front-End (regra de performance)](#consumo-de-datasets-no-front-end-regra-de-performance).
 > **Não duplique** essas regras aqui; esta seção cobre apenas o **padrão de
-> integração dentro de `SuperWidget.extend`** (uso de `var ctx = this` e feedback
+> integração dentro de `SuperWidget.extend`** (uso de `this` direto e feedback
 > via `FLUIGC.toast`).
 
 Dentro do `.extend({})`, separe em **dois métodos**: um método **`async`** que dá
 `await` e trata o resultado, e um método que retorna o `fetch()` (que já é uma
 `Promise`). Cada método é declarado com a sintaxe de propriedade do `.extend`
-(`nome: function()` / `nome: async function()`) e captura `var ctx = this` para
-preservar o contexto do widget:
+(`nome: function()` / `nome: async function()`) e usa `this` direto (sem cache de
+escopo), com Arrow Functions nos callbacks, para preservar o contexto do widget:
 
 ```javascript
-var URL_DATASET_V2 = WCMAPI.getServerURL() + '/dataset/api/v2/dataset-handle/search';
+const URL_DATASET_V2 = WCMAPI.getServerURL() + '/dataset/api/v2/dataset-handle/search';
 ```
 
 ```javascript
 loadData: async function() {
-    var ctx = this;
     try {
-        var data = await ctx.fetchDataset();
-        ctx.renderTable(data);
+        const data = await this.fetchDataset();
+        this.renderTable(data);
     } catch (error) {
         console.error('Falha ao consultar dataset:', error);
         FLUIGC.toast({
-            message: "${i18n.getTranslation('error.load.data')}",
+            message: "[=i18n.getTranslation('error.load.data')]",
             type: 'danger'
         });
     }
 },
 
 fetchDataset: function() {
-    var ctx = this;
-    var url = URL_DATASET_V2
-        + '?datasetId=' + encodeURIComponent(ctx.datasetName)
+    const url = URL_DATASET_V2
+        + '?datasetId=' + encodeURIComponent(this.datasetName)
         + '&field=codigo&field=descricao&field=status'
         + '&limit=50&offset=0';
 
     return fetch(url, {
         headers: { 'Accept': 'application/json; charset=UTF-8' }
-    }).then(function(response) {
+    }).then((response) => {
         if (!response.ok) throw new Error('HTTP ' + response.status);
         return response.json();
     });
@@ -578,7 +609,7 @@ fetchDataset: function() {
 | Regra específica do padrão SuperWidget | Detalhe |
 |----------------------------------------|---------|
 | Dois métodos (`async` + `*Promise`/`fetch`) | Método `async` dá `await`; o outro devolve a `Promise` do `fetch` — sem IIFE dentro do método |
-| `var ctx = this` | Preserva referência ao widget em cada método |
+| `this` direto + Arrow Functions | Preserva a referência ao widget sem `var ctx = this` |
 | `fetch()` + `async/await` + `try/catch` | Padrão único de integração HTTP no cliente |
 | `FLUIGC.toast` no `catch` | Feedback visual obrigatório ao usuário em caso de falha |
 | `encodeURIComponent` | Sempre codificar valores dinâmicos na URL |
@@ -633,18 +664,17 @@ de versão da própria página.
 ```javascript
 // chave do objeto 'preferences' bate com o nome da propriedade declarada em .extend({})
 saveSettings: function() {
-    var ctx = this;
-    var preferences = { numberOfArticles: ctx.readNumberOfArticlesInput() };
+    const preferences = { numberOfArticles: this.readNumberOfArticlesInput() };
 
     WCMSpaceAPI.PageService.UPDATEPREFERENCES({
         async: true,
-        success: function(data) {
-            FLUIGC.toast({ message: "${i18n.getTranslation('preferences.saved')}", type: 'success' });
+        success: (data) => {
+            FLUIGC.toast({ message: "[=i18n.getTranslation('preferences.saved')]", type: 'success' });
         },
-        fail: function(xhr, message, errorData) {
-            FLUIGC.toast({ message: "${i18n.getTranslation('preferences.saveError')}", type: 'danger' });
+        fail: (xhr, message, errorData) => {
+            FLUIGC.toast({ message: "[=i18n.getTranslation('preferences.saveError')]", type: 'danger' });
         }
-    }, ctx.instanceId, preferences);
+    }, this.instanceId, preferences);
 }
 ```
 
@@ -679,14 +709,12 @@ var MyWidget = SuperWidget.extend({
     },
 
     saveData: function() {
-        var ctx = this;
         // ... persistir os dados lidos do modal ...
-        ctx.myModal.remove(); // fecha e remove o modal do DOM
+        this.myModal.remove(); // fecha e remove o modal do DOM
     },
 
     openModal: function() {
-        var ctx = this;
-        ctx.myModal = FLUIGC.modal({
+        this.myModal = FLUIGC.modal({
             title: 'Title',
             content: '<h1>Modal Content</h1>', // ver variações de `content` abaixo
             id: 'fluig-modal',
@@ -698,7 +726,7 @@ var MyWidget = SuperWidget.extend({
                 'label': 'Close',
                 'autoClose': true // fecha automaticamente, sem precisar de binding
             }]
-        }, function(err, data) {
+        }, (err, data) => {
             if (err) {
                 // tratamento de erro
             }
@@ -746,11 +774,10 @@ verdade de "Templating com Mustache" abaixo — aqui só o uso dentro do modal:
 
 ```javascript
 openModal: function() {
-    var ctx = this;
-    var view = { param1: 'Valor enviado ao template' };
-    var content = Mustache.render($('#tpl-modal').html(), view);
+    const view = { param1: 'Valor enviado ao template' };
+    const content = Mustache.render($('#tpl-modal').html(), view);
 
-    ctx.myModal = FLUIGC.modal({ title: 'Title', content: content, id: 'fluig-modal', actions: [/* ... */] });
+    this.myModal = FLUIGC.modal({ title: 'Title', content: content, id: 'fluig-modal', actions: [/* ... */] });
 }
 ```
 
@@ -759,8 +786,7 @@ widget** dentro do modal, passando dados para ela:
 
 ```javascript
 openModal: function() {
-    var ctx = this;
-    ctx.myModal = FLUIGC.modal({
+    this.myModal = FLUIGC.modal({
         title: 'Title',
         content: {
             'widgetCode': 'widget_reutilizavel',  // application.code da widget alvo
@@ -782,9 +808,8 @@ antes de abrir o modal):
 
 ```javascript
 openModal: function() {
-    var ctx = this;
-    WCMAPI.convertFtlAsync('widget_reutilizavel', 'view.ftl', JSON.stringify({ 'meuParametro1': 'Valor personalizado' }), function(data) {
-        ctx.myModal = FLUIGC.modal({ title: 'Title', content: data, id: 'fluig-modal', actions: [/* ... */] });
+    WCMAPI.convertFtlAsync('widget_reutilizavel', 'view.ftl', JSON.stringify({ 'meuParametro1': 'Valor personalizado' }), (data) => {
+        this.myModal = FLUIGC.modal({ title: 'Title', content: data, id: 'fluig-modal', actions: [/* ... */] });
     });
 }
 ```
@@ -817,8 +842,8 @@ dentro da própria `view.ftl` do widget; o JS lê o template com `.innerHTML`
 insere o resultado no DOM:
 
 ```javascript
-var template = document.getElementById('tpl-example').innerHTML;
-var output = Mustache.render(template, view);
+const template = document.getElementById('tpl-example').innerHTML;
+const output = Mustache.render(template, view);
 document.getElementById('target_' + this.instanceId).innerHTML = output;
 ```
 
@@ -836,9 +861,9 @@ chama a função e usa o retorno:
 ```
 
 ```javascript
-var view = {
+const view = {
     title: 'Joe',
-    calc: function() { return 2 + 4; } // valor computado
+    calc: () => 2 + 4 // valor computado
 };
 ```
 
@@ -855,7 +880,7 @@ interno uma vez por item do array, com as chaves do item acessíveis direto
 ```
 
 ```javascript
-var view = {
+const view = {
     people: [
         { name: 'Luis', age: '19' },
         { name: 'Ana', age: '20' }
@@ -906,17 +931,15 @@ var MyWidget = SuperWidget.extend({
     myTable: null,
 
     init: function() {
-        var ctx = this;
-        ctx.initDatatable();
+        this.initDatatable();
     },
 
     initDatatable: function() {
-        var ctx = this;
-        ctx.myTable = FLUIGC.datatable('#target_datatable_' + ctx.instanceId, {
-            dataRequest: ctx.data,
+        this.myTable = FLUIGC.datatable('#target_datatable_' + this.instanceId, {
+            dataRequest: this.data,
             renderContent: ['id', 'name', 'uf'],
             header: [{ 'title': 'Código' }, { 'title': 'Nome' }, { 'title': 'UF' }]
-        }, function(err, data) {
+        }, (err, data) => {
             if (err) {
                 // tratamento de erro
             }
@@ -969,23 +992,22 @@ bindings: {
 `.reload()` com o resultado ficam a cargo do widget:
 
 ```javascript
-// No método do widget que monta o datatable, capture ctx ANTES do settings:
-var ctx = this;            // ctx = o widget (SuperWidget)
+// No método do widget que monta o datatable:
 // ... FLUIGC.datatable(elemento, { ... settings ... }) ...
 search: {
     enabled: true,
     onlyEnterkey: false,
-    onSearch: function(text) {
-        // ⚠️ NÃO usar `this` aqui: dentro do callback de settings do datatable
-        // `this` NÃO é o widget. Use a closure `ctx` capturada no método acima.
+    onSearch: (text) => {
+        // Arrow Function: o `this` léxico continua sendo o widget (o método que
+        // monta o datatable), sem precisar de cache de escopo.
         if (!text) {
-            ctx.myTable.reload(ctx.dataInit);
+            this.myTable.reload(this.dataInit);
             return;
         }
-        var filtered = ctx.dataInit.filter(function(item) {
+        const filtered = this.dataInit.filter((item) => {
             return item.name.toUpperCase().includes(text.toUpperCase());
         });
-        ctx.myTable.reload(filtered);
+        this.myTable.reload(filtered);
     }
 }
 ```
@@ -999,16 +1021,16 @@ search: {
 Widget (persistência por instância)" acima — não duplicar aqui, apenas aplicar:
 
 ```javascript
-ctx.myTable.on('fluig.datatable.drag.end', function(data) {
-    var reorderedPage = ctx.myTable.getData();
-    // mesclar a página reordenada no array completo (ctx.dataInit) antes de salvar
-    var preferences = { orderedData: encodeURIComponent(JSON.stringify(ctx.dataInit)) };
+this.myTable.on('fluig.datatable.drag.end', (data) => {
+    const reorderedPage = this.myTable.getData();
+    // mesclar a página reordenada no array completo (this.dataInit) antes de salvar
+    const preferences = { orderedData: encodeURIComponent(JSON.stringify(this.dataInit)) };
 
     WCMSpaceAPI.PageService.UPDATEPREFERENCES({
         async: true,
-        success: function(result) { /* ... */ },
-        fail: function(xhr, message, errorData) { /* ... */ }
-    }, ctx.instanceId, preferences);
+        success: (result) => { /* ... */ },
+        fail: (xhr, message, errorData) => { /* ... */ }
+    }, this.instanceId, preferences);
 });
 ```
 
@@ -1024,17 +1046,16 @@ var MyWidget = SuperWidget.extend({
     currentPage: 0,
 
     paginateData: function() {
-        var ctx = this;
-        var start = ctx.currentPage * ctx.pageSize;
-        return ctx.dataInit.slice(start, start + ctx.pageSize);
+        const start = this.currentPage * this.pageSize;
+        return this.dataInit.slice(start, start + this.pageSize);
     }
 });
 ```
 
 ```javascript
-ctx.myTable.on('fluig.datatable.forward', function() {
-    ctx.currentPage++;
-    ctx.myTable.reload(ctx.paginateData());
+this.myTable.on('fluig.datatable.forward', () => {
+    this.currentPage++;
+    this.myTable.reload(this.paginateData());
 });
 ```
 
@@ -1060,9 +1081,8 @@ acima para a sintaxe), substitui a linha pelo modo de edição via
 
 ```javascript
 editRow: function() {
-    var ctx = this;
-    var row = ctx.myTable.getRow(ctx.myTable.selectedRows()[0]);
-    ctx.myTable.updateRow(ctx.myTable.selectedRows()[0], row, '.template-datatable-edit');
+    const row = this.myTable.getRow(this.myTable.selectedRows()[0]);
+    this.myTable.updateRow(this.myTable.selectedRows()[0], row, '.template-datatable-edit');
 }
 ```
 
@@ -1383,12 +1403,12 @@ um domínio no outro**.
 | Domínio | Função de tradução | Arquivos `.properties` | Onde se aplica |
 |---------|--------------------|------------------------|----------------|
 | **Formulários** | `i18n.translate("chave")` (HTML e scripts de evento) | **3** arquivos de locale (`_pt_BR`, `_en_US`, `_es`) — **sem** arquivo base | View HTML do formulário e seus eventos → ver [i18n em formulários](conventions-form.md#internacionalização-i18n-em-formulários) |
-| **Páginas (Widgets e Layouts)** | `${i18n.getTranslation('chave')}` em `.ftl` **e** em `.js` (mesma sintaxe) | **1 base** (`<code>.properties`) **+** locales | `view.ftl`/`layout.ftl`, `edit.ftl` e o `.js` do widget → ver [i18n — Widgets e Layouts](#internacionalização-i18n--widgets-e-layouts) |
+| **Páginas (Widgets e Layouts)** | `i18n.getTranslation('chave')` resolvido pelo FreeMarker: em `.js`, preferir `[=i18n.getTranslation('chave')]`; em `.ftl`, a sintaxe FreeMarker do arquivo | **1 base** (`<code>.properties`) **+** locales | `view.ftl`/`layout.ftl`, `edit.ftl` e o `.js` do widget → ver [i18n — Widgets e Layouts](#internacionalização-i18n--widgets-e-layouts) |
 | **Processos (Workflow)** | `i18n.translate("chave")` (customizações/eventos do processo) | Locale na pasta `literals/` (`<diagrama>_pt_BR`, `_en_US`, `_es`) | Diagrama do processo (atividades, fluxos) e eventos → ver [i18n — Processos (Workflow)](#internacionalização-i18n--processos-workflow) |
 
 > **Regra de ouro:** formulários e processos usam `i18n.translate("chave")`;
-> páginas (widgets/layouts) usam `${i18n.getTranslation('chave')}` tanto no
-> `.ftl` quanto no `.js` — a mesma sintaxe nos dois arquivos. Os três
+> páginas (widgets/layouts) usam `i18n.getTranslation('chave')` via FreeMarker —
+> em `.js`, preferir `[=i18n.getTranslation('chave')]`. Os três
 > mecanismos são independentes — a função, os arquivos e a nomenclatura de chaves
 > de um domínio **não** valem no outro.
 
@@ -1414,20 +1434,31 @@ um domínio no outro**.
 Todo texto visível ao usuário em widgets e layouts **deve** vir de i18n — nunca usar strings fixas.
 A tradução é resolvida server-side pelo FreeMarker antes de chegar ao navegador.
 
+### 2. Internacionalização (i18n) — Widgets e Layouts
+
+Escopo: Exclusivo para Widgets e Layouts. (Formulários possuem mecanismo próprio de i18n, não aplique estas regras neles).
+
+Todo texto visível deve vir de i18n, resolvido server-side pelo FreeMarker.
+
+- Em `.js`: Prefira `[=i18n.getTranslation('key')]`. A sintaxe `${...}` colide com template literals do ES6, e a sintaxe `[=...]` evita esse conflito, sendo resolvida de forma segura no server-side.
+- Consistência: Respeite o padrão do arquivo. Se um arquivo legado já usa `${i18n...}`, mantenha. Use `[=i18n...]` para código novo ou em arquivos sem um padrão estabelecido. Não misture as duas sintaxes no mesmo arquivo.
+- Acesso: Nunca acesse i18n como objeto (ex: `i18n.key`). A expressão precisa estar entre aspas quando atribuída a uma variável (ex: `const msg = "[=i18n.getTranslation('key')]";`).
+
 ### Sintaxes de tradução
 
-O FreeMarker resolve a tradução **server-side**, com a **mesma sintaxe** nos
-dois tipos de arquivo — essa é a convenção oficialmente documentada pela TOTVS
-(TDN "Internacionalização", pageId=185738869):
+O FreeMarker resolve a tradução **server-side**. A chamada `i18n.getTranslation`
+é a mesma; muda apenas o delimitador da interpolação (a sintaxe `${...}` é a
+documentada pela TOTVS — TDN "Internacionalização", pageId=185738869):
 
 | Contexto | Sintaxe | Observação |
 |----------|---------|------------|
-| FreeMarker (`.ftl`) | `${i18n.getTranslation('key')}` | Sintaxe padrão em templates |
-| **Arquivo `.js`** | `${i18n.getTranslation('key')}` | Mesma sintaxe do `.ftl` — exemplo oficial da TOTVS: `var descricao = '${i18n.getTranslation("codigo.da.label")}';` (regra 1 de [platform-constitution.md](platform-constitution.md)) |
+| FreeMarker (`.ftl`) | `${i18n.getTranslation('key')}` | Sintaxe padrão em templates; mantenha a já usada no arquivo |
+| **Arquivo `.js` (código novo)** | `[=i18n.getTranslation('key')]` | Preferida: não colide com template literals ES6 (regra 1 de [platform-constitution.md](platform-constitution.md)) |
+| Arquivo `.js` legado | `${i18n.getTranslation('key')}` | Mantida se o arquivo já usa esse padrão — **não misture** as duas sintaxes no mesmo arquivo |
 
-**Regra para arquivos `.js`:** use `${i18n.getTranslation('key')}`, igual ao
-`.ftl`. A expressão deve estar **entre aspas** quando atribuída a uma variável:
-`const t = "${i18n.getTranslation('key')}";`.
+**Regra para arquivos `.js`:** em código novo use
+`[=i18n.getTranslation('key')]`. A expressão deve estar **entre aspas** quando
+atribuída a uma variável: `const t = "[=i18n.getTranslation('key')]";`.
 
 > **Minificação com Closure Compiler.** A minificação de um `.js` pelo
 > `closure-compiler-maven-plugin` (ver a documentação oficial
@@ -1436,7 +1467,7 @@ dois tipos de arquivo — essa é a convenção oficialmente documentada pela TO
 > (backticks), gerando inconsistências. Se o `.js` **não** usa i18n, o template
 > string funciona normalmente. Em um `.js` que usa i18n, prefira concatenação
 > clássica (`+`) a template literals para montar textos com
-> `${i18n.getTranslation(...)}`. O cuidado é do **arquivo inteiro** que passa
+> `[=i18n.getTranslation(...)]`. O cuidado é do **arquivo inteiro** que passa
 > por essa minificação, não de um backtick específico — ver também
 > [platform-constitution.md](platform-constitution.md).
 
@@ -1444,24 +1475,24 @@ dois tipos de arquivo — essa é a convenção oficialmente documentada pela TO
 > está em [backend-java-maven.md](backend-java-maven.md).
 
 ```javascript
-// ✅ correto em .js — mesma sintaxe do .ftl, entre aspas
-const title = "${i18n.getTranslation('save.success.title')}";
+// ✅ correto em .js (código novo) — colchetes, entre aspas
+const title = "[=i18n.getTranslation('save.success.title')]";
 
 // ✅ correto por cautela — concatenação clássica (+) em vez de template
 // literal, em .js que usa i18n e é minificado pelo Closure Compiler
-const translatedPart = "${i18n.getTranslation('save.success.message')}";
+const translatedPart = "[=i18n.getTranslation('save.success.message')]";
 const fullMessage = translatedPart + ': ' + name;
 
 // ❌ evite — template string envolvendo i18n em .js minificado pelo Closure
 // Compiler (a minificação conflita com template strings que contêm i18n)
-const risky = `${i18n.getTranslation('save.success.message')}: ${name}`;
+const risky = `[=i18n.getTranslation('save.success.message')]: ${name}`;
 ```
 
 Regras gerais:
 
 - **Nunca** acessar `i18n` como objeto JavaScript (`i18n.key` ou `i18n['key']`) — não funciona.
 - A expressão precisa estar entre aspas quando atribuída a uma variável em `.js`:
-  `const t = "${i18n.getTranslation('key')}";`.
+  `const t = "[=i18n.getTranslation('key')]";`.
 - Dentro de `<script>` em `.ftl`, o texto continua com a sintaxe do FreeMarker
   (`${i18n.getJSTranslation('key')}` — ver abaixo).
 
@@ -1621,29 +1652,32 @@ JavaScript.
 
 ### Armadilha dos template literals
 
-`${i18n.getTranslation('key')}` é resolvido pelo FreeMarker **server-side**,
-antes de o `.js` chegar ao navegador — exatamente como em um `.ftl`. Não existe
-sintaxe alternativa `[=...]` nos documentos oficiais da TOTVS: usar o próprio
-`${i18n.getTranslation('key')}` em `.js` é o padrão documentado.
+A interpolação de i18n em `.js` é resolvida pelo FreeMarker **server-side**,
+antes de o `.js` chegar ao navegador — exatamente como em um `.ftl`. A sintaxe
+`${...}` colide com os template literals do ES6; por isso, em código novo, o
+padrão do pacote é `[=i18n.getTranslation('key')]` (ver
+[2. Internacionalização (i18n) — Widgets e Layouts](#2-internacionalização-i18n--widgets-e-layouts)).
+Arquivos legados que já usam `${i18n...}` mantêm essa sintaxe, sem misturar as
+duas no mesmo arquivo.
 
-O ponto de atenção é outro: a minificação de um `.js` pelo
+O ponto de atenção adicional: a minificação de um `.js` pelo
 `closure-compiler-maven-plugin` (ver a documentação oficial ["Closure Compiler Maven
 Plugin"](https://tdn.totvs.com/display/public/fluig/Closure+Compiler+Maven+Plugin))
 conflita com o mecanismo de i18n quando
 esse arquivo usa template strings, gerando inconsistências. Se o `.js` **não**
 usa i18n, o template string funciona normalmente. A mitigação prática é
 preferir concatenação clássica (`+`) a template literals ao montar textos com
-`${i18n.getTranslation(...)}` em um `.js` que usa i18n:
+`[=i18n.getTranslation(...)]` em um `.js` que usa i18n:
 
 ```javascript
 // ✅ mitigação prudente — concatenação clássica (+) em vez de template
 // literal, em .js que usa i18n e é minificado pelo Closure Compiler
-const translatedPart = "${i18n.getTranslation('save.success.message')}";
+const translatedPart = "[=i18n.getTranslation('save.success.message')]";
 const fullMessage = translatedPart + ': ' + name;
 
 // ❌ evite — template string envolvendo i18n em .js minificado pelo Closure
 // Compiler (a minificação conflita com template strings que contêm i18n)
-const risky = `${i18n.getTranslation('save.success.message')}: ${name}`;
+const risky = `[=i18n.getTranslation('save.success.message')]: ${name}`;
 ```
 
 > Essa regra vale para o **arquivo `.js` inteiro** que usa i18n e passa pela
@@ -1651,17 +1685,17 @@ const risky = `${i18n.getTranslation('save.success.message')}: ${name}`;
 > `.js` sem i18n não é afetado e pode usar template literals livremente. Aplica-se
 > sobretudo a artefatos de Parceiro empacotados via Maven/EAR.
 
-> ⚠️ **Armadilha do `${...}` em comentário/texto do `.js`.** Como o FreeMarker
+> ⚠️ **Armadilha da interpolação em comentário/texto do `.js`.** Como o FreeMarker
 > processa o **`.js` inteiro** antes de servir, ele interpreta **qualquer**
-> `${...}` — inclusive dentro de **comentários** (`//` ou `/* */`), que o
-> FreeMarker **não** ignora. Um `${...}` mal-formado (ex.: escrever
-> `${i18n.getTranslation(...)}` com reticências literais como ilustração num
+> interpolação (`${...}` ou `[=...]`) — inclusive dentro de **comentários**
+> (`//` ou `/* */`), que o FreeMarker **não** ignora. Uma interpolação mal-formada
+> (ex.: escrever a chamada com reticências literais como ilustração num
 > comentário) causa `Syntax error in template` no deploy e faz o Fluig **cair no
 > conteúdo original**, deixando **todas** as chaves i18n do arquivo **sem
-> resolver** (a mensagem aparece crua na tela como `[=i18n.getTranslation('...')]`).
-> **Regra:** use `${...}` **apenas no código**, com expressão válida
-> (`"${i18n.getTranslation('chave.real')}"`). Em comentários/explicações, **não**
-> escreva o `$`+`{...}` — refira a função sem o cifrão (ex.: "use
+> resolver** (a mensagem aparece crua na tela).
+> **Regra:** use a interpolação **apenas no código**, com expressão válida
+> (`"[=i18n.getTranslation('chave.real')]"`). Em comentários/explicações, **não**
+> escreva a interpolação — refira a função sem delimitadores (ex.: "use
 > `i18n.getTranslation('chave')`").
 
 > **Parceiro (Store):** a configuração do `closure-compiler-maven-plugin`
@@ -1770,12 +1804,13 @@ resultado sanitizado.
 
 ```javascript
 // Modo string — sanitizar dados antes de exibir
-var textoSeguro = WCMAPI.validateXSS(comentarioDoUsuario, false);
+const textoSeguro = WCMAPI.validateXSS(comentarioDoUsuario, false);
 $('#area-comentario').text(textoSeguro);
 
 // Modo input — sanitizar o campo diretamente ao perder o foco
-$('#campo-titulo').on('blur', function() {
-    WCMAPI.validateXSS(this, false);
+$('#campo-titulo').on('blur', (event) => {
+    // Em arrow function o `this` não é o elemento: use event.currentTarget
+    WCMAPI.validateXSS(event.currentTarget, false);
 });
 ```
 
@@ -1904,7 +1939,7 @@ const fetchData = async () => {
     return data;
   } catch (error) {
     console.error('Erro ao carregar dados:', error);
-    FLUIGC.toast({ message: "${i18n.getTranslation('error.load')}", type: 'danger' });
+    FLUIGC.toast({ message: "[=i18n.getTranslation('error.load')]", type: 'danger' });
   }
 };
 ```
@@ -2006,7 +2041,7 @@ const loadDashboard = async () => {
     render(data);
   } catch (error) {
     console.error('Falha ao carregar o dashboard:', error);
-    FLUIGC.toast({ message: "${i18n.getTranslation('dashboard.load.error')}", type: 'danger' });
+    FLUIGC.toast({ message: "[=i18n.getTranslation('dashboard.load.error')]", type: 'danger' });
   }
 };
 ```
@@ -2106,8 +2141,7 @@ Se precisar usar `DatasetFactory.getDataset` **no cliente**, **sempre** encapsul
 // ✅ correto: DatasetFactory encapsulado em Promise (async/await)
 // (métodos dentro de SuperWidget.extend({}), na sintaxe `nome: function() {}`)
 obterColleague: async function() {
-    var ctx = this;
-    const colleague = await ctx.obterColleaguePromise();
+    const colleague = await this.obterColleaguePromise();
     console.log(colleague);
 },
 
