@@ -52,8 +52,11 @@
         }
 
         // Exemplo de remocao: passe um elemento da linha (ex.: botao lixeira customizado).
+        // ATENCAO ao nome: remover e fnWdkRemoveChild (com prefixo fn); nao existe
+        // wdkRemoveChild sem o fn. Para customizar, use o atributo customFnDelete
+        // no <table> chamando fnWdkRemoveChild(element) dentro da sua funcao.
         function removeAprovacaoRow(element) {
-            wdkRemoveChild(element);
+            fnWdkRemoveChild(element);
         }
     </script>
 </body>

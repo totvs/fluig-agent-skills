@@ -16,7 +16,7 @@
 
 - [ ] Usa `const` por padrão e `let` apenas quando há reatribuição; **não** usa `var`.
 - [ ] Usa arrow functions para funções anônimas (concisão e `this` léxico).
-- [ ] Usa template literals em vez de concatenação com `+`.
+- [ ] Usa template literals em vez de concatenação com `+` — **exceto** em `.js` **legado** com `${i18n...}` minificado pelo Closure Compiler, onde a concatenação (`+`) é preferida (ver item de i18n abaixo); com `[=i18n...]`, template literals são liberados.
 - [ ] Trata assíncrono com `async/await` em `try/catch`, não cadeias longas de `.then()`.
 - [ ] Funções pequenas, com responsabilidade única; organização em módulos ES6.
 - [ ] **Não** mistura jQuery e ES6+ no mesmo arquivo (jQuery só em manutenção de legado); **não** usa `$()` em código novo.
@@ -42,6 +42,10 @@
 - [ ] Separador antes do `instanceId` é sempre `_`, nunca `-`.
 - [ ] Chave de binding é o valor do `data-*` **sem** o prefixo `data-` (o framework adiciona `data-`).
 - [ ] `bindings.local` para elementos dentro da raiz; `bindings.global` para elementos fora (modais/dropdowns no `body`).
+- [ ] Variável raiz da SuperWidget declarada com `var` (ex.: `var MyWidget = SuperWidget.extend({...})`).
+- [ ] Métodos dentro de `.extend({})` declarados como `nome: function() { }` — **sem** method shorthand ES6 (`nome() {}`) nem arrow function como método (`nome: () => {}`).
+- [ ] Nenhum método usa cache de escopo (`var ctx = this;` / `var that = this;`): o contexto é acessado por `this` direto e os callbacks internos (success, fail, eventos) são Arrow Functions `() => {}`.
+- [ ] Chamadas REST via `fetch()` + `async/await`; domínio do próprio Fluig só com API pública, URL a partir de `WCMAPI.getServerURL()`.
 
 ## 4. Convenções de Custom Elements (Web Components)
 
@@ -56,12 +60,13 @@
 
 ## 5. Internacionalização (i18n)
 
-> Regra-fonte: [`../../../context/conventions.md`](../../../context/conventions.md) › "Internacionalização (i18n)".
+> Regra-fonte: [`../../../context/conventions.md`](../../../context/conventions.md) › "Internacionalização (i18n)"
+> e [`../../../context/platform-constitution.md`](../../../context/platform-constitution.md).
 
-- [ ] Todo texto visível ao usuário vem de i18n (`${i18n.getTranslation('key')}`); sem strings fixas.
+- [ ] Todo texto visível ao usuário vem de i18n — `[=i18n.getTranslation('key')]` em `.js` de widget/layout (código novo; `.js` legado com `${...}` mantém a sintaxe do arquivo, sem misturar) e `${i18n.getTranslation('key')}` em `.ftl`; sem strings fixas. **(Exceção: Formulários usam `i18n.translate("chave")` — outro domínio; não cobrar `${i18n.getTranslation}` ao revisar form.)**
 - [ ] **Não** acessa `i18n` como objeto JavaScript (`i18n.key` / `i18n['key']`).
 - [ ] A expressão de i18n está entre aspas quando atribuída a variável.
-- [ ] Em template literals, a tradução é declarada em variável separada antes de concatenar (evita conflito entre `${...}` do JS e do FreeMarker).
+- [ ] Em `.js` **legado** com `${i18n...}` minificado pelo Closure Compiler, a concatenação com variáveis JS usa `+` em vez de template literal (com `[=i18n...]`, template literal é permitido e não deve ser reportado).
 - [ ] Usa `getTranslationP1`/`getTranslationPn` quando há parâmetros.
 
 ## 6. Segurança
@@ -76,13 +81,16 @@
 - [ ] Dados dinâmicos escapados em FreeMarker (`${value?html}`, `${value?js_string}` em JS inline).
 - [ ] Sanitização aplicada tanto na entrada (POST/PUT) quanto na exibição (GET).
 
-## 7. Chamadas REST internas
+## 7. Chamadas REST e Integrações
 
-> Regra-fonte: [`../../../context/conventions.md`](../../../context/conventions.md) › "Chamadas REST internas".
+> Regra-fonte: [`../../../context/conventions.md`](../../../context/conventions.md) › "Chamadas REST e Integrações"
+> e [`../../../context/platform-constitution.md`](../../../context/platform-constitution.md).
 
-- [ ] Endpoints internos chamados via `FLUIGC.ajax` (código novo) ou `WCMAPI.Read/Create/Update/Delete` (legado).
-- [ ] **Não** usa `fetch()` nem `$.ajax()` direto para endpoints internos.
-- [ ] Erros de rede tratados (ex.: `try/catch` com `async/await`).
+- [ ] Qualquer chamada (ao próprio Fluig ou a terceiro) é feita com `fetch()` + `async/await` + `try/catch`.
+- [ ] Domínio do próprio Fluig usa **somente API pública**, com a URL montada a partir de `WCMAPI.getServerURL()`.
+- [ ] **Nunca** usa `async: false` ou qualquer chamada síncrona.
+- [ ] Severidade **Alta** é atribuída por **rota interna não documentada** acessada direto (ex.: `/ecm/api/rest/`), não pelo uso de `fetch` em si.
+- [ ] Erros de rede tratados (ex.: `try/catch` com `async/await`); feedback ao usuário em caso de erro.
 
 ## 8. CSS e Style Guide
 

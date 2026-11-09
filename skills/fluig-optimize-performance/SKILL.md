@@ -8,6 +8,16 @@ argument-hint: o código/artefato frontend alvo a otimizar (trecho ou arquivo se
 
 Esta skill otimiza a performance de código frontend Fluig; ela **não duplica** convenções — os arquivos de `context/` são a fonte de verdade, referenciada abaixo.
 
+## Passo 0 — Persona
+
+Antes de otimizar, classifique a persona do desenvolvedor seguindo a cascata em
+[persona-routing.md](../../context/persona-routing.md): conversa > marcador de
+arquivo > marcador técnico de Store (`component.xml` ou API de slot) > estrutura
+do projeto > pergunta. Se restar ambígua, pare e pergunte antes de
+continuar. Emita `Persona: <Parceiro|Consultor> (motivo)` — esta skill aplica as
+mesmas regras técnicas independentemente da persona (não há camada da Store
+envolvida na otimização de performance).
+
 ## Objetivo
 
 Otimizar, com responsabilidade única, a **performance de código frontend Fluig** — DOM, eventos, requisições e carga de dados — aplicando boas práticas públicas sem alterar o comportamento observável, a i18n nem a compatibilidade com a plataforma.
@@ -31,8 +41,9 @@ Otimizar, com responsabilidade única, a **performance de código frontend Fluig
 
 Leia antes de executar — não reproduza o conteúdo aqui:
 
-- [conventions.md](../../context/conventions.md) — manipulação de DOM, ES6+ e `async/await`, REST a endpoints internos via `WCMAPI`/`FLUIGC.ajax`, bindings de widget, i18n, segurança e **CSS responsivo e funções CSS modernas** (`calc`/`var`/`rgba`/`hsla`/`min`/`max`/`clamp`/`minmax`, media e container queries).
+- [conventions.md](../../context/conventions.md) — manipulação de DOM, ES6+ e `async/await`, REST via `fetch()` ao domínio do próprio Fluig (API pública, `WCMAPI.getServerURL()`) ou a terceiro, bindings de widget, i18n, segurança e **CSS responsivo e funções CSS modernas** (`calc`/`var`/`rgba`/`hsla`/`min`/`max`/`clamp`/`minmax`, media e container queries).
 - [style-guide.md](../../context/style-guide.md) — reutilização de componentes/helpers/grid do Fluig Style Guide em vez de soluções próprias mais custosas.
+- [platform-constitution.md](../../context/platform-constitution.md) — regras invioláveis de i18n (`[=i18n.getTranslation(...)]` em `.js`, `${i18n.getTranslation(...)}` em `.ftl`) e HTTP (`fetch`).
 
 ## Regras Aplicáveis (Resumo Executivo)
 
@@ -44,17 +55,19 @@ Somente o mínimo para orientar a otimização; o detalhe está no contexto. Boa
 - **Event delegation:** um listener no container em vez de muitos listeners individuais → ver `conventions.md` (bindings de widget).
 - **Debounce/throttle** em eventos de alta frequência (scroll, resize, input/keyup).
 - **Carregar dados sob demanda** (paginação/lazy load) e tratar o assíncrono com `async/await` em `try/catch` → ver `conventions.md`.
-- **REST a endpoints internos** via `WCMAPI`/`FLUIGC.ajax` (nunca `fetch`/`$.ajax` direto) → ver `conventions.md`.
+- **REST** via `fetch()` + `async/await`; domínio do próprio Fluig só com API pública, URL via `WCMAPI.getServerURL()` → ver `platform-constitution.md`.
 - **Reutilizar componentes** do Style Guide em vez de recriar comportamentos custosos → ver `style-guide.md`.
+- **Reutilizar jQuery UI/Mustache** (já embutidos) em vez de reimplementar interações de UI ou templating manual — evita listeners redundantes e concatenação de string custosa → ver `style-guide.md`, seção "Plugins embutidos (jQuery, jQuery UI, Mustache)".
 - **CSS responsivo e funções CSS modernas:** preferir funções nativas (`calc`/`var`/`rgba`/`hsla`/`min`/`max`/`clamp`/`minmax`) e media/container queries para layouts fluidos e eficientes em vez de valores fixos repetidos → ver `conventions.md` (CSS responsivo e moderno).
 - **Liberar recursos:** remover listeners/timers ao destruir o widget para evitar vazamentos.
+- **Preservar a sintaxe de widget ao otimizar (regra 3 da constituição):** ao refatorar o JS de um widget `SuperWidget.extend({})`, **não** converta os métodos para arrow/method shorthand, e remova (nunca introduza) `var ctx = this;` — métodos continuam `nome: function() {}` (arrow como método não vincula `this`), com `this` direto e callbacks internos em Arrow Functions — **nunca** `var ctx = this;`. Otimizações de performance **não** justificam violar a regra 3 → ver `platform-constitution.md` (regra 3) e `conventions.md`.
 
 ## Procedimento
 
 1. Medir/identificar o gargalo a partir do sintoma e da leitura do código (DOM em laço, seletores repetidos, excesso de listeners, requisições redundantes, evento de alta frequência sem controle).
 2. Selecionar a otimização adequada do catálogo acima para cada gargalo encontrado.
-3. Aplicar a otimização **preservando o comportamento observável** e a i18n (`${i18n.getTranslation('chave')}`).
-4. Garantir que chamadas REST internas continuem via `WCMAPI`/`FLUIGC.ajax` e que o assíncrono seja tratado com `try/catch`.
+3. Aplicar a otimização **preservando o comportamento observável** e a i18n com a sintaxe já usada no arquivo (`[=i18n.getTranslation('chave')]` em `.js` novo; `${i18n.getTranslation('chave')}` em `.ftl` ou `.js` legado).
+4. Garantir que chamadas REST continuem via `fetch()`, com o domínio do próprio Fluig pela API pública (`WCMAPI.getServerURL()`), e que o assíncrono seja tratado com `try/catch`.
 5. Validar o resultado com o checklist abaixo antes de entregar, anotando as otimizações aplicadas.
 
 ## Saída Esperada
@@ -91,5 +104,5 @@ list.appendChild(fragment);
 - [ ] Sem seletores redundantes — referências de elementos cacheadas.
 - [ ] Eventos de alta frequência com debounce/throttle e/ou delegação de eventos.
 - [ ] Assíncrono tratado com `async/await` em `try/catch`; dados carregados sob demanda.
-- [ ] Chamadas REST a endpoints internos via `WCMAPI`/`FLUIGC.ajax`.
+- [ ] Chamadas REST via `fetch()`; domínio do próprio Fluig só com API pública via `WCMAPI.getServerURL()`.
 - [ ] Comportamento original e i18n preservados.

@@ -28,23 +28,45 @@ A filosofia central que organiza o pacote:
 
 As skills **não duplicam** o conteúdo do contexto: elas o **referenciam** como fonte de verdade e mantêm apenas um resumo executivo do necessário para a tarefa.
 
+## Personas
+
+O agente que consome este pacote atua como o Agente Especialista em Desenvolvimento Fluig (TOTVS) e atende dois perfis de desenvolvedor. Antes de criar, modernizar ou revisar qualquer artefato, ele classifica a persona pela cascata descrita em [`context/persona-routing.md`](context/persona-routing.md) e aplica sempre as regras técnicas base de [`context/platform-constitution.md`](context/platform-constitution.md). As regras da Store **nunca** são misturadas no código de um Consultor.
+
+- **Consultor (Cliente):** solução exclusiva para uma empresa (empregador ou cliente), sem publicar na Store — usa o core de `context/` + `platform-constitution.md` (e `backend-java-maven.md` quando a estrutura for Maven/Java).
+- **Parceiro (Store):** produto publicado na Store do TOTVS Fluig (App Review) — usa o core + os arquivos `partner-store-*.md`, com prefixo obrigatório e relatório de pré-review persistido.
+
 ## Estrutura
 
 ```text
 fluig-agent-skills/
 ├── README.md, AGENTS.md, CLAUDE.md   # arquivos de entrada — "por onde começar"
-├── context/                          # conhecimento permanente — "o que é"
+├── context/                          # conhecimento permanente — "o que é" (fonte única de verdade)
 │   ├── architecture.md               # artefatos, pontos de extensão, estrutura de pastas
 │   ├── technologies.md               # tecnologias públicas (ES6+, libs client-side, runtime)
 │   ├── conventions.md                # padrões de código, i18n, segurança, REST público
-│   └── style-guide.md                # componentes, grid, helpers e variáveis CSS do Style Guide
+│   ├── conventions-form.md           # convenções de Form: estrutura, campos, Pai x Filho, i18n de forms
+│   ├── style-guide.md                # componentes, grid, helpers e variáveis CSS do Style Guide
+│   ├── business-components.md        # Componentes de Negócio nativos a reusar
+│   ├── datasets-nativos.md           # datasets nativos do Fluig a reusar
+│   ├── processo-bpm.md               # processos BPM, formulários e ciclo de vida de workflow
+│   ├── writing-style-guide.md        # estilo de escrita para a documentação do pacote
+│   ├── backend-java-maven.md         # backend Java e projeto Maven multi-módulo — genérico para qualquer persona
+│   ├── platform-constitution.md      # as 3 regras técnicas base, válidas para toda persona
+│   ├── persona-routing.md            # cascata de classificação Parceiro × Consultor
+│   ├── partner-store-architecture.md       # arquitetura/provisionamento exclusivo de Parceiro (Store)
+│   ├── partner-store-conventions.md        # convenções exclusivas de Parceiro (prefixo, application.info, versionamento)
+│   ├── partner-store-review-rules.md       # regras de revisão de Parceiro para o App Review da Store
+│   └── references/                   # tabelas de referência (ícones, slots de layouts nativos, etc.)
 ├── skills/                           # procedimentos especializados — "como fazer"
 │   └── <nome>/SKILL.md               # cada skill é um diretório com um SKILL.md
 ├── examples/                         # referências concretas mínimas — "como se parece"
-│   ├── widget/
-│   ├── layout/
+│   ├── activation/
+│   ├── component/
+│   ├── dataset/
 │   ├── form/
-│   └── dataset/
+│   ├── layout/
+│   ├── widget/
+│   └── wizard/
 └── docs/                             # prompts de uso por skill — "como acionar"
     └── <nome>/README.md              # prompts de exemplo para acionar a skill
 ```
@@ -58,6 +80,8 @@ Fluxo de consumo por um agente de IA:
 3. **Leia o contexto.** A skill referencia os arquivos de `context/` relevantes como fonte de verdade — consulte-os para convenções, tecnologias e regras.
 4. **Consulte os exemplos.** Use `examples/` como referência concreta mínima do artefato em questão.
 5. **Produza o código** seguindo as convenções oficiais descritas no contexto.
+
+> **Método: investigar → planejar → gerar.** Antes de gerar, não vá pelo instinto. Confirme na fonte (`context/` e documentação oficial) os **nomes exatos** de API, método e campo — não assuma assinaturas (ex.: `FLUIGC.message.prompt` não existe), nem que o nome de um `field` pedido é a chave do objeto retornado, nem qual método traz o dado certo (ex.: código × nome do usuário). Planeje de onde vêm os dados e com que nomes chegam; só então gere. Na dúvida, **confirme ou pergunte — nunca invente.**
 
 ## Compatível com várias ferramentas de IA
 
@@ -75,11 +99,9 @@ A seção a seguir detalha o exemplo do GitHub Copilot no VS Code; use-a como mo
 
 A qualidade do resultado depende **diretamente** do modelo de IA usado pelo agente. Estas skills envolvem raciocínio sobre múltiplos arquivos, seguir convenções e gerar código correto — tarefas em que **modelos "básicos", pequenos ou econômicos tendem a entregar resultados ruins** (ignoram convenções, inventam APIs, quebram caminhos relativos).
 
-Para bons resultados, prefira modelos de raciocínio de ponta. Sugestões (use a versão mais recente disponível de cada família):
+**Critério (o que importa, independentemente da geração):** prefira o **modelo de raciocínio mais capaz** disponível no seu agente — um que lide bem com **contexto de múltiplos arquivos**, **siga convenções à risca** e **não invente APIs**. Use sempre a **versão de topo mais recente** de cada família (evite as variantes econômicas descritas abaixo).
 
-- **Anthropic Claude** — Opus e Sonnet das gerações mais recentes (ex.: Claude Opus 4.x / Sonnet 4.x).
-- **OpenAI GPT** — modelos de topo da linha GPT-5 / o-series de raciocínio.
-- **Google Gemini** — Gemini 2.5 Pro ou superior.
+> **Exemplos ilustrativos (vigentes em outubro de 2026 — a lista envelhece; valem como referência, não como requisito):** Anthropic Claude Opus/Sonnet da geração mais recente; OpenAI GPT de topo / linha de raciocínio (o-series); Google Gemini Pro mais recente. Ao ler isto no futuro, troque mentalmente por **o modelo de ponta equivalente da data** — o que vale é o critério acima, não o nome da versão.
 
 Evite variantes "mini", "nano", "flash-lite", "instant" ou modelos antigos para estas tarefas — elas priorizam custo/velocidade em detrimento da precisão de que as skills dependem. Se o orçamento exigir um modelo menor, **revise o resultado com atenção redobrada** e valide sempre contra os arquivos de `context/`.
 
@@ -100,16 +122,25 @@ seu-projeto/
     ├── copilot-instructions.md # instrução para o copilot 
     ├── skills/                 # copie o skills/ deste pacote
     │   └── <nome>/SKILL.md
-    ├── context/                # copie o context/ deste pacote
+    ├── context/                # copie o context/ deste pacote (os 15 .md + references/)
     │   ├── architecture.md
     │   ├── technologies.md
     │   ├── conventions.md
-    │   └── style-guide.md
+    │   ├── conventions-form.md
+    │   ├── style-guide.md
+    │   ├── ...                  # business-components, datasets-nativos, processo-bpm,
+    │   │                        # writing-style-guide, backend-java-maven,
+    │   │                        # platform-constitution, persona-routing
+    │   ├── partner-store-*.md   # camada Parceiro/Store (architecture/conventions/review-rules)
+    │   └── references/
     └── examples/               # copie o examples/ deste pacote
         ├── widget/
         ├── layout/
         ├── form/
-        └── dataset/
+        ├── dataset/
+        ├── activation/
+        ├── component/
+        └── wizard/
 ```
 
 Com essa disposição os links relativos das skills resolvem corretamente:
@@ -118,6 +149,8 @@ Com essa disposição os links relativos das skills resolvem corretamente:
 - De um asset em `.github/skills/<skill>/assets/`, o caminho `../../../context/conventions.md` resolve para `.github/context/conventions.md`.
 
 > **Atenção aos caminhos do `AGENTS.md`:** o `AGENTS.md` deste pacote referencia `context/`, `skills/` e `examples/` por caminho relativo. Ao colocá-lo na raiz com as pastas em `.github/`, ajuste essas referências para apontar para `.github/context/...`, `.github/skills/...` e `.github/examples/...`.
+
+> **Sobre o `copilot-instructions.md` — dois locais, não confunda:** **neste pacote** ele é um **arquivo de entrada** e fica na **raiz** (ao lado de `AGENTS.md`, `CLAUDE.md`, `README.md`, `CONTRIBUTING.md`), com links `context/...` que resolvem a partir da raiz. Já o **GitHub Copilot** lê o arquivo de instruções do seu projeto em **`.github/copilot-instructions.md`** — então, ao instalar, **copie-o para `.github/`** (como na árvore acima) e ajuste os caminhos `context/...` para `.github/context/...`, do mesmo modo que o `AGENTS.md`.
 
 > **Importante:** o campo `name` no frontmatter de cada `SKILL.md` **deve ser igual ao nome da pasta** da skill (já é o caso neste pacote). Nomes divergentes fazem a skill falhar silenciosamente ao carregar.
 
@@ -137,11 +170,20 @@ Com essa disposição os links relativos das skills resolvem corretamente:
 | `context/architecture.md` | O modelo conceitual dos artefatos (widget, layout, form, dataset), seus pontos de extensão públicos, o ciclo de vida visível ao código e a estrutura oficial de pastas/arquivos (incluindo o projeto Fluig Studio). |
 | `context/technologies.md` | As tecnologias públicas de customização: ES6+, bibliotecas client-side (jQuery, Kendo UI, Bootstrap), Fluig Style Guide e o runtime de scripting server-side. |
 | `context/conventions.md` | Padrões de código, convenções de widget, i18n, segurança via APIs públicas e chamadas REST públicas. |
+| `context/conventions-form.md` | Convenções de Form: estrutura base, campos, tabela Pai x Filho e i18n de formulários (`i18n.translate`). |
 | `context/style-guide.md` | Componentes, grid, helpers e utilitários do Fluig Style Guide, além das variáveis CSS de tema (`var(--fs-color-*)`). |
+| `context/processo-bpm.md` | Processos BPM: formulários de processo, eventos server-side e ciclo de vida de workflow. |
+| `context/writing-style-guide.md` | Terminologia e estilo de escrita oficiais TOTVS para textos visíveis ao usuário e documentação. |
+| `context/business-components.md` | Componentes de Negócio nativos do Fluig a reusar em vez de recriar. |
+| `context/datasets-nativos.md` | Datasets nativos do Fluig disponíveis para reuso. |
+| `context/backend-java-maven.md` | Backend Java e projeto Maven multi-módulo (empacotamento EAR, dependências/plugins Maven, Nexus, JNDI, `ServiceLocator`, DAO, persistência, multi-tenant, respostas REST e i18n na camada Java). Genérico para qualquer persona. |
+| `context/platform-constitution.md` | As 3 regras técnicas base válidas para toda persona: i18n em `.js`, chamadas REST via `fetch`, sintaxe do `SuperWidget.extend`. |
+| `context/persona-routing.md` | A cascata de classificação da persona do desenvolvedor (Parceiro × Consultor). |
+| `context/partner-store-architecture.md`, `context/partner-store-conventions.md`, `context/partner-store-review-rules.md` | Camada exclusiva da persona Parceiro (Store): arquitetura e provisionamento do módulo de configuração, convenções e prefixo de parceiro e regras de App Review. |
 
 ## Skills disponíveis
 
-Skills agrupadas por intenção. Cada uma vive em `skills/<nome>/SKILL.md` e é selecionada pela sua `description`.
+16 skills agrupadas por intenção (4 geração, 7 modernização, 5 revisão). Cada uma vive em `skills/<nome>/SKILL.md` e é selecionada pela sua `description`.
 
 ### Geração (scaffolding) — "criar do zero"
 
@@ -172,13 +214,16 @@ Skills agrupadas por intenção. Cada uma vive em `skills/<nome>/SKILL.md` e é 
 | `fluig-review-performance` | Revisão focada em performance. |
 | `fluig-review-security` | Revisão de segurança conforme OWASP Top 10. |
 | `fluig-review-accessibility` | Revisão de acessibilidade alinhada às WCAG. |
-| `fluig-best-practices` | Revisão de aderência às boas práticas oficiais do Fluig. |
+| `fluig-best-practices` | Revisão de **manutenibilidade/arquitetura** (modularização, responsabilidade única, nomenclatura, organização, reuso) — não cobre segurança/performance/acessibilidade. |
 
 As skills de revisão classificam os achados por severidade e referenciam a regra correspondente nos arquivos de `context/`.
 
 ## Exemplos disponíveis
 
-`examples/` contém referências mínimas para os quatro tipos de artefato: `widget/`, `layout/`, `form/` e `dataset/`. Cada exemplo é um trecho de código curto que reflete as APIs e convenções descritas em `context/`.
+`examples/` contém referências mínimas por tipo de artefato. Cada exemplo é um trecho de código curto que reflete as APIs e convenções descritas em `context/`.
+
+- **Com skill de geração (scaffolding) hoje:** `widget/`, `layout/`, `form/`, `dataset/` — os quatro artefatos cobertos pelas skills `fluig-scaffolding-*`.
+- **Referência de contexto (sem skill de geração própria ainda):** `activation/`, `component/` e `wizard/` — artefatos da camada de **Parceiro (Store)** que existem como exemplo/fonte de verdade, mas cuja skill de *geração* dedicada **ainda será criada** (roadmap). Enquanto isso, use o exemplo como molde e o `context/` como regra.
 
 ## Feedback da comunidade
 

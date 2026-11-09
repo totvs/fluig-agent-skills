@@ -8,6 +8,16 @@ argument-hint: o código/CSS alvo a adaptar ao dark mode (trecho ou arquivo com 
 
 Esta skill adapta o CSS de customizações Fluig ao dark mode usando variáveis de tema; ela **não duplica** os tokens de cor nem a **tabela de mapeamento de cores** (uso comum → `var(--fs-color-*)` e hexadecimal → `var(--fs-color-*)`) — o arquivo de `context/` é a fonte de verdade, referenciada abaixo.
 
+## Passo 0 — Persona
+
+Antes de adaptar o CSS, classifique a persona do desenvolvedor seguindo a
+cascata em [persona-routing.md](../../context/persona-routing.md): conversa >
+marcador de arquivo > marcador técnico de Store (`component.xml` ou API de slot)
+> estrutura do projeto > pergunta. Se restar ambígua, pare e
+pergunte antes de continuar. Emita `Persona: <Parceiro|Consultor> (motivo)` —
+esta skill aplica as mesmas regras técnicas independentemente da persona (não
+há camada da Store envolvida no dark mode).
+
 ## Objetivo
 
 Adaptar, com responsabilidade única, o **CSS de uma customização ao modo escuro**, substituindo cores fixas (hexadecimais, `rgb()`, nomes de cor) por **variáveis CSS de tema no formato `var(--fs-color-*)`**, para que o componente acompanhe a troca de tema (claro/escuro) automaticamente, sem alterar o comportamento nem o layout.
@@ -32,18 +42,18 @@ Adaptar, com responsabilidade única, o **CSS de uma customização ao modo escu
 Leia antes de executar — não reproduza o conteúdo aqui:
 
 - [style-guide.md](../../context/style-guide.md) — seção **Theming e dark mode (variáveis CSS)**: regra obrigatória de usar `var(--fs-color-*)`, proibição de hexadecimais fixos e de variáveis SCSS para cores de tema, tabelas completas de todas as famílias de tokens (marca, ação, neutros, feedback com tons `lightest`→`darkest`, sombras `--fs-shadow-*`) e a **tabela de mapeamento de cores** (uso comum → `var(--fs-color-*)` e hexadecimal → `var(--fs-color-*)`) usada para converter cores fixas.
-- Referência completa das **variáveis CSS**: `references/helpers-and-variables-css/css-variables.md`.
+- Referência completa das **variáveis CSS**: [style-guide.md](../../context/style-guide.md#theming-e-dark-mode-variáveis-css--fonte-de-verdade).
 
 ## Regras Aplicáveis (Resumo Executivo)
 
 Somente o mínimo para orientar a tarefa; o detalhe e o catálogo de tokens estão no contexto:
 
 - Para **qualquer cor de tema**, usar variáveis CSS no formato `var(--fs-color-*)` → ver `style-guide.md`.
-- ⚠️ **Proibido inventar variáveis CSS.** Usar **somente** as variáveis documentadas em `references/helpers-and-variables-css/css-variables.md`. Se uma variável não estiver nessa referência, ela não existe no Style Guide — nesse caso, use um valor CSS convencional ou CSS próprio escopado.
+- ⚠️ **Proibido inventar variáveis CSS.** Usar **somente** as variáveis documentadas em [style-guide.md](../../context/style-guide.md#theming-e-dark-mode-variáveis-css--fonte-de-verdade). Se uma variável não estiver nessa referência, ela não existe no Style Guide — nesse caso, use um valor CSS convencional ou CSS próprio escopado.
 - **Hexadecimais fixos e variáveis SCSS (`$...`) para cores de tema são proibidos** — não acompanham a troca de tema e quebram o dark mode → ver `style-guide.md`.
 - Ao converter cores fixas, consultar a **tabela de mapeamento de cores** (uso comum → variável e hexadecimal → variável) que vive em `style-guide.md` → ver `style-guide.md`.
 - Escolher a **família de token** conforme o papel da cor: marca (`--fs-color-brand-*`), ação (`--fs-color-action-*`), neutros (`--fs-color-neutral-*`), feedback (`--fs-color-positive/negative/warning/info-*`) → ver `style-guide.md`.
-- Usar tokens de **sombra** (`--fs-shadow-*`) e **tipografia** (`--fs-font-*`) em vez de valores fixos, quando aplicável → ver `style-guide.md`.
+- Usar tokens de **sombra** (`--fs-shadow-*`) em vez de valores fixos, quando aplicável → ver `style-guide.md`.
 - **Reutilizar componentes/classes do Style Guide** já adaptados ao tema, em vez de recriar estilos → ver `style-guide.md`.
 - **Preservar** o layout e o comportamento: trocar apenas a origem da cor, não a estrutura.
 
@@ -52,7 +62,7 @@ Somente o mínimo para orientar a tarefa; o detalhe e o catálogo de tokens est�
 1. Ler o CSS alvo e listar todas as cores fixas usadas (hexadecimais, `rgb()`, nomes de cor) e sombras com valores fixos.
 2. Classificar cada cor pelo seu papel (texto, fundo, borda, ação, feedback) para escolher a família de token correta.
 3. Substituir cada cor fixa pela variável `var(--fs-color-*)` correspondente, consultando a **tabela de mapeamento de cores** (uso comum → variável e hexadecimal → variável) em `style-guide.md`.
-4. Trocar sombras fixas por tokens `--fs-shadow-*` e, quando houver, fonte/cor de texto por tokens `--fs-font-*`.
+4. Trocar sombras fixas por tokens `--fs-shadow-*`.
 5. Verificar que **nenhum hexadecimal fixo de cor de tema** permaneceu e que o layout não mudou.
 6. Conferir o resultado com o checklist abaixo antes de entregar.
 
@@ -80,7 +90,7 @@ Depois (variáveis de tema — adaptam-se automaticamente):
 .my-widget__header {
   color: var(--fs-color-neutral-dark-90);
   background-color: var(--fs-color-neutral-light-00);
-  box-shadow: var(--fs-shadow-sm);
+  box-shadow: var(--fs-shadow-md);
 }
 ```
 
@@ -88,6 +98,6 @@ Depois (variáveis de tema — adaptam-se automaticamente):
 
 - [ ] Toda cor de tema usa `var(--fs-color-*)`; nenhum hexadecimal fixo de tema permaneceu.
 - [ ] A família de token escolhida corresponde ao papel da cor (marca/ação/neutros/feedback).
-- [ ] Sombras usam `--fs-shadow-*` e tipografia usa `--fs-font-*` quando aplicável.
+- [ ] Sombras usam `--fs-shadow-*` quando aplicável.
 - [ ] Layout e comportamento preservados (somente a origem da cor mudou).
 - [ ] Tokens consistentes com os já adotados no componente e com `style-guide.md`.

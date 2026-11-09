@@ -8,6 +8,17 @@ argument-hint: o markup/componente alvo a tornar acessível (trecho ou arquivo s
 
 Esta skill melhora a acessibilidade de markup/UI Fluig; ela **não duplica** convenções — os arquivos de `context/` são a fonte de verdade, referenciada abaixo.
 
+## Passo 0 — Persona
+
+Antes de ajustar a acessibilidade, classifique a persona do desenvolvedor
+seguindo a cascata em
+[persona-routing.md](../../context/persona-routing.md): conversa > marcador de
+arquivo > marcador técnico de Store (`component.xml` ou API de slot) > estrutura
+do projeto > pergunta. Se restar ambígua, pare e pergunte antes de
+continuar. Emita `Persona: <Parceiro|Consultor> (motivo)` — esta skill aplica as
+mesmas regras técnicas independentemente da persona (não há camada da Store
+envolvida na acessibilidade).
+
 ## Objetivo
 
 Melhorar, com responsabilidade única, a **acessibilidade do frontend Fluig** — semântica, rótulos, teclado/foco, ARIA, texto alternativo e contraste — aplicando boas práticas públicas alinhadas às WCAG, sem alterar o comportamento observável, a i18n nem a compatibilidade com a plataforma.
@@ -30,15 +41,15 @@ Melhorar, com responsabilidade única, a **acessibilidade do frontend Fluig** �
 
 Leia antes de executar — não reproduza o conteúdo aqui:
 
-- [conventions.md](../../context/conventions.md) — HTML semântico, convenções de markup e i18n (texto visível sempre via `${i18n.getTranslation('chave')}`).
+- [conventions.md](../../context/conventions.md) — convenções de markup e **i18n** (texto visível sempre via i18n: `[=i18n.getTranslation('chave')]` em `.js` e `${i18n.getTranslation('chave')}` em `.ftl`). ⚠️ O core ainda **não** tem seção dedicada de acessibilidade (ADR-16, em avaliação); as regras de a11y abaixo se ancoram na **WCAG 2.1 AA** (W3C) — use `conventions.md` para i18n e `style-guide.md` para contraste/componentes.
 - [style-guide.md](../../context/style-guide.md) — componentes acessíveis do Style Guide, tokens de cor/contraste via `var(--fs-color-*)` e conjuntos de ícones.
 
 ## Regras Aplicáveis (Resumo Executivo)
 
 Somente o mínimo para orientar a melhoria; o detalhe está no contexto. Boas práticas públicas, genéricas e alinhadas às WCAG:
 
-- **HTML semântico** (`header`, `nav`, `main`, `button`, `label`) em vez de `div`/`span` genéricos → ver `conventions.md`.
-- **Rótulos associados** a campos (`label`/`for`, ou `aria-label` quando não há rótulo visível), com texto via i18n → ver `conventions.md`.
+- **HTML semântico** (`header`, `nav`, `main`, `button`, `label`) em vez de `div`/`span` genéricos → WCAG 1.3.1 / 4.1.2.
+- **Rótulos associados** a campos (`label`/`for`, ou `aria-label` quando não há rótulo visível), com texto via i18n → WCAG 1.3.1 / 2.4.6; i18n em `conventions.md`.
 - **Navegação por teclado e foco visível:** ordem de tabulação lógica e foco gerenciado em modais/diálogos.
 - **Atributos ARIA apenas quando necessário** (roles e `aria-*`) — semântica nativa tem prioridade sobre ARIA.
 - **Texto alternativo** em imagens/ícones informativos; ícones puramente decorativos ficam ocultos para a tecnologia assistiva.
@@ -52,7 +63,7 @@ Somente o mínimo para orientar a melhoria; o detalhe está no contexto. Boas pr
 2. Aplicar **HTML semântico** e corrigir a estrutura antes de recorrer a ARIA.
 3. Associar **rótulos/nomes acessíveis** aos controles e garantir **navegação por teclado e foco visível** (foco gerenciado em modais).
 4. Adicionar **ARIA e texto alternativo** apenas onde a semântica nativa não basta; ajustar **contraste** usando `var(--fs-color-*)`.
-5. Manter a **i18n** em todos os textos acessíveis (rótulos, `aria-label`, `alt`) via `${i18n.getTranslation('chave')}`.
+5. Manter a **i18n** em todos os textos acessíveis (rótulos, `aria-label`, `alt`) via i18n (`[=i18n.getTranslation('chave')]` em `.js`, `${i18n.getTranslation('chave')}` em `.ftl`/markup server-side).
 6. Validar o resultado com o checklist abaixo antes de entregar, anotando as melhorias aplicadas.
 
 > **Nota importante:** a conformidade WCAG completa exige **teste manual com tecnologias assistivas** (leitores de tela, navegação só por teclado) e **revisão por especialista**. Esta skill **auxilia** a tornar a UI mais acessível, mas **não garante** conformidade total por si só.
@@ -68,14 +79,14 @@ Trecho ilustrativo: botão somente com ícone recebe nome acessível via i18n.
 ```html
 <!-- Antes — botão sem nome acessível (só ícone) -->
 <button class="btn">
-  <span class="icon icon-trash" aria-hidden="true"></span>
+  <span class="flaticon flaticon-trash" aria-hidden="true"></span>
 </button>
 ```
 
 ```html
 <!-- Depois — aria-label com texto via i18n; ícone decorativo oculto -->
 <button class="btn" aria-label="${i18n.getTranslation('action.delete')}">
-  <span class="icon icon-trash" aria-hidden="true"></span>
+  <span class="flaticon flaticon-trash" aria-hidden="true"></span>
 </button>
 ```
 

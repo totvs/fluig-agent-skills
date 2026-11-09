@@ -1,9 +1,14 @@
-.kiro/
 .vscode/
-references/
+.kiro/
 
 # Ambientes virtuais e artefatos de teste Python
 .venv/
 __pycache__/
 .hypothesis/
 .pytest_cache/
+
+# Zips gerados por ci/scripts/build.sh
+release/
+
+# Rascunhos de plano/review gerados por workflows de agente (processo, não pacote)
+.agents/

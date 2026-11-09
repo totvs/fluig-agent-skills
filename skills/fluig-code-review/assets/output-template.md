@@ -3,10 +3,43 @@
 > Asset da skill `fluig-code-review`. Estrutura padrão do relatório de revisão. Preencha
 > cada seção com os achados reais. Cada achado **deve** ter severidade e referenciar
 > a regra do arquivo de contexto (`conventions.md` ou `style-guide.md`, com a seção).
+> O cabeçalho varia por persona (ver `context/persona-routing.md` e
+> `conventions.md` › Saída do review por persona). **Ambas as personas gravam o
+> relatório em `.md`** na raiz do alvo: use o cabeçalho **Consultor** para o
+> relatório gravado em `review-<artefato>-<AAAA-MM-DD>.md`; use o cabeçalho
+> **Parceiro** para o relatório gravado em `pre-review-<artefato>-<AAAA-MM-DD>.md`.
 
 ---
 
-# Relatório de Revisão — <nome do artefato/arquivo>
+## Cabeçalho — Consultor
+
+# Revisão de Código — <nome do artefato/arquivo>
+
+> Análise de boas práticas para a customização do cliente. Gravada em
+> `review-<artefato>-<AAAA-MM-DD>.md` na raiz do alvo, sem qualquer menção à
+> Store ou ao App Review.
+> - **Escopo:** <artefato/arquivo revisado>
+> - **Avaliação geral:** <aprovado | aprovado com ressalvas | requer correções antes do merge>
+> - **Achados:** Crítico <n> · Alto <n> · Médio <n> · Baixo <n>
+
+## Cabeçalho — Parceiro (Store)
+
+# Pré-Review de Código — <nome do artefato/arquivo>
+
+> ⚠️ **Pré-review preparatório.** Este resultado é um passo interno de higiene e
+> **não** significa aprovação: **não substitui o App Review oficial** da Store
+> (`conventions.md` › Saída do review por persona; `partner-store-review-rules.md` [§ 32.9](../../../context/partner-store-review-rules.md#329-natureza-de-pré-review-não-é-aprovação)).
+> - **Escopo:** <artefato/arquivo revisado>
+> - **Parecer:** Provável Aprovação | Atenção | Correções Obrigatórias
+> - **Achados:** Crítico <n> · Alto <n> · Médio <n> · Baixo <n>
+>
+> Este relatório deve ser **gravado** em `pre-review-<artefato>-<AAAA-MM-DD>.md` na
+> raiz do alvo — a única escrita permitida (`partner-store-review-rules.md` [§ 32.10](../../../context/partner-store-review-rules.md#3210-persistência-do-relatório-em-arquivo-md) / [§ 32.1](../../../context/partner-store-review-rules.md#321-modo-somente-leitura)).
+
+---
+
+Use um dos cabeçalhos acima conforme a persona classificada; o restante do
+relatório (Resumo em diante) é igual para as duas.
 
 ## Resumo
 

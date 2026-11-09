@@ -38,6 +38,29 @@ Princípios a seguir ao contribuir:
 - **Caminhos autocontidos.** Refira-se apenas a caminhos dentro do pacote
   (`context/`, `skills/`, `examples/`).
 
+## Personas
+
+O pacote serve o Agente Especialista em Desenvolvimento Fluig (TOTVS) para dois
+perfis de desenvolvedor. A persona é classificada pela cascata de
+[`context/persona-routing.md`](context/persona-routing.md) e toda skill respeita
+sempre [`context/platform-constitution.md`](context/platform-constitution.md). A
+persona é decidida pelo **destino da entrega**, não pelo cargo. As regras
+exclusivas da Store — prefixo de parceiro (`partner-store-*`), `component.xml`,
+validação de licença/slot (`/license/api/v1/slots/`) e relatório de pré-review
+persistido — **nunca** entram no código de um Consultor. Empacotamento EAR e
+`simple.deploy` são **estruturais** (descrevem o projeto, não a persona).
+
+- **Consultor (Cliente):** solução exclusiva para uma empresa — core de
+  `context/` + `platform-constitution.md` (e `backend-java-maven.md` quando a
+  estrutura for Maven/Java).
+- **Parceiro (Store):** produto publicado na Store do TOTVS Fluig — core +
+  `partner-store-*.md`, com prefixo obrigatório e saída de revisão persistida em
+  arquivo.
+
+Ao contribuir com uma skill, verifique se ela precisa de um "Passo 0 — Persona"
+que linka `context/persona-routing.md` antes de aplicar regra exclusiva de uma
+das duas personas.
+
 ## Estrutura do repositório
 
 ```text
@@ -104,7 +127,8 @@ previsível:
 - **Exemplo de Uso** — aponta para a referência correspondente em `examples/`.
 - **Checklist de Validação** — as verificações a fazer antes de entregar o resultado.
 
-As skills de revisão (`fluig-code-review`, `review-*`) seguem a mesma forma, mas
+As skills de revisão (`fluig-code-review`, `fluig-code-review-*`, incluindo as
+exclusivas de parceiro `fluig-code-review-partner-*`) seguem a mesma forma, mas
 classificam os achados por severidade e referenciam a regra correspondente em
 `context/`.
 
@@ -137,7 +161,18 @@ regra em uma skill, verifique se ela já existe em:
 | `context/architecture.md` | Artefatos, pontos de extensão, ciclo de vida, estrutura oficial de pastas/arquivos. |
 | `context/technologies.md` | Tecnologias públicas de customização (ES6+, libs client-side, runtime server-side). |
 | `context/conventions.md` | Padrões de código, i18n, segurança via APIs públicas, chamadas REST públicas. |
+| `context/conventions-form.md` | Convenções de Form: estrutura base, campos, tabela Pai x Filho, i18n de formulários. |
 | `context/style-guide.md` | Componentes, grid, helpers e variáveis CSS de tema (`var(--fs-color-*)`). |
+| `context/business-components.md` | Componentes de Negócio nativos a reusar. |
+| `context/datasets-nativos.md` | Datasets nativos do Fluig a reusar. |
+| `context/backend-java-maven.md` | Backend Java e projeto Maven multi-módulo (EAR, dependências/plugins, Nexus, JNDI, DAO, persistência, REST, i18n Java). Genérico para qualquer persona. |
+| `context/processo-bpm.md` | Processos BPM, formulários e ciclo de vida de workflow. |
+| `context/writing-style-guide.md` | Estilo de escrita para documentação do pacote. |
+| `context/platform-constitution.md` | As 3 regras técnicas base válidas para toda persona. |
+| `context/persona-routing.md` | Cascata de classificação Parceiro × Consultor. |
+| `context/partner-store-architecture.md` | Arquitetura e estrutura exclusivas de Parceiro (Store): módulo de configuração, provisionamento e ciclo de vida. |
+| `context/partner-store-conventions.md` | Convenções e regras exclusivas de Parceiro (prefixo, `application.info`, versionamento). |
+| `context/partner-store-review-rules.md` | Regras de revisão exclusivas de Parceiro para App Review da Store. |
 
 Diretrizes:
 
@@ -167,8 +202,9 @@ Diretrizes:
 - **Diretório e `name` da skill** — kebab-case, idênticos entre si
   (ex.: `fluig-scaffolding-widget`). Agrupe por intenção mentalmente, mas mantenha os
   nomes planos sob `skills/`.
-- **Arquivos de contexto** — atenha-se aos quatro arquivos canônicos; estenda o
-  conteúdo deles em vez de adicionar arquivos avulsos, salvo um domínio novo claro.
+- **Arquivos de contexto** — estenda o conteúdo dos arquivos canônicos existentes
+  em vez de adicionar arquivos avulsos, salvo um domínio novo claro que justifique
+  um arquivo separado (ex.: `processo-bpm.md` para um domínio completo de BPM).
 - **Exemplos** — coloque trechos mínimos sob a pasta do artefato correspondente
   (`examples/widget/`, `examples/layout/`, `examples/form/`, `examples/dataset/`).
 - **Docs de uso** — ao adicionar uma skill, crie `docs/<nome>/README.md` com

@@ -1,0 +1,4450 @@
+[
+    {
+        "key": "flaticon-blocked",
+        "keywords": [
+            "bloqueado",
+            "impedido",
+            "obstruído"
+        ]
+    },
+    {
+        "key": "flaticon-flags",
+        "keywords": [
+            "bandeiras",
+            "estandartes",
+            "signalizações"
+        ]
+    },
+    {
+        "key": "flaticon-single-smile-simple",
+        "keywords": [
+            "sorriso",
+            "feliz",
+            "alegria"
+        ]
+    },
+    {
+        "key": "flaticon-radio-btn-active",
+        "keywords": [
+            "botão de rádio ativo",
+            "selecionado",
+            "opção escolhida"
+        ]
+    },
+    {
+        "key": "flaticon-sentiment-dissatisfied-active",
+        "keywords": [
+            "insatisfeito",
+            "descontente",
+            "desapontado"
+        ]
+    },
+    {
+        "key": "flaticon-single-smile-simple-active",
+        "keywords": [
+            "sorriso ativo",
+            "feliz",
+            "alegria"
+        ]
+    },
+    {
+        "key": "flaticon-view-grid",
+        "keywords": [
+            "visualização em grade",
+            "matriz",
+            "grade de exibição"
+        ]
+    },
+    {
+        "key": "flaticon-add-branch",
+        "keywords": [
+            "adicionar ramo",
+            "incluir seção",
+            "expandir"
+        ]
+    },
+    {
+        "key": "flaticon-ordenation",
+        "keywords": [
+            "ordenação",
+            "classificação",
+            "organização"
+        ]
+    },
+    {
+        "key": "flaticon-view-list",
+        "keywords": [
+            "visualização em lista",
+            "lista",
+            "exibição de itens"
+        ]
+    },
+    {
+        "key": "flaticon-file-date",
+        "keywords": [
+            "data do arquivo",
+            "data",
+            "registro de tempo"
+        ]
+    },
+    {
+        "key": "flaticon-person-refresh",
+        "keywords": [
+            "atualização de pessoa",
+            "renovação",
+            "recarga"
+        ]
+    },
+    {
+        "key": "flaticon-file-internet",
+        "keywords": [
+            "arquivo de internet",
+            "arquivo online",
+            "documento na web"
+        ]
+    },
+    {
+        "key": "flaticon-file-ams",
+        "keywords": [
+            "arquivo AMS",
+            "documento AMS",
+            "arquivo de sistema"
+        ]
+    },
+    {
+        "key": "flaticon-light-bulb",
+        "keywords": [
+            "lâmpada",
+            "ideia",
+            "inovação"
+        ]
+    },
+    {
+        "key": "flaticon-product",
+        "keywords": [
+            "produto",
+            "item",
+            "mercadoria"
+        ]
+    },
+    {
+        "key": "flaticon-btn",
+        "keywords": [
+            "botão",
+            "tecla",
+            "comando"
+        ]
+    },
+    {
+        "key": "flaticon-fluig",
+        "keywords": [
+            "fluido",
+            "fluxo",
+            "dinâmica"
+        ]
+    },
+    {
+        "key": "flaticon-taskcentral",
+        "keywords": [
+            "tarefa central",
+            "centro de tarefas",
+            "gerenciamento de tarefas"
+        ]
+    },
+    {
+        "key": "flaticon-widgets",
+        "keywords": [
+            "widgets",
+            "gadgets",
+            "componentes"
+        ]
+    },
+    {
+        "key": "flaticon-charts-bar-ams",
+        "keywords": [
+            "gráficos de barras AMS",
+            "análise de dados",
+            "visualização gráfica"
+        ]
+    },
+    {
+        "key": "flaticon-ab",
+        "keywords": [
+            "AB",
+            "opção AB",
+            "seção AB"
+        ]
+    },
+    {
+        "key": "flaticon-abc",
+        "keywords": [
+            "ABC",
+            "opção ABC",
+            "seção ABC"
+        ]
+    },
+    {
+        "key": "flaticon-gallery",
+        "keywords": [
+            "galeria",
+            "exibição",
+            "coleção"
+        ]
+    },
+    {
+        "key": "flaticon-no-pic",
+        "keywords": [
+            "sem imagem",
+            "imagem ausente",
+            "não disponível"
+        ]
+    },
+    {
+        "key": "flaticon-airport-shuttle",
+        "keywords": [
+            "transporte de aeroporto",
+            "shuttle",
+            "transferência"
+        ]
+    },
+    {
+        "key": "flaticon-directions-boat",
+        "keywords": [
+            "direções de barco",
+            "navegação",
+            "transporte aquático"
+        ]
+    },
+    {
+        "key": "flaticon-directions-run",
+        "keywords": [
+            "direções para correr",
+            "corrida",
+            "movimento rápido"
+        ]
+    },
+    {
+        "key": "flaticon-directions-transit",
+        "keywords": [
+            "direções de trânsito",
+            "transporte público",
+            "mobilidade"
+        ]
+    },
+    {
+        "key": "flaticon-flight-land",
+        "keywords": [
+            "pouso de voo",
+            "aterrissagem",
+            "chegada"
+        ]
+    },
+    {
+        "key": "flaticon-flight-takeoff",
+        "keywords": [
+            "decolagem de voo",
+            "partida",
+            "início"
+        ]
+    },
+    {
+        "key": "flaticon-local-atm",
+        "keywords": [
+            "caixa eletrônico local",
+            "ATM",
+            "banco"
+        ]
+    },
+    {
+        "key": "flaticon-child-care",
+        "keywords": [
+            "cuidados infantis",
+            "assistência a crianças",
+            "apoio familiar"
+        ]
+    },
+    {
+        "key": "flaticon-company",
+        "keywords": [
+            "empresa",
+            "negócio",
+            "corporação"
+        ]
+    },
+    {
+        "key": "flaticon-free-breakfast",
+        "keywords": [
+            "café da manhã grátis",
+            "refeição",
+            "alimentação"
+        ]
+    },
+    {
+        "key": "flaticon-local-city",
+        "keywords": [
+            "cidade local",
+            "área urbana",
+            "comunidade"
+        ]
+    },
+    {
+        "key": "flaticon-local-coffee",
+        "keywords": [
+            "café local",
+            "café",
+            "estabelecimento"
+        ]
+    },
+    {
+        "key": "flaticon-local-hospital",
+        "keywords": [
+            "hospital local",
+            "clínica",
+            "saúde"
+        ]
+    },
+    {
+        "key": "flaticon-local-library",
+        "keywords": [
+            "biblioteca local",
+            "centro de leitura",
+            "acervo"
+        ]
+    },
+    {
+        "key": "flaticon-local-offer",
+        "keywords": [
+            "oferta local",
+            "promoção",
+            "desconto"
+        ]
+    },
+    {
+        "key": "flaticon-local-parking",
+        "keywords": [
+            "estacionamento local",
+            "vaga",
+            "garagem"
+        ]
+    },
+    {
+        "key": "flaticon-nature",
+        "keywords": [
+            "natureza",
+            "ambiente",
+            "ecologia"
+        ]
+    },
+    {
+        "key": "flaticon-nature-people",
+        "keywords": [
+            "pessoas na natureza",
+            "natureza humana",
+            "ambiente social"
+        ]
+    },
+    {
+        "key": "flaticon-restaurant",
+        "keywords": [
+            "restaurante",
+            "estabelecimento de comida",
+            "refeição"
+        ]
+    },
+    {
+        "key": "flaticon-restaurant-menu",
+        "keywords": [
+            "menu de restaurante",
+            "cardápio",
+            "opções de comida"
+        ]
+    },
+    {
+        "key": "flaticon-snow",
+        "keywords": [
+            "neve",
+            "frio",
+            "inverno"
+        ]
+    },
+    {
+        "key": "flaticon-store-mall-directory",
+        "keywords": [
+            "diretório de loja",
+            "centro comercial",
+            "shopping"
+        ]
+    },
+    {
+        "key": "flaticon-theater",
+        "keywords": [
+            "teatro",
+            "cena",
+            "espetáculo"
+        ]
+    },
+    {
+        "key": "flaticon-toys",
+        "keywords": [
+            "brinquedos",
+            "diversão",
+            "entretenimento"
+        ]
+    },
+    {
+        "key": "flaticon-whatshot",
+        "keywords": [
+            "quente",
+            "popular",
+            "tendência"
+        ]
+    },
+    {
+        "key": "flaticon-border-bottom",
+        "keywords": [
+            "borda inferior",
+            "margem",
+            "limite"
+        ]
+    },
+    {
+        "key": "flaticon-border-color",
+        "keywords": [
+            "cor da borda",
+            "contorno",
+            "estilo"
+        ]
+    },
+    {
+        "key": "flaticon-border-horizontal",
+        "keywords": [
+            "borda horizontal",
+            "margem lateral",
+            "limite horizontal"
+        ]
+    },
+    {
+        "key": "flaticon-border-inner",
+        "keywords": [
+            "borda interna",
+            "contorno interno",
+            "limite interno"
+        ]
+    },
+    {
+        "key": "flaticon-border-left",
+        "keywords": [
+            "borda esquerda",
+            "lado esquerdo",
+            "margem esquerda"
+        ]
+    },
+    {
+        "key": "flaticon-border-outer",
+        "keywords": [
+            "borda externa",
+            "contorno externo",
+            "limite externo"
+        ]
+    },
+    {
+        "key": "flaticon-border-right",
+        "keywords": [
+            "borda direita",
+            "lado direito",
+            "margem direita"
+        ]
+    },
+    {
+        "key": "flaticon-border-style",
+        "keywords": [
+            "estilo da borda",
+            "design",
+            "configuração"
+        ]
+    },
+    {
+        "key": "flaticon-border-top",
+        "keywords": [
+            "borda superior",
+            "margem",
+            "limite superior"
+        ]
+    },
+    {
+        "key": "flaticon-border-vertical",
+        "keywords": [
+            "borda vertical",
+            "margem vertical",
+            "limite vertical"
+        ]
+    },
+    {
+        "key": "flaticon-compare-arrows",
+        "keywords": [
+            "setas de comparação",
+            "comparar",
+            "opções"
+        ]
+    },
+    {
+        "key": "flaticon-div-vertical",
+        "keywords": [
+            "divisão vertical",
+            "divisão em colunas",
+            "estrutura vertical"
+        ]
+    },
+    {
+        "key": "flaticon-font-download",
+        "keywords": [
+            "download de fonte",
+            "baixar fonte",
+            "transferir fonte"
+        ]
+    },
+    {
+        "key": "flaticon-format-list-numbered",
+        "keywords": [
+            "lista numerada",
+            "formatação de lista",
+            "lista ordenada"
+        ]
+    },
+    {
+        "key": "flaticon-h-1",
+        "keywords": [
+            "título 1",
+            "cabeçalho 1",
+            "primeiro nível de título"
+        ]
+    },
+    {
+        "key": "flaticon-link-broken",
+        "keywords": [
+            "link quebrado",
+            "link inválido",
+            "erro de link"
+        ]
+    },
+    {
+        "key": "flaticon-multiline-chart",
+        "keywords": [
+            "gráfico multilinear",
+            "gráfico de múltiplas linhas",
+            "análise de múltiplas linhas"
+        ]
+    },
+    {
+        "key": "flaticon-sentiment-dissatisfied",
+        "keywords": [
+            "sentimento insatisfeito",
+            "descontentamento",
+            "desagrado"
+        ]
+    },
+    {
+        "key": "flaticon-sentiment-neutral",
+        "keywords": [
+            "sentimento neutro",
+            "indiferente",
+            "sem emoção"
+        ]
+    },
+    {
+        "key": "flaticon-sentiment-very-dissatisfied",
+        "keywords": [
+            "muito insatisfeito",
+            "extrema insatisfação",
+            "desagrado intenso"
+        ]
+    },
+    {
+        "key": "flaticon-sentiment-very-satisfied",
+        "keywords": [
+            "muito satisfeito",
+            "satisfação extrema",
+            "alta satisfação"
+        ]
+    },
+    {
+        "key": "flaticon-order",
+        "keywords": [
+            "ordem",
+            "pedido",
+            "classificação"
+        ]
+    },
+    {
+        "key": "flaticon-tint",
+        "keywords": [
+            "tom",
+            "coloração",
+            "tintura"
+        ]
+    },
+    {
+        "key": "flaticon-toc",
+        "keywords": [
+            "índice",
+            "tabela de conteúdo",
+            "sumário"
+        ]
+    },
+    {
+        "key": "flaticon-wrap-text",
+        "keywords": [
+            "quebra de texto",
+            "envolver texto",
+            "texto encadeado"
+        ]
+    },
+    {
+        "key": "flaticon-starchat",
+        "keywords": [
+            "chat estelar",
+            "conversa interestelar",
+            "bate-papo cósmico"
+        ]
+    },
+    {
+        "key": "flaticon-clock",
+        "keywords": [
+            "relógio",
+            "tempo",
+            "horário"
+        ]
+    },
+    {
+        "key": "flaticon-play-filled",
+        "keywords": [
+            "play preenchido",
+            "iniciar",
+            "executar"
+        ]
+    },
+    {
+        "key": "flaticon-d-rotation",
+        "keywords": [
+            "rotação",
+            "giro",
+            "movimento circular"
+        ]
+    },
+    {
+        "key": "flaticon-add-pin",
+        "keywords": [
+            "adicionar pino",
+            "pin novo",
+            "fixar item"
+        ]
+    },
+    {
+        "key": "flaticon-add-shop",
+        "keywords": [
+            "adicionar loja",
+            "criar loja",
+            "estabelecer comércio"
+        ]
+    },
+    {
+        "key": "flaticon-important",
+        "keywords": [
+            "importante",
+            "essencial",
+            "relevante"
+        ]
+    },
+    {
+        "key": "flaticon-life-buoy",
+        "keywords": [
+            "boia salva-vidas",
+            "flutuação",
+            "segurança aquática"
+        ]
+    },
+    {
+        "key": "flaticon-new-releases",
+        "keywords": [
+            "novos lançamentos",
+            "lançamento recente",
+            "novidade"
+        ]
+    },
+    {
+        "key": "flaticon-sync-problem",
+        "keywords": [
+            "problema de sincronização",
+            "erro de sincronia",
+            "conflito de dados"
+        ]
+    },
+    {
+        "key": "flaticon-favorite-person",
+        "keywords": [
+            "pessoa favorita",
+            "favorito",
+            "preferido"
+        ]
+    },
+    {
+        "key": "flaticon-community-person",
+        "keywords": [
+            "pessoa da comunidade",
+            "membro da comunidade",
+            "cidadão"
+        ]
+    },
+    {
+        "key": "flaticon-archive",
+        "keywords": [
+            "arquivo",
+            "armazenamento",
+            "conservação"
+        ]
+    },
+    {
+        "key": "flaticon-unarchive",
+        "keywords": [
+            "desarquivar",
+            "remover do arquivo",
+            "restaurar"
+        ]
+    },
+    {
+        "key": "flaticon-add-box",
+        "keywords": [
+            "adicionar caixa",
+            "nova caixa",
+            "inserir caixa"
+        ]
+    },
+    {
+        "key": "flaticon-juridical",
+        "keywords": [
+            "jurídico",
+            "legal",
+            "relacionado ao direito"
+        ]
+    },
+    {
+        "key": "flaticon-card-user",
+        "keywords": [
+            "cartão de usuário",
+            "identidade de usuário",
+            "perfil"
+        ]
+    },
+    {
+        "key": "flaticon-flight",
+        "keywords": [
+            "voo",
+            "aviação",
+            "transporte aéreo"
+        ]
+    },
+    {
+        "key": "flaticon-directions-car",
+        "keywords": [
+            "direções de carro",
+            "rota de veículo",
+            "navegação automotiva"
+        ]
+    },
+    {
+        "key": "flaticon-child-friendly",
+        "keywords": [
+            "amigável para crianças",
+            "para crianças",
+            "apto para crianças"
+        ]
+    },
+    {
+        "key": "flaticon-account-balance",
+        "keywords": [
+            "saldo de conta",
+            "equilíbrio financeiro",
+            "controle de conta"
+        ]
+    },
+    {
+        "key": "flaticon-cash",
+        "keywords": [
+            "dinheiro",
+            "efetivo",
+            "moeda"
+        ]
+    },
+    {
+        "key": "flaticon-discount",
+        "keywords": [
+            "desconto",
+            "promoção",
+            "redução de preço"
+        ]
+    },
+    {
+        "key": "flaticon-buy-order",
+        "keywords": [
+            "pedido de compra",
+            "ordem de compra",
+            "compra"
+        ]
+    },
+    {
+        "key": "flaticon-mail",
+        "keywords": [
+            "correio",
+            "email",
+            "mensagem"
+        ]
+    },
+    {
+        "key": "flaticon-sale-order",
+        "keywords": [
+            "pedido de venda",
+            "ordem de venda",
+            "transação"
+        ]
+    },
+    {
+        "key": "flaticon-transport",
+        "keywords": [
+            "transporte",
+            "movimentação",
+            "logística"
+        ]
+    },
+    {
+        "key": "flaticon-document-check",
+        "keywords": [
+            "documento verificado",
+            "checar documento",
+            "validar"
+        ]
+    },
+    {
+        "key": "flaticon-last-page",
+        "keywords": [
+            "última página",
+            "página final",
+            "última seção"
+        ]
+    },
+    {
+        "key": "flaticon-first-page",
+        "keywords": [
+            "primeira página",
+            "início",
+            "capa"
+        ]
+    },
+    {
+        "key": "flaticon-remove-user",
+        "keywords": [
+            "remover usuário",
+            "excluir usuário",
+            "desfazer registro"
+        ]
+    },
+    {
+        "key": "flaticon-earth",
+        "keywords": [
+            "terra",
+            "mundo",
+            "planeta"
+        ]
+    },
+    {
+        "key": "flaticon-grid-view",
+        "keywords": [
+            "visualização em grade",
+            "layout em grade",
+            "formato de grade"
+        ]
+    },
+    {
+        "key": "flaticon-unlock",
+        "keywords": [
+            "desbloquear",
+            "liberar",
+            "abrir acesso"
+        ]
+    },
+    {
+        "key": "flaticon-page-default",
+        "keywords": [
+            "página padrão",
+            "configuração padrão",
+            "layout inicial"
+        ]
+    },
+    {
+        "key": "flaticon-adb",
+        "keywords": [
+            "ADB",
+            "Android Debug Bridge",
+            "ferramenta de depuração"
+        ]
+    },
+    {
+        "key": "flaticon-android",
+        "keywords": [
+            "Android",
+            "sistema operacional",
+            "dispositivo Android"
+        ]
+    },
+    {
+        "key": "flaticon-books",
+        "keywords": [
+            "livros",
+            "literatura",
+            "publicações"
+        ]
+    },
+    {
+        "key": "flaticon-border",
+        "keywords": [
+            "borda",
+            "margem",
+            "limite"
+        ]
+    },
+    {
+        "key": "flaticon-camera",
+        "keywords": [
+            "câmera",
+            "fotografia",
+            "captura de imagem"
+        ]
+    },
+    {
+        "key": "flaticon-document-approved",
+        "keywords": [
+            "documento aprovado",
+            "validação",
+            "conformidade"
+        ]
+    },
+    {
+        "key": "flaticon-file-settings",
+        "keywords": [
+            "configurações de arquivo",
+            "ajustes de arquivo",
+            "preferências de arquivo"
+        ]
+    },
+    {
+        "key": "flaticon-bar-chart-ams",
+        "keywords": [
+            "gráfico de barras AMS",
+            "gráfico de barras",
+            "análise de dados"
+        ]
+    },
+    {
+        "key": "flaticon-bar-chart-view",
+        "keywords": [
+            "visualização de gráfico de barras",
+            "gráfico de barras visual",
+            "representação de dados"
+        ]
+    },
+    {
+        "key": "flaticon-bar-chart-time",
+        "keywords": [
+            "gráfico de barras temporal",
+            "análise temporal",
+            "dados ao longo do tempo"
+        ]
+    },
+    {
+        "key": "flaticon-color-background",
+        "keywords": [
+            "fundo colorido",
+            "background colorido",
+            "cor de fundo"
+        ]
+    },
+    {
+        "key": "flaticon-converter",
+        "keywords": [
+            "conversor",
+            "transformador",
+            "adaptador"
+        ]
+    },
+    {
+        "key": "flaticon-crop",
+        "keywords": [
+            "corte",
+            "recorte",
+            "trim"
+        ]
+    },
+    {
+        "key": "flaticon-desktop-list",
+        "keywords": [
+            "lista de desktop",
+            "lista de área de trabalho",
+            "desktop em lista"
+        ]
+    },
+    {
+        "key": "flaticon-desktop-terminal",
+        "keywords": [
+            "terminal de desktop",
+            "console de área de trabalho",
+            "terminal desktop"
+        ]
+    },
+    {
+        "key": "flaticon-digital",
+        "keywords": [
+            "digital",
+            "eletrônico",
+            "virtual"
+        ]
+    },
+    {
+        "key": "flaticon-document-block",
+        "keywords": [
+            "documento bloqueado",
+            "bloqueio de documento",
+            "arquivo bloqueado"
+        ]
+    },
+    {
+        "key": "flaticon-file-star",
+        "keywords": [
+            "arquivo estrela",
+            "documento favorito",
+            "arquivo destacado"
+        ]
+    },
+    {
+        "key": "flaticon-file-awards",
+        "keywords": [
+            "arquivo prêmios",
+            "documento premiado",
+            "arquivo com prêmios"
+        ]
+    },
+    {
+        "key": "flaticon-file-check",
+        "keywords": [
+            "arquivo checado",
+            "documento aprovado",
+            "arquivo validado"
+        ]
+    },
+    {
+        "key": "flaticon-file-clock",
+        "keywords": [
+            "arquivo com relógio",
+            "documento temporizado",
+            "arquivo horário"
+        ]
+    },
+    {
+        "key": "flaticon-document-settings",
+        "keywords": [
+            "configurações de documento",
+            "configuração de arquivo",
+            "ajustes de documento"
+        ]
+    },
+    {
+        "key": "flaticon-file-delete",
+        "keywords": [
+            "arquivo deletado",
+            "documento excluído",
+            "arquivo removido"
+        ]
+    },
+    {
+        "key": "flaticon-change-layout",
+        "keywords": [
+            "alterar layout",
+            "mudar disposição",
+            "modificar layout"
+        ]
+    },
+    {
+        "key": "flaticon-file-person",
+        "keywords": [
+            "arquivo pessoal",
+            "documento de pessoa",
+            "arquivo individual"
+        ]
+    },
+    {
+        "key": "flaticon-document-time",
+        "keywords": [
+            "documento temporal",
+            "arquivo com tempo",
+            "registro de tempo"
+        ]
+    },
+    {
+        "key": "flaticon-person-star",
+        "keywords": [
+            "pessoa estrela",
+            "indivíduo destacado",
+            "pessoa notável"
+        ]
+    },
+    {
+        "key": "flaticon-filter-list",
+        "keywords": [
+            "lista de filtro",
+            "filtro em lista",
+            "filtragem de itens"
+        ]
+    },
+    {
+        "key": "flaticon-icon-flag",
+        "keywords": [
+            "ícone de bandeira",
+            "bandeira",
+            "sinalização"
+        ]
+    },
+    {
+        "key": "flaticon-form-list",
+        "keywords": [
+            "lista de formulário",
+            "formulário em lista",
+            "listagem de formulários"
+        ]
+    },
+    {
+        "key": "flaticon-icon-like",
+        "keywords": [
+            "ícone de curtir",
+            "ícone de gosto",
+            "sinal de aprovação"
+        ]
+    },
+    {
+        "key": "flaticon-linkedin",
+        "keywords": [
+            "linkedin",
+            "rede profissional",
+            "plataforma de carreira"
+        ]
+    },
+    {
+        "key": "flaticon-folder-person",
+        "keywords": [
+            "pasta pessoal",
+            "diretório de pessoa",
+            "pasta de usuário"
+        ]
+    },
+    {
+        "key": "flaticon-person-certify",
+        "keywords": [
+            "pessoa certificada",
+            "indivíduo qualificado",
+            "certificação de pessoa"
+        ]
+    },
+    {
+        "key": "flaticon-person-card",
+        "keywords": [
+            "cartão de pessoa",
+            "identificação de usuário",
+            "cartão pessoal"
+        ]
+    },
+    {
+        "key": "flaticon-person-academy-list",
+        "keywords": [
+            "lista de academia pessoal",
+            "formação acadêmica",
+            "pessoa acadêmica"
+        ]
+    },
+    {
+        "key": "flaticon-person-academy",
+        "keywords": [
+            "pessoa da academia",
+            "acadêmico",
+            "indivíduo educacional"
+        ]
+    },
+    {
+        "key": "flaticon-italic",
+        "keywords": [
+            "itálico",
+            "texto itálico",
+            "estilo itálico"
+        ]
+    },
+    {
+        "key": "flaticon-message-favorite",
+        "keywords": [
+            "mensagem favorita",
+            "mensagem destacada",
+            "mensagem preferida"
+        ]
+    },
+    {
+        "key": "flaticon-checkbox",
+        "keywords": [
+            "caixa de seleção",
+            "checkbox",
+            "seletor de opções"
+        ]
+    },
+    {
+        "key": "flaticon-smile",
+        "keywords": [
+            "sorriso",
+            "rosto feliz",
+            "expressão alegre"
+        ]
+    },
+    {
+        "key": "flaticon-single-smile",
+        "keywords": [
+            "sorriso único",
+            "rosto alegre",
+            "sorriso solitário"
+        ]
+    },
+    {
+        "key": "flaticon-sign",
+        "keywords": [
+            "sinal",
+            "indicação",
+            "marcador"
+        ]
+    },
+    {
+        "key": "flaticon-share",
+        "keywords": [
+            "compartilhar",
+            "dividir",
+            "distribuir"
+        ]
+    },
+    {
+        "key": "flaticon-shape-mask",
+        "keywords": [
+            "máscara de forma",
+            "forma de máscara",
+            "modelo de forma"
+        ]
+    },
+    {
+        "key": "flaticon-process-star",
+        "keywords": [
+            "processo estrela",
+            "etapa destacada",
+            "fase importante"
+        ]
+    },
+    {
+        "key": "flaticon-process-activity",
+        "keywords": [
+            "atividade de processo",
+            "ação de processo",
+            "tarefa de processo"
+        ]
+    },
+    {
+        "key": "flaticon-process-settings",
+        "keywords": [
+            "configurações de processo",
+            "ajustes de processo",
+            "parametrizações de processo"
+        ]
+    },
+    {
+        "key": "flaticon-news",
+        "keywords": [
+            "notícias",
+            "informações",
+            "atualizações"
+        ]
+    },
+    {
+        "key": "flaticon-pin-active",
+        "keywords": [
+            "pino ativo",
+            "marcador ativo",
+            "sinalizador ativo"
+        ]
+    },
+    {
+        "key": "flaticon-align-top",
+        "keywords": [
+            "alinhamento superior",
+            "topo alinhado",
+            "ajuste ao topo"
+        ]
+    },
+    {
+        "key": "flaticon-folder-back",
+        "keywords": [
+            "pasta de volta",
+            "diretório anterior",
+            "pasta retroceder"
+        ]
+    },
+    {
+        "key": "flaticon-search-zoom",
+        "keywords": [
+            "pesquisa ampliada",
+            "zoom na busca",
+            "busca detalhada"
+        ]
+    },
+    {
+        "key": "flaticon-tasks",
+        "keywords": [
+            "tarefas",
+            "atividades",
+            "deveres"
+        ]
+    },
+    {
+        "key": "flaticon-page-builder",
+        "keywords": [
+            "construtor de páginas",
+            "editor de páginas",
+            "ferramenta de páginas"
+        ]
+    },
+    {
+        "key": "flaticon-send",
+        "keywords": [
+            "enviar",
+            "mandar",
+            "submeter"
+        ]
+    },
+    {
+        "key": "flaticon-rocket",
+        "keywords": [
+            "foguete",
+            "lançamento",
+            "viagem espacial"
+        ]
+    },
+    {
+        "key": "flaticon-feed",
+        "keywords": [
+            "alimentação",
+            "fluxo",
+            "conteúdo"
+        ]
+    },
+    {
+        "key": "flaticon-grid",
+        "keywords": [
+            "grade",
+            "grelha",
+            "matriz"
+        ]
+    },
+    {
+        "key": "flaticon-briefcase",
+        "keywords": [
+            "maleta",
+            "estojo",
+            "case"
+        ]
+    },
+    {
+        "key": "flaticon-fast-forward",
+        "keywords": [
+            "avançar",
+            "progredir",
+            "adiante"
+        ]
+    },
+    {
+        "key": "flaticon-database",
+        "keywords": [
+            "banco de dados",
+            "armazenamento",
+            "repositório"
+        ]
+    },
+    {
+        "key": "flaticon-trending-up",
+        "keywords": [
+            "tendência crescente",
+            "crescimento",
+            "avanço"
+        ]
+    },
+    {
+        "key": "flaticon-arrange",
+        "keywords": [
+            "arranjar",
+            "organizar",
+            "dispor"
+        ]
+    },
+    {
+        "key": "flaticon-folder-top-right",
+        "keywords": [
+            "pasta canto superior direito",
+            "diretório superior direito",
+            "pasta na parte superior"
+        ]
+    },
+    {
+        "key": "flaticon-multiple-valor",
+        "keywords": [
+            "múltiplos valores",
+            "valores diversos",
+            "diversidade de valores"
+        ]
+    },
+    {
+        "key": "flaticon-slider",
+        "keywords": [
+            "deslizante",
+            "controle deslizante",
+            "regulador"
+        ]
+    },
+    {
+        "key": "flaticon-sort",
+        "keywords": [
+            "ordenar",
+            "classificar",
+            "dispor"
+        ]
+    },
+    {
+        "key": "flaticon-square-check",
+        "keywords": [
+            "quadrado checado",
+            "quadrado validado",
+            "opção marcada"
+        ]
+    },
+    {
+        "key": "flaticon-bar-chart",
+        "keywords": [
+            "gráfico de barras",
+            "diagrama de barras",
+            "tabela de barras"
+        ]
+    },
+    {
+        "key": "flaticon-bookmark",
+        "keywords": [
+            "marcador",
+            "favorito",
+            "sinalizador"
+        ]
+    },
+    {
+        "key": "flaticon-accessibility",
+        "keywords": [
+            "acessibilidade",
+            "inclusão",
+            "facilidade de acesso"
+        ]
+    },
+    {
+        "key": "flaticon-list",
+        "keywords": [
+            "lista",
+            "relatório",
+            "enumerar"
+        ]
+    },
+    {
+        "key": "flaticon-plugin",
+        "keywords": [
+            "plugin",
+            "complemento",
+            "extensão"
+        ]
+    },
+    {
+        "key": "flaticon-swim-lane",
+        "keywords": [
+            "pista de natação",
+            "faixa de natação",
+            "linha de natação"
+        ]
+    },
+    {
+        "key": "flaticon-align-left",
+        "keywords": [
+            "alinhar à esquerda",
+            "justificar à esquerda",
+            "deslocar para a esquerda"
+        ]
+    },
+    {
+        "key": "flaticon-light",
+        "keywords": [
+            "luz",
+            "iluminação",
+            "brilho"
+        ]
+    },
+    {
+        "key": "flaticon-moon",
+        "keywords": [
+            "lua",
+            "satélite",
+            "astro"
+        ]
+    },
+    {
+        "key": "flaticon-chevron-left",
+        "keywords": [
+            "seta para a esquerda",
+            "indicador esquerdo",
+            "seta esquerda"
+        ]
+    },
+    {
+        "key": "flaticon-minus",
+        "keywords": [
+            "menos",
+            "subtração",
+            "diminuição"
+        ]
+    },
+    {
+        "key": "flaticon-folder",
+        "keywords": [
+            "pasta",
+            "diretório",
+            "arquivo"
+        ]
+    },
+    {
+        "key": "flaticon-menu",
+        "keywords": [
+            "menu",
+            "lista",
+            "navegação"
+        ]
+    },
+    {
+        "key": "flaticon-cloud-download",
+        "keywords": [
+            "download na nuvem",
+            "baixar na nuvem",
+            "salvar na nuvem"
+        ]
+    },
+    {
+        "key": "flaticon-done",
+        "keywords": [
+            "feito",
+            "concluído",
+            "finalizado"
+        ]
+    },
+    {
+        "key": "flaticon-tablet",
+        "keywords": [
+            "tablet",
+            "computador portátil",
+            "dispositivo móvel"
+        ]
+    },
+    {
+        "key": "flaticon-view-slash",
+        "keywords": [
+            "visualização cortada",
+            "visão descontinuada",
+            "exibição excluída"
+        ]
+    },
+    {
+        "key": "flaticon-upload",
+        "keywords": [
+            "upload",
+            "envio",
+            "carregar"
+        ]
+    },
+    {
+        "key": "flaticon-cloud",
+        "keywords": [
+            "nuvem",
+            "computação em nuvem",
+            "armazenamento na nuvem"
+        ]
+    },
+    {
+        "key": "flaticon-color",
+        "keywords": [
+            "cor",
+            "tinta",
+            "matiz"
+        ]
+    },
+    {
+        "key": "flaticon-align-center",
+        "keywords": [
+            "alinhar ao centro",
+            "justificar ao centro",
+            "centralizar"
+        ]
+    },
+    {
+        "key": "flaticon-arrow-left",
+        "keywords": [
+            "seta para a esquerda",
+            "indicador esquerdo",
+            "seta esquerda"
+        ]
+    },
+    {
+        "key": "flaticon-calendar",
+        "keywords": [
+            "calendário",
+            "agenda",
+            "datas"
+        ]
+    },
+    {
+        "key": "flaticon-filter",
+        "keywords": [
+            "filtro",
+            "filtragem",
+            "seletor"
+        ]
+    },
+    {
+        "key": "flaticon-filter-active",
+        "keywords": [
+            "filtro ativo",
+            "filtro em uso",
+            "seletor ativo"
+        ]
+    },
+    {
+        "key": "flaticon-twitter",
+        "keywords": [
+            "twitter",
+            "rede social",
+            "microblog"
+        ]
+    },
+    {
+        "key": "flaticon-undo",
+        "keywords": [
+            "desfazer",
+            "reverter",
+            "anular"
+        ]
+    },
+    {
+        "key": "flaticon-view",
+        "keywords": [
+            "visualização",
+            "exibição",
+            "perspectiva"
+        ]
+    },
+    {
+        "key": "flaticon-arrow-up",
+        "keywords": [
+            "seta para cima",
+            "indicador acima",
+            "seta ascendente"
+        ]
+    },
+    {
+        "key": "flaticon-square-plus",
+        "keywords": [
+            "quadrado mais",
+            "adicionar",
+            "incrementar"
+        ]
+    },
+    {
+        "key": "flaticon-mobile",
+        "keywords": [
+            "móvel",
+            "dispositivo móvel",
+            "telefone celular"
+        ]
+    },
+    {
+        "key": "flaticon-circle-dropdown",
+        "keywords": [
+            "círculo suspenso",
+            "menu suspenso",
+            "opção de círculo"
+        ]
+    },
+    {
+        "key": "flaticon-exit",
+        "keywords": [
+            "sair",
+            "abandonar",
+            "encerrar"
+        ]
+    },
+    {
+        "key": "flaticon-h1",
+        "keywords": [
+            "título 1",
+            "cabeçalho 1",
+            "seção 1"
+        ]
+    },
+    {
+        "key": "flaticon-language",
+        "keywords": [
+            "idioma",
+            "linguagem",
+            "língua"
+        ]
+    },
+    {
+        "key": "flaticon-edit-square",
+        "keywords": [
+            "editar quadrado",
+            "modificar",
+            "alterar"
+        ]
+    },
+    {
+        "key": "flaticon-youtube",
+        "keywords": [
+            "youtube",
+            "plataforma de vídeo",
+            "rede social de vídeo"
+        ]
+    },
+    {
+        "key": "flaticon-circle-initial",
+        "keywords": [
+            "círculo inicial",
+            "círculo base",
+            "círculo padrão"
+        ]
+    },
+    {
+        "key": "flaticon-mortarboard",
+        "keywords": [
+            "capelo",
+            "chapéu de formatura",
+            "toga"
+        ]
+    },
+    {
+        "key": "flaticon-video-rec",
+        "keywords": [
+            "gravação de vídeo",
+            "captura de vídeo",
+            "filmagem"
+        ]
+    },
+    {
+        "key": "flaticon-star",
+        "keywords": [
+            "estrela",
+            "astro",
+            "símbolo"
+        ]
+    },
+    {
+        "key": "flaticon-circle-plus",
+        "keywords": [
+            "círculo mais",
+            "adicionar círculo",
+            "incrementar círculo"
+        ]
+    },
+    {
+        "key": "flaticon-circle-bold",
+        "keywords": [
+            "círculo negrito",
+            "círculo forte",
+            "círculo destacado"
+        ]
+    },
+    {
+        "key": "flaticon-trash",
+        "keywords": [
+            "lixo",
+            "remover",
+            "excluir"
+        ]
+    },
+    {
+        "key": "flaticon-add-plus",
+        "keywords": [
+            "adicionar mais",
+            "incluir",
+            "incrementar"
+        ]
+    },
+    {
+        "key": "flaticon-more-horiz",
+        "keywords": [
+            "mais horizontal",
+            "opções adicionais",
+            "mais opções"
+        ]
+    },
+    {
+        "key": "flaticon-user-search",
+        "keywords": [
+            "pesquisa de usuário",
+            "buscar usuário",
+            "encontrar usuário"
+        ]
+    },
+    {
+        "key": "flaticon-redo",
+        "keywords": [
+            "refazer",
+            "repetir",
+            "fazer novamente"
+        ]
+    },
+    {
+        "key": "flaticon-facebook",
+        "keywords": [
+            "facebook",
+            "rede social",
+            "plataforma social"
+        ]
+    },
+    {
+        "key": "flaticon-radio-btn",
+        "keywords": [
+            "botão de rádio",
+            "seleção",
+            "opção"
+        ]
+    },
+    {
+        "key": "flaticon-play",
+        "keywords": [
+            "tocar",
+            "executar",
+            "iniciar"
+        ]
+    },
+    {
+        "key": "flaticon-person-add",
+        "keywords": [
+            "adicionar pessoa",
+            "incluir usuário",
+            "inscrever"
+        ]
+    },
+    {
+        "key": "flaticon-square",
+        "keywords": [
+            "quadrado",
+            "forma quadrada",
+            "bloco"
+        ]
+    },
+    {
+        "key": "flaticon-sidebar",
+        "keywords": [
+            "barra lateral",
+            "painel lateral",
+            "menu lateral"
+        ]
+    },
+    {
+        "key": "flaticon-message",
+        "keywords": [
+            "mensagem",
+            "comunicação",
+            "notificação"
+        ]
+    },
+    {
+        "key": "flaticon-rating",
+        "keywords": [
+            "avaliação",
+            "classificação",
+            "nota"
+        ]
+    },
+    {
+        "key": "flaticon-paperclip",
+        "keywords": [
+            "clipe",
+            "anexo",
+            "prender"
+        ]
+    },
+    {
+        "key": "flaticon-fork",
+        "keywords": [
+            "garfo",
+            "bifurcação",
+            "divisão"
+        ]
+    },
+    {
+        "key": "flaticon-check-circle",
+        "keywords": [
+            "círculo de verificação",
+            "check",
+            "marca"
+        ]
+    },
+    {
+        "key": "flaticon-image",
+        "keywords": [
+            "imagem",
+            "foto",
+            "ilustração"
+        ]
+    },
+    {
+        "key": "flaticon-align-right",
+        "keywords": [
+            "alinhar à direita",
+            "justificar à direita",
+            "deslocar para a direita"
+        ]
+    },
+    {
+        "key": "flaticon-refresh",
+        "keywords": [
+            "atualizar",
+            "renovar",
+            "recarregar"
+        ]
+    },
+    {
+        "key": "flaticon-copy",
+        "keywords": [
+            "cópia",
+            "duplicar",
+            "reproduzir"
+        ]
+    },
+    {
+        "key": "flaticon-pages",
+        "keywords": [
+            "páginas",
+            "folhas",
+            "documentos"
+        ]
+    },
+    {
+        "key": "flaticon-hamburguer-menu",
+        "keywords": [
+            "menu",
+            "navegação",
+            "opções"
+        ]
+    },
+    {
+        "key": "flaticon-close",
+        "keywords": [
+            "fechar",
+            "encerrar",
+            "sair"
+        ]
+    },
+    {
+        "key": "flaticon-info",
+        "keywords": [
+            "informação",
+            "dados",
+            "detalhes"
+        ]
+    },
+    {
+        "key": "flaticon-star-active",
+        "keywords": [
+            "estrela",
+            "favorito",
+            "destacado"
+        ]
+    },
+    {
+        "key": "flaticon-email",
+        "keywords": [
+            "e-mail",
+            "correio",
+            "mensagem"
+        ]
+    },
+    {
+        "key": "flaticon-headphones",
+        "keywords": [
+            "fones de ouvido",
+            "auriculares",
+            "som"
+        ]
+    },
+    {
+        "key": "flaticon-more-vert",
+        "keywords": [
+            "mais opções",
+            "mais",
+            "menu vertical"
+        ]
+    },
+    {
+        "key": "flaticon-multiple-register",
+        "keywords": [
+            "múltiplos registros",
+            "vários",
+            "diversos"
+        ]
+    },
+    {
+        "key": "flaticon-circle-slash",
+        "keywords": [
+            "círculo cortado",
+            "cancelar",
+            "remover"
+        ]
+    },
+    {
+        "key": "flaticon-code",
+        "keywords": [
+            "código",
+            "programação",
+            "scripts"
+        ]
+    },
+    {
+        "key": "flaticon-bell",
+        "keywords": [
+            "sino",
+            "notificação",
+            "alerta"
+        ]
+    },
+    {
+        "key": "flaticon-wallet",
+        "keywords": [
+            "carteira",
+            "bolsa",
+            "dinheiro"
+        ]
+    },
+    {
+        "key": "flaticon-book",
+        "keywords": [
+            "livro",
+            "obra",
+            "publicação"
+        ]
+    },
+    {
+        "key": "flaticon-book-open",
+        "keywords": [
+            "livro aberto",
+            "ler",
+            "estudo"
+        ]
+    },
+    {
+        "key": "flaticon-import",
+        "keywords": [
+            "importar",
+            "trazer",
+            "receber"
+        ]
+    },
+    {
+        "key": "flaticon-download",
+        "keywords": [
+            "baixar",
+            "download",
+            "receber"
+        ]
+    },
+    {
+        "key": "flaticon-desktop",
+        "keywords": [
+            "desktop",
+            "computador",
+            "mesa"
+        ]
+    },
+    {
+        "key": "flaticon-settings",
+        "keywords": [
+            "configurações",
+            "ajustes",
+            "preferências"
+        ]
+    },
+    {
+        "key": "flaticon-component-outline",
+        "keywords": [
+            "contorno de componente",
+            "forma",
+            "esboço"
+        ]
+    },
+    {
+        "key": "flaticon-arrow-right",
+        "keywords": [
+            "seta para a direita",
+            "avançar",
+            "direção"
+        ]
+    },
+    {
+        "key": "flaticon-link",
+        "keywords": [
+            "link",
+            "conexão",
+            "vínculo"
+        ]
+    },
+    {
+        "key": "flaticon-chevron-right",
+        "keywords": [
+            "chevron para a direita",
+            "seta",
+            "direção"
+        ]
+    },
+    {
+        "key": "flaticon-awards",
+        "keywords": [
+            "prêmios",
+            "conquistas",
+            "reconhecimento"
+        ]
+    },
+    {
+        "key": "flaticon-cloud-upload",
+        "keywords": [
+            "upload para a nuvem",
+            "carregar",
+            "enviar"
+        ]
+    },
+    {
+        "key": "flaticon-lock",
+        "keywords": [
+            "cadeado",
+            "segurança",
+            "fechar"
+        ]
+    },
+    {
+        "key": "flaticon-question",
+        "keywords": [
+            "pergunta",
+            "dúvida",
+            "interrogação"
+        ]
+    },
+    {
+        "key": "flaticon-chevron-up",
+        "keywords": [
+            "chevron para cima",
+            "seta",
+            "direção"
+        ]
+    },
+    {
+        "key": "flaticon-move",
+        "keywords": [
+            "mover",
+            "deslocar",
+            "transferir"
+        ]
+    },
+    {
+        "key": "flaticon-file",
+        "keywords": [
+            "arquivo",
+            "documento",
+            "dado"
+        ]
+    },
+    {
+        "key": "flaticon-galery",
+        "keywords": [
+            "galeria",
+            "coleção",
+            "exposição"
+        ]
+    },
+    {
+        "key": "flaticon-export",
+        "keywords": [
+            "exportar",
+            "enviar",
+            "transmitir"
+        ]
+    },
+    {
+        "key": "flaticon-sections",
+        "keywords": [
+            "seções",
+            "partes",
+            "segmentos"
+        ]
+    },
+    {
+        "key": "flaticon-cancel",
+        "keywords": [
+            "cancelar",
+            "interromper",
+            "abortar"
+        ]
+    },
+    {
+        "key": "flaticon-chevron-down",
+        "keywords": [
+            "chevron para baixo",
+            "seta",
+            "direção"
+        ]
+    },
+    {
+        "key": "flaticon-input-text",
+        "keywords": [
+            "campo de texto",
+            "entrada",
+            "dados"
+        ]
+    },
+    {
+        "key": "flaticon-sliders",
+        "keywords": [
+            "deslizadores",
+            "controle",
+            "ajustes"
+        ]
+    },
+    {
+        "key": "flaticon-music",
+        "keywords": [
+            "música",
+            "som",
+            "melodia"
+        ]
+    },
+    {
+        "key": "flaticon-alert",
+        "keywords": [
+            "alerta",
+            "aviso",
+            "notificação"
+        ]
+    },
+    {
+        "key": "flaticon-shop",
+        "keywords": [
+            "loja",
+            "compras",
+            "vendas"
+        ]
+    },
+    {
+        "key": "flaticon-home",
+        "keywords": [
+            "casa",
+            "lar",
+            "residência"
+        ]
+    },
+    {
+        "key": "flaticon-person",
+        "keywords": [
+            "pessoa",
+            "indivíduo",
+            "ser humano"
+        ]
+    },
+    {
+        "key": "flaticon-circle",
+        "keywords": [
+            "círculo",
+            "forma",
+            "contorno"
+        ]
+    },
+    {
+        "key": "flaticon-tab",
+        "keywords": [
+            "aba",
+            "seção",
+            "página"
+        ]
+    },
+    {
+        "key": "flaticon-div",
+        "keywords": [
+            "divisão",
+            "parte",
+            "seção"
+        ]
+    },
+    {
+        "key": "flaticon-play-circle",
+        "keywords": [
+            "círculo de play",
+            "tocar",
+            "reproduzir"
+        ]
+    },
+    {
+        "key": "flaticon-group-person",
+        "keywords": [
+            "grupo de pessoas",
+            "equipe",
+            "coletivo"
+        ]
+    },
+    {
+        "key": "flaticon-arrow-down",
+        "keywords": [
+            "seta para baixo",
+            "descer",
+            "direção"
+        ]
+    },
+    {
+        "key": "flaticon-check-square",
+        "keywords": [
+            "quadrado de verificação",
+            "confirmar",
+            "aprovar"
+        ]
+    },
+    {
+        "key": "flaticon-search",
+        "keywords": [
+            "buscar",
+            "procurar",
+            "investigar"
+        ]
+    },
+    {
+        "key": "flaticon-triangle",
+        "keywords": [
+            "triângulo",
+            "forma",
+            "figura"
+        ]
+    },
+    {
+        "key": "flaticon-drag-n-drop",
+        "keywords": [
+            "arrastar e soltar",
+            "mover",
+            "transferir"
+        ]
+    },
+    {
+        "key": "flaticon-search-form",
+        "keywords": [
+            "formulário de busca",
+            "pesquisa",
+            "consulta"
+        ]
+    },
+    {
+        "key": "flaticon-board",
+        "keywords": [
+            "quadro",
+            "painel",
+            "tela"
+        ]
+    },
+    {
+        "key": "flaticon-documents",
+        "keywords": [
+            "documentos",
+            "papéis",
+            "registros"
+        ]
+    },
+    {
+        "key": "flaticon-message-question",
+        "keywords": [
+            "mensagem de pergunta",
+            "dúvida",
+            "interrogação"
+        ]
+    },
+    {
+        "key": "flaticon-horizontal-align-center",
+        "keywords": [
+            "alinhar horizontalmente",
+            "centro",
+            "equilibrar"
+        ]
+    },
+    {
+        "key": "flaticon-horizontal-align-left",
+        "keywords": [
+            "alinhar à esquerda",
+            "margem",
+            "disposição"
+        ]
+    },
+    {
+        "key": "flaticon-horizontal-align-right",
+        "keywords": [
+            "alinhar à direita",
+            "margem",
+            "disposição"
+        ]
+    },
+    {
+        "key": "flaticon-build",
+        "keywords": [
+            "construir",
+            "montar",
+            "criar"
+        ]
+    },
+    {
+        "key": "flaticon-pin-map",
+        "keywords": [
+            "pin de mapa",
+            "localização",
+            "marcador"
+        ]
+    },
+    {
+        "key": "flaticon-bar-code",
+        "keywords": [
+            "código de barras",
+            "identificação",
+            "produto"
+        ]
+    },
+    {
+        "key": "flaticon-alarm",
+        "keywords": [
+            "alarme",
+            "aviso",
+            "alerta"
+        ]
+    },
+    {
+        "key": "flaticon-all-inbox",
+        "keywords": [
+            "todas as mensagens",
+            "inbox",
+            "entrada"
+        ]
+    },
+    {
+        "key": "flaticon-assignment",
+        "keywords": [
+            "atribuição",
+            "tarefa",
+            "designação"
+        ]
+    },
+    {
+        "key": "flaticon-assignment-ind",
+        "keywords": [
+            "atribuição individual",
+            "tarefa individual",
+            "designação individual"
+        ]
+    },
+    {
+        "key": "flaticon-assignment-late",
+        "keywords": [
+            "atribuição atrasada",
+            "tarefa atrasada",
+            "designação atrasada"
+        ]
+    },
+    {
+        "key": "flaticon-assignment-return",
+        "keywords": [
+            "retorno de atribuição",
+            "devolução de tarefa",
+            "retorno de designação"
+        ]
+    },
+    {
+        "key": "flaticon-assignment-returned",
+        "keywords": [
+            "atribuição devolvida",
+            "tarefa retornada",
+            "designação devolvida"
+        ]
+    },
+    {
+        "key": "flaticon-assignment-turned-in",
+        "keywords": [
+            "atribuição entregue",
+            "tarefa submetida",
+            "designação apresentada"
+        ]
+    },
+    {
+        "key": "flaticon-assistant",
+        "keywords": [
+            "assistente",
+            "ajudante",
+            "auxiliar"
+        ]
+    },
+    {
+        "key": "flaticon-cash-transfer",
+        "keywords": [
+            "transferência de dinheiro",
+            "movimentação de caixa",
+            "transação financeira"
+        ]
+    },
+    {
+        "key": "flaticon-collections-bookmark",
+        "keywords": [
+            "marcador de coleções",
+            "favoritos de coleções",
+            "coleção destacada"
+        ]
+    },
+    {
+        "key": "flaticon-cut",
+        "keywords": [
+            "cortar",
+            "recortar",
+            "seccionar"
+        ]
+    },
+    {
+        "key": "flaticon-date-range",
+        "keywords": [
+            "intervalo de datas",
+            "faixa de datas",
+            "período de datas"
+        ]
+    },
+    {
+        "key": "flaticon-event",
+        "keywords": [
+            "evento",
+            "ocorrência",
+            "acontecimento"
+        ]
+    },
+    {
+        "key": "flaticon-event-note",
+        "keywords": [
+            "nota de evento",
+            "anotação de evento",
+            "registro de evento"
+        ]
+    },
+    {
+        "key": "flaticon-expand",
+        "keywords": [
+            "expandir",
+            "ampliar",
+            "desdobrar"
+        ]
+    },
+    {
+        "key": "flaticon-extension",
+        "keywords": [
+            "extensão",
+            "ampliação",
+            "expansão"
+        ]
+    },
+    {
+        "key": "flaticon-find-replace",
+        "keywords": [
+            "encontrar e substituir",
+            "localizar e trocar",
+            "achar e mudar"
+        ]
+    },
+    {
+        "key": "flaticon-fit-screen",
+        "keywords": [
+            "ajustar à tela",
+            "adaptar à tela",
+            "dimensionar para a tela"
+        ]
+    },
+    {
+        "key": "flaticon-gavel",
+        "keywords": [
+            "martelo",
+            "tribunal",
+            "decisão judicial"
+        ]
+    },
+    {
+        "key": "flaticon-heart",
+        "keywords": [
+            "coração",
+            "afeto",
+            "amor"
+        ]
+    },
+    {
+        "key": "flaticon-heart-active",
+        "keywords": [
+            "coração ativo",
+            "coração preenchido",
+            "amor em ação"
+        ]
+    },
+    {
+        "key": "flaticon-hourglass",
+        "keywords": [
+            "ampulheta",
+            "relógio de areia",
+            "temporizador"
+        ]
+    },
+    {
+        "key": "flaticon-import-export",
+        "keywords": [
+            "importação e exportação",
+            "comércio internacional",
+            "movimentação de mercadorias"
+        ]
+    },
+    {
+        "key": "flaticon-inbox",
+        "keywords": [
+            "caixa de entrada",
+            "entrada de mensagens",
+            "recebimentos"
+        ]
+    },
+    {
+        "key": "flaticon-internal-view",
+        "keywords": [
+            "visualização interna",
+            "exibição interna",
+            "perspectiva interna"
+        ]
+    },
+    {
+        "key": "flaticon-like",
+        "keywords": [
+            "gostar",
+            "curtir",
+            "aprovar"
+        ]
+    },
+    {
+        "key": "flaticon-log-download",
+        "keywords": [
+            "download de registro",
+            "baixar log",
+            "salvar histórico"
+        ]
+    },
+    {
+        "key": "flaticon-maximize",
+        "keywords": [
+            "maximizar",
+            "ampliar",
+            "expandir"
+        ]
+    },
+    {
+        "key": "flaticon-minimize",
+        "keywords": [
+            "minimizar",
+            "reduzir",
+            "encolher"
+        ]
+    },
+    {
+        "key": "flaticon-minus-box",
+        "keywords": [
+            "caixa de subtração",
+            "menos",
+            "remover"
+        ]
+    },
+    {
+        "key": "flaticon-monetization-on",
+        "keywords": [
+            "monetização ativada",
+            "geração de receita",
+            "ativação de ganhos"
+        ]
+    },
+    {
+        "key": "flaticon-money-off",
+        "keywords": [
+            "dinheiro off",
+            "desconto",
+            "redução de preço"
+        ]
+    },
+    {
+        "key": "flaticon-move-to-inbox",
+        "keywords": [
+            "mover para a caixa de entrada",
+            "transferir para recebimentos",
+            "enviar para entrada"
+        ]
+    },
+    {
+        "key": "flaticon-next-step",
+        "keywords": [
+            "próximo passo",
+            "etapa seguinte",
+            "avanço"
+        ]
+    },
+    {
+        "key": "flaticon-pageview",
+        "keywords": [
+            "visualização de página",
+            "acesso à página",
+            "exibição de página"
+        ]
+    },
+    {
+        "key": "flaticon-perm-contact-calendar",
+        "keywords": [
+            "contato de calendário permanente",
+            "agenda fixa",
+            "calendário de contatos"
+        ]
+    },
+    {
+        "key": "flaticon-pin",
+        "keywords": [
+            "pino",
+            "fixador",
+            "ancora"
+        ]
+    },
+    {
+        "key": "flaticon-play-for-work",
+        "keywords": [
+            "tocar para trabalho",
+            "executar para trabalho",
+            "reproduzir para serviço"
+        ]
+    },
+    {
+        "key": "flaticon-present-to-all",
+        "keywords": [
+            "apresentar a todos",
+            "mostrar a todos",
+            "exibir para todos"
+        ]
+    },
+    {
+        "key": "flaticon-print",
+        "keywords": [
+            "imprimir",
+            "cópia",
+            "produção impressa"
+        ]
+    },
+    {
+        "key": "flaticon-restore",
+        "keywords": [
+            "restaurar",
+            "recuperar",
+            "reestabelecer"
+        ]
+    },
+    {
+        "key": "flaticon-settings-applications",
+        "keywords": [
+            "configurações de aplicativos",
+            "ajustes de software",
+            "preferências de app"
+        ]
+    },
+    {
+        "key": "flaticon-settings-phone",
+        "keywords": [
+            "configurações de telefone",
+            "ajustes de celular",
+            "preferências de telefone"
+        ]
+    },
+    {
+        "key": "flaticon-settings-power",
+        "keywords": [
+            "configurações de energia",
+            "ajustes de potência",
+            "preferências de energia"
+        ]
+    },
+    {
+        "key": "flaticon-settings-voice",
+        "keywords": [
+            "configurações de voz",
+            "ajustes de áudio",
+            "preferências de som"
+        ]
+    },
+    {
+        "key": "flaticon-shopping-basket",
+        "keywords": [
+            "cesta de compras",
+            "carrinho",
+            "sacola"
+        ]
+    },
+    {
+        "key": "flaticon-speaker-notes",
+        "keywords": [
+            "notas do apresentador",
+            "anotações do orador",
+            "comentários do palestrante"
+        ]
+    },
+    {
+        "key": "flaticon-speaker-notes-off",
+        "keywords": [
+            "notas do apresentador desligadas",
+            "anotações ocultas",
+            "comentários do palestrante desativados"
+        ]
+    },
+    {
+        "key": "flaticon-system-tools",
+        "keywords": [
+            "ferramentas do sistema",
+            "utensílios do sistema",
+            "instrumentos do sistema"
+        ]
+    },
+    {
+        "key": "flaticon-timeline-social",
+        "keywords": [
+            "linha do tempo social",
+            "cronologia social",
+            "histórico social"
+        ]
+    },
+    {
+        "key": "flaticon-today",
+        "keywords": [
+            "hoje",
+            "data atual",
+            "dia atual"
+        ]
+    },
+    {
+        "key": "flaticon-traffic",
+        "keywords": [
+            "tráfego",
+            "fluxo",
+            "circulação"
+        ]
+    },
+    {
+        "key": "flaticon-view-column",
+        "keywords": [
+            "visualização em coluna",
+            "exibição em coluna",
+            "perspectiva em coluna"
+        ]
+    },
+    {
+        "key": "flaticon-view-compact",
+        "keywords": [
+            "visualização compacta",
+            "exibição condensada",
+            "perspectiva reduzida"
+        ]
+    },
+    {
+        "key": "flaticon-view-quilt",
+        "keywords": [
+            "visualização em colcha",
+            "exibição patchwork",
+            "perspectiva em mosaico"
+        ]
+    },
+    {
+        "key": "flaticon-zoom-out",
+        "keywords": [
+            "zoom para fora",
+            "afastar",
+            "diminuir"
+        ]
+    },
+    {
+        "key": "flaticon-hearth-active",
+        "keywords": [
+            "coração ativo",
+            "coração preenchido",
+            "amor em ação"
+        ]
+    },
+    {
+        "key": "flaticon-hearth",
+        "keywords": [
+            "coração",
+            "afeto",
+            "amor"
+        ]
+    },
+    {
+        "key": "flaticon-audiotrack",
+        "keywords": [
+            "faixa de áudio",
+            "trilha sonora",
+            "som"
+        ]
+    },
+    {
+        "key": "flaticon-av-timer",
+        "keywords": [
+            "cronômetro de vídeo",
+            "temporizador de áudio",
+            "temporizador"
+        ]
+    },
+    {
+        "key": "flaticon-close-caption",
+        "keywords": [
+            "legenda oculta",
+            "subtítulo",
+            "texto assistivo"
+        ]
+    },
+    {
+        "key": "flaticon-hearing",
+        "keywords": [
+            "audição",
+            "escuta",
+            "ouvir"
+        ]
+    },
+    {
+        "key": "flaticon-mic",
+        "keywords": [
+            "microfone",
+            "captador de som",
+            "gravador"
+        ]
+    },
+    {
+        "key": "flaticon-mic-off",
+        "keywords": [
+            "microfone desligado",
+            "silenciar",
+            "desligar o som"
+        ]
+    },
+    {
+        "key": "flaticon-ondemand-video",
+        "keywords": [
+            "vídeo sob demanda",
+            "vídeo a pedido",
+            "streaming"
+        ]
+    },
+    {
+        "key": "flaticon-playlist-add",
+        "keywords": [
+            "adicionar à lista de reprodução",
+            "playlist",
+            "sequência de músicas"
+        ]
+    },
+    {
+        "key": "flaticon-playlist-add-check",
+        "keywords": [
+            "playlist verificada",
+            "adicionar à lista confirmada",
+            "adicionar à lista"
+        ]
+    },
+    {
+        "key": "flaticon-playlist-play",
+        "keywords": [
+            "tocar lista de reprodução",
+            "executar playlist",
+            "iniciar reprodução"
+        ]
+    },
+    {
+        "key": "flaticon-subtitles",
+        "keywords": [
+            "legendas",
+            "subtítulos",
+            "texto de apoio"
+        ]
+    },
+    {
+        "key": "flaticon-volume",
+        "keywords": [
+            "volume",
+            "intensidade sonora",
+            "nível de som"
+        ]
+    },
+    {
+        "key": "flaticon-volume-off",
+        "keywords": [
+            "silêncio",
+            "sem som",
+            "volume desligado"
+        ]
+    },
+    {
+        "key": "flaticon-airline-seat",
+        "keywords": [
+            "assento de avião",
+            "cadeira de bordo",
+            "poltrona"
+        ]
+    },
+    {
+        "key": "flaticon-airline-seat-recline-normal",
+        "keywords": [
+            "assento reclinável",
+            "cadeira ajustável",
+            "poltrona reclinável"
+        ]
+    },
+    {
+        "key": "flaticon-airline-suite",
+        "keywords": [
+            "suíte de avião",
+            "cabine",
+            "área de descanso"
+        ]
+    },
+    {
+        "key": "flaticon-call-end",
+        "keywords": [
+            "encerrar chamada",
+            "finalizar ligação",
+            "desconectar"
+        ]
+    },
+    {
+        "key": "flaticon-contacts",
+        "keywords": [
+            "contatos",
+            "lista de contatos",
+            "endereços"
+        ]
+    },
+    {
+        "key": "flaticon-drafts",
+        "keywords": [
+            "rascunhos",
+            "esboços",
+            "versões preliminares"
+        ]
+    },
+    {
+        "key": "flaticon-next-week",
+        "keywords": [
+            "próxima semana",
+            "semana seguinte",
+            "futuro próximo"
+        ]
+    },
+    {
+        "key": "flaticon-phone",
+        "keywords": [
+            "telefone",
+            "celular",
+            "aparelho"
+        ]
+    },
+    {
+        "key": "flaticon-timer",
+        "keywords": [
+            "cronômetro",
+            "temporizador",
+            "contagem regressiva"
+        ]
+    },
+    {
+        "key": "flaticon-bold",
+        "keywords": [
+            "negrito",
+            "texto em destaque",
+            "ênfase"
+        ]
+    },
+    {
+        "key": "flaticon-border-dashed",
+        "keywords": [
+            "borda tracejada",
+            "linha pontilhada",
+            "contorno não sólido"
+        ]
+    },
+    {
+        "key": "flaticon-border-dotted",
+        "keywords": [
+            "borda pontilhada",
+            "linha pontuada",
+            "contorno com pontos"
+        ]
+    },
+    {
+        "key": "flaticon-border-double",
+        "keywords": [
+            "borda dupla",
+            "contorno duplo",
+            "duas linhas"
+        ]
+    },
+    {
+        "key": "flaticon-edit",
+        "keywords": [
+            "editar",
+            "modificar",
+            "alterar"
+        ]
+    },
+    {
+        "key": "flaticon-flip-horizontal",
+        "keywords": [
+            "inverter horizontalmente",
+            "refletir lateralmente",
+            "virar"
+        ]
+    },
+    {
+        "key": "flaticon-flip-vertical",
+        "keywords": [
+            "inverter verticalmente",
+            "refletir verticalmente",
+            "virar em pé"
+        ]
+    },
+    {
+        "key": "flaticon-horizontal-align-center1",
+        "keywords": [
+            "alinhar horizontalmente ao centro",
+            "centralizar",
+            "alinhamento central"
+        ]
+    },
+    {
+        "key": "flaticon-horizontal-align-left1",
+        "keywords": [
+            "alinhar horizontalmente à esquerda",
+            "alinhamento à esquerda",
+            "justificar à esquerda"
+        ]
+    },
+    {
+        "key": "flaticon-horizontal-align-right1",
+        "keywords": [
+            "alinhar horizontalmente à direita",
+            "alinhamento à direita",
+            "justificar à direita"
+        ]
+    },
+    {
+        "key": "flaticon-number",
+        "keywords": [
+            "número",
+            "cifra",
+            "quantidade"
+        ]
+    },
+    {
+        "key": "flaticon-padding-bottom",
+        "keywords": [
+            "margem inferior",
+            "espaçamento inferior",
+            "padding embaixo"
+        ]
+    },
+    {
+        "key": "flaticon-padding-left",
+        "keywords": [
+            "margem esquerda",
+            "espaçamento à esquerda",
+            "padding à esquerda"
+        ]
+    },
+    {
+        "key": "flaticon-padding-right",
+        "keywords": [
+            "margem direita",
+            "espaçamento à direita",
+            "padding à direita"
+        ]
+    },
+    {
+        "key": "flaticon-padding-top",
+        "keywords": [
+            "margem superior",
+            "espaçamento superior",
+            "padding em cima"
+        ]
+    },
+    {
+        "key": "flaticon-rich-text",
+        "keywords": [
+            "texto rico",
+            "texto formatado",
+            "texto com estilo"
+        ]
+    },
+    {
+        "key": "flaticon-text",
+        "keywords": [
+            "texto",
+            "escrita",
+            "mensagem"
+        ]
+    },
+    {
+        "key": "flaticon-underline",
+        "keywords": [
+            "sublinhado",
+            "ênfase",
+            "realçar"
+        ]
+    },
+    {
+        "key": "flaticon-vertical-align-bottom",
+        "keywords": [
+            "alinhar verticalmente na parte inferior",
+            "alinhamento inferior",
+            "alinhamento para baixo"
+        ]
+    },
+    {
+        "key": "flaticon-vertical-align-center",
+        "keywords": [
+            "alinhar verticalmente ao centro",
+            "centralizar verticalmente",
+            "alinhamento central"
+        ]
+    },
+    {
+        "key": "flaticon-vertical-align-top",
+        "keywords": [
+            "alinhar verticalmente na parte superior",
+            "alinhamento superior",
+            "alinhamento para cima"
+        ]
+    },
+    {
+        "key": "flaticon-cursor",
+        "keywords": [
+            "cursor",
+            "ponteiro",
+            "seta"
+        ]
+    },
+    {
+        "key": "flaticon-dashboard",
+        "keywords": [
+            "painel",
+            "painel de controle",
+            "interface"
+        ]
+    },
+    {
+        "key": "flaticon-directions",
+        "keywords": [
+            "direções",
+            "caminhos",
+            "rota"
+        ]
+    },
+    {
+        "key": "flaticon-web",
+        "keywords": [
+            "web",
+            "internet",
+            "rede"
+        ]
+    },
+    {
+        "key": "flaticon-add-camera",
+        "keywords": [
+            "adicionar câmera",
+            "incorporar câmera",
+            "câmera extra"
+        ]
+    },
+    {
+        "key": "flaticon-add-image",
+        "keywords": [
+            "adicionar imagem",
+            "inserir foto",
+            "imagem extra"
+        ]
+    },
+    {
+        "key": "flaticon-art-track",
+        "keywords": [
+            "faixa de arte",
+            "trilha artística",
+            "arte digital"
+        ]
+    },
+    {
+        "key": "flaticon-blur-linear",
+        "keywords": [
+            "desfoque linear",
+            "efeito de desfoque",
+            "foco suave"
+        ]
+    },
+    {
+        "key": "flaticon-broken-image",
+        "keywords": [
+            "imagem quebrada",
+            "imagem ausente",
+            "falha na imagem"
+        ]
+    },
+    {
+        "key": "flaticon-camera-front",
+        "keywords": [
+            "câmera frontal",
+            "câmera da frente",
+            "câmera de selfie"
+        ]
+    },
+    {
+        "key": "flaticon-camera-rear",
+        "keywords": [
+            "câmera traseira",
+            "câmera de trás",
+            "câmera principal"
+        ]
+    },
+    {
+        "key": "flaticon-crop-rotate",
+        "keywords": [
+            "cortar e rotacionar",
+            "recortar imagem",
+            "girar imagem"
+        ]
+    },
+    {
+        "key": "flaticon-details",
+        "keywords": [
+            "detalhes",
+            "informações",
+            "características"
+        ]
+    },
+    {
+        "key": "flaticon-exposure",
+        "keywords": [
+            "exposição",
+            "iluminação",
+            "brilho"
+        ]
+    },
+    {
+        "key": "flaticon-exposure-0",
+        "keywords": [
+            "exposição zero",
+            "sem brilho",
+            "nível de luz normal"
+        ]
+    },
+    {
+        "key": "flaticon-exposure-neg-1",
+        "keywords": [
+            "exposição negativa 1",
+            "brilho reduzido",
+            "menos luz"
+        ]
+    },
+    {
+        "key": "flaticon-exposure-neg-2",
+        "keywords": [
+            "exposição negativa 2",
+            "brilho muito reduzido",
+            "luz mínima"
+        ]
+    },
+    {
+        "key": "flaticon-exposure-plus-1",
+        "keywords": [
+            "exposição positiva 1",
+            "aumento de brilho",
+            "mais luz"
+        ]
+    },
+    {
+        "key": "flaticon-exposure-plus-2",
+        "keywords": [
+            "exposição positiva 2",
+            "brilho elevado",
+            "luz intensa"
+        ]
+    },
+    {
+        "key": "flaticon-favorite-image",
+        "keywords": [
+            "imagem favorita",
+            "foto preferida",
+            "imagem selecionada"
+        ]
+    },
+    {
+        "key": "flaticon-flare",
+        "keywords": [
+            "flare",
+            "brilho",
+            "reflexo"
+        ]
+    },
+    {
+        "key": "flaticon-infinite",
+        "keywords": [
+            "infinito",
+            "ilimitado",
+            "sem fim"
+        ]
+    },
+    {
+        "key": "flaticon-perm-media",
+        "keywords": [
+            "mídia permanente",
+            "acesso à mídia",
+            "mídia fixa"
+        ]
+    },
+    {
+        "key": "flaticon-photo-size-select-large",
+        "keywords": [
+            "tamanho da foto grande",
+            "imagem em tamanho grande",
+            "selecionar grande"
+        ]
+    },
+    {
+        "key": "flaticon-satellite",
+        "keywords": [
+            "satélite",
+            "dispositivo orbital",
+            "satélite de comunicação"
+        ]
+    },
+    {
+        "key": "flaticon-wb-iridescent",
+        "keywords": [
+            "brilho iridescente",
+            "iluminação iridescente",
+            "luz colorida"
+        ]
+    },
+    {
+        "key": "flaticon-bug-report",
+        "keywords": [
+            "relatar erro",
+            "reportar bug",
+            "denunciar falha"
+        ]
+    },
+    {
+        "key": "flaticon-chrome-reader-mode",
+        "keywords": [
+            "modo de leitura",
+            "leitura simplificada",
+            "modo leitura Chrome"
+        ]
+    },
+    {
+        "key": "flaticon-developer-board",
+        "keywords": [
+            "placa de desenvolvedor",
+            "quadro de desenvolvimento",
+            "painel de desenvolvedor"
+        ]
+    },
+    {
+        "key": "flaticon-device-hub",
+        "keywords": [
+            "hub de dispositivos",
+            "central de dispositivos",
+            "conexão de dispositivos"
+        ]
+    },
+    {
+        "key": "flaticon-domain",
+        "keywords": [
+            "domínio",
+            "zona",
+            "área"
+        ]
+    },
+    {
+        "key": "flaticon-important-devices",
+        "keywords": [
+            "dispositivos importantes",
+            "aparelhos essenciais",
+            "equipamentos críticos"
+        ]
+    },
+    {
+        "key": "flaticon-laptop",
+        "keywords": [
+            "notebook",
+            "computador portátil",
+            "laptop"
+        ]
+    },
+    {
+        "key": "flaticon-laptop-mac",
+        "keywords": [
+            "laptop Mac",
+            "computador Mac",
+            "notebook Apple"
+        ]
+    },
+    {
+        "key": "flaticon-live-tv",
+        "keywords": [
+            "TV ao vivo",
+            "transmissão ao vivo",
+            "programação ao vivo"
+        ]
+    },
+    {
+        "key": "flaticon-memory",
+        "keywords": [
+            "memória",
+            "armazenamento",
+            "capacidade de memória"
+        ]
+    },
+    {
+        "key": "flaticon-monitoring-task",
+        "keywords": [
+            "tarefa de monitoramento",
+            "supervisão de tarefa",
+            "vigilância de tarefa"
+        ]
+    },
+    {
+        "key": "flaticon-phonelink",
+        "keywords": [
+            "conexão com telefone",
+            "vincular telefone",
+            "interação com celular"
+        ]
+    },
+    {
+        "key": "flaticon-phonelink-off",
+        "keywords": [
+            "desconectar telefone",
+            "sem conexão com celular",
+            "telefone desvinculado"
+        ]
+    },
+    {
+        "key": "flaticon-rest",
+        "keywords": [
+            "descanso",
+            "pausa",
+            "relaxamento"
+        ]
+    },
+    {
+        "key": "flaticon-storage",
+        "keywords": [
+            "armazenamento",
+            "depósito",
+            "capacidade de armazenamento"
+        ]
+    },
+    {
+        "key": "flaticon-vpn-key",
+        "keywords": [
+            "chave VPN",
+            "segurança VPN",
+            "acesso VPN"
+        ]
+    },
+    {
+        "key": "flaticon-workstation",
+        "keywords": [
+            "estação de trabalho",
+            "ambiente de trabalho",
+            "posto de trabalho"
+        ]
+    },
+    {
+        "key": "flaticon-megaphone",
+        "keywords": [
+            "megafone",
+            "amplificador de som",
+            "dispositivo de anúncio"
+        ]
+    },
+    {
+        "key": "flaticon-cloud-settings",
+        "keywords": [
+            "configurações em nuvem",
+            "opções de nuvem",
+            "ajustes na nuvem"
+        ]
+    },
+    {
+        "key": "flaticon-content-paste",
+        "keywords": [
+            "colar conteúdo",
+            "inserir texto",
+            "adicionar informação"
+        ]
+    },
+    {
+        "key": "flaticon-create-new-folder",
+        "keywords": [
+            "criar nova pasta",
+            "nova diretório",
+            "organizar arquivos"
+        ]
+    },
+    {
+        "key": "flaticon-description",
+        "keywords": [
+            "descrição",
+            "detalhes",
+            "informação"
+        ]
+    },
+    {
+        "key": "flaticon-document-checkout",
+        "keywords": [
+            "documento retirado",
+            "checkout de documento",
+            "documento acessado"
+        ]
+    },
+    {
+        "key": "flaticon-document-group",
+        "keywords": [
+            "grupo de documentos",
+            "coleção de arquivos",
+            "conjunto de documentos"
+        ]
+    },
+    {
+        "key": "flaticon-document-policy",
+        "keywords": [
+            "política de documentos",
+            "diretrizes de arquivos",
+            "regulamento de documentos"
+        ]
+    },
+    {
+        "key": "flaticon-folder-open",
+        "keywords": [
+            "pasta aberta",
+            "diretório acessado",
+            "explorar pasta"
+        ]
+    },
+    {
+        "key": "flaticon-invoices",
+        "keywords": [
+            "faturas",
+            "contas",
+            "documentos de cobrança"
+        ]
+    },
+    {
+        "key": "flaticon-invoices-check",
+        "keywords": [
+            "verificar faturas",
+            "checar contas",
+            "confirmar cobranças"
+        ]
+    },
+    {
+        "key": "flaticon-receipt",
+        "keywords": [
+            "recibo",
+            "comprovante",
+            "nota fiscal"
+        ]
+    },
+    {
+        "key": "flaticon-tests-central",
+        "keywords": [
+            "centro de testes",
+            "local de testes",
+            "área de testes"
+        ]
+    },
+    {
+        "key": "flaticon-bubble-chart",
+        "keywords": [
+            "gráfico de bolhas",
+            "diagrama de bolhas",
+            "representação de dados"
+        ]
+    },
+    {
+        "key": "flaticon-chart-bar",
+        "keywords": [
+            "gráfico de barras",
+            "diagrama de barras",
+            "representação em barras"
+        ]
+    },
+    {
+        "key": "flaticon-diagram",
+        "keywords": [
+            "diagrama",
+            "esquema",
+            "ilustração"
+        ]
+    },
+    {
+        "key": "flaticon-organogram",
+        "keywords": [
+            "organograma",
+            "estrutura organizacional",
+            "diagrama hierárquico"
+        ]
+    },
+    {
+        "key": "flaticon-pie-chart",
+        "keywords": [
+            "gráfico de pizza",
+            "representação em fatias",
+            "diagrama circular"
+        ]
+    },
+    {
+        "key": "flaticon-pie-chart-outline",
+        "keywords": [
+            "contorno de gráfico de pizza",
+            "gráfico de pizza esboçado",
+            "representação circular"
+        ]
+    },
+    {
+        "key": "flaticon-poll",
+        "keywords": [
+            "sondagem",
+            "pesquisa",
+            "enquete"
+        ]
+    },
+    {
+        "key": "flaticon-show-chart",
+        "keywords": [
+            "mostrar gráfico",
+            "exibir diagrama",
+            "apresentar dados"
+        ]
+    },
+    {
+        "key": "flaticon-account-box",
+        "keywords": [
+            "caixa de conta",
+            "perfil de usuário",
+            "informações da conta"
+        ]
+    },
+    {
+        "key": "flaticon-account-circle",
+        "keywords": [
+            "círculo de conta",
+            "perfil circular",
+            "imagem de usuário"
+        ]
+    },
+    {
+        "key": "flaticon-account-qualification",
+        "keywords": [
+            "qualificação de conta",
+            "informações de conta",
+            "dados de perfil"
+        ]
+    },
+    {
+        "key": "flaticon-anonymous",
+        "keywords": [
+            "anônimo",
+            "sem identidade",
+            "não identificado"
+        ]
+    },
+    {
+        "key": "flaticon-cake",
+        "keywords": [
+            "bolo",
+            "doce",
+            "confeitaria"
+        ]
+    },
+    {
+        "key": "flaticon-card-membership",
+        "keywords": [
+            "cartão de associação",
+            "membro",
+            "afiliação"
+        ]
+    },
+    {
+        "key": "flaticon-class-check",
+        "keywords": [
+            "verificação de classe",
+            "checagem de categoria",
+            "validação de grupo"
+        ]
+    },
+    {
+        "key": "flaticon-contact-phone",
+        "keywords": [
+            "telefone de contato",
+            "número de telefone",
+            "contato telefônico"
+        ]
+    },
+    {
+        "key": "flaticon-face",
+        "keywords": [
+            "face",
+            "rosto",
+            "imagem de perfil"
+        ]
+    },
+    {
+        "key": "flaticon-group-add",
+        "keywords": [
+            "adicionar grupo",
+            "incluir grupo",
+            "criar grupo"
+        ]
+    },
+    {
+        "key": "flaticon-group-config",
+        "keywords": [
+            "configuração de grupo",
+            "ajustes de grupo",
+            "opções de grupo"
+        ]
+    },
+    {
+        "key": "flaticon-handshake",
+        "keywords": [
+            "aperto de mão",
+            "concordância",
+            "acordo"
+        ]
+    },
+    {
+        "key": "flaticon-hashtag",
+        "keywords": [
+            "hashtag",
+            "marcação",
+            "tag"
+        ]
+    },
+    {
+        "key": "flaticon-meeting",
+        "keywords": [
+            "reunião",
+            "encontro",
+            "assembleia"
+        ]
+    },
+    {
+        "key": "flaticon-pages-grid",
+        "keywords": [
+            "grade de páginas",
+            "disposição de páginas",
+            "layout de páginas"
+        ]
+    },
+    {
+        "key": "flaticon-person-cost",
+        "keywords": [
+            "custo pessoal",
+            "custo de pessoa",
+            "despesas individuais"
+        ]
+    },
+    {
+        "key": "flaticon-person-edit",
+        "keywords": [
+            "editar pessoa",
+            "modificar perfil",
+            "alterar dados pessoais"
+        ]
+    },
+    {
+        "key": "flaticon-person-pin",
+        "keywords": [
+            "pin de pessoa",
+            "localizar pessoa",
+            "marcador de perfil"
+        ]
+    },
+    {
+        "key": "flaticon-person-pin-circle",
+        "keywords": [
+            "círculo de pessoa",
+            "pin circular",
+            "localização de perfil"
+        ]
+    },
+    {
+        "key": "flaticon-person-tasks",
+        "keywords": [
+            "tarefas da pessoa",
+            "atividades pessoais",
+            "responsabilidades individuais"
+        ]
+    },
+    {
+        "key": "flaticon-record-voice-over",
+        "keywords": [
+            "gravar voz",
+            "captura de áudio",
+            "registro de narração"
+        ]
+    },
+    {
+        "key": "flaticon-supervisor-account",
+        "keywords": [
+            "conta de supervisor",
+            "perfil de supervisor",
+            "usuário supervisor"
+        ]
+    },
+    {
+        "key": "flaticon-change-history",
+        "keywords": [
+            "histórico de mudanças",
+            "alterações registradas",
+            "modificações anteriores"
+        ]
+    },
+    {
+        "key": "flaticon-offline-pin",
+        "keywords": [
+            "pin offline",
+            "marcador offline",
+            "localização sem internet"
+        ]
+    },
+    {
+        "key": "flaticon-query-correlative",
+        "keywords": [
+            "consulta correlativa",
+            "consulta relacionada",
+            "interrogação correlata"
+        ]
+    },
+    {
+        "key": "flaticon-star-circle",
+        "keywords": [
+            "círculo de estrela",
+            "estrela circular",
+            "símbolo de estrela"
+        ]
+    },
+    {
+        "key": "flaticon-change-doc",
+        "keywords": [
+            "mudar documento",
+            "alterar arquivo",
+            "modificar documento"
+        ]
+    },
+    {
+        "key": "flaticon-process",
+        "keywords": [
+            "processo",
+            "procedimento",
+            "fluxo de trabalho"
+        ]
+    },
+    {
+        "key": "flaticon-bell-filled",
+        "keywords": [
+            "sino cheio",
+            "sino completo",
+            "sino preenchido"
+        ]
+    },
+    {
+        "key": "flaticon-share-filled",
+        "keywords": [
+            "compartilhamento preenchido",
+            "distribuição completa",
+            "compartilhar conteúdo"
+        ]
+    },
+    {
+        "key": "flaticon-like-filled",
+        "keywords": [
+            "curtida preenchida",
+            "gosto completo",
+            "sinal de aprovação"
+        ]
+    },
+    {
+        "key": "flaticon-webhook",
+        "keywords": [
+            "webhook",
+            "chamada de retorno",
+            "integrar web"
+        ]
+    },
+    {
+        "key": "flaticon-unmake",
+        "keywords": [
+            "desfazer",
+            "remover",
+            "reverter"
+        ]
+    },
+    {
+        "key": "flaticon-global-error",
+        "keywords": [
+            "erro global",
+            "falha geral",
+            "problema abrangente"
+        ]
+    },
+    {
+        "key": "flaticon-totvs-forms",
+        "keywords": [
+            "formulários TOTVS",
+            "documentos TOTVS",
+            "formularios de dados"
+        ]
+    },
+    {
+        "key": "flaticon-custom",
+        "keywords": [
+            "personalizado",
+            "customizado",
+            "adaptável"
+        ]
+    },
+    {
+        "key": "flaticon-mobile-no-check",
+        "keywords": [
+            "móvel não verificado",
+            "celular sem checagem",
+            "dispositivo não confirmado"
+        ]
+    },
+    {
+        "key": "flaticon-mobile-check",
+        "keywords": [
+            "móvel verificado",
+            "celular checado",
+            "dispositivo confirmado"
+        ]
+    },
+    {
+        "key": "flaticon-bell-off",
+        "keywords": [
+            "sino desligado",
+            "notificações desativadas",
+            "sino inativo"
+        ]
+    },
+    {
+        "key": "flaticon-aim",
+        "keywords": [
+            "objetivo",
+            "meta",
+            "intenção"
+        ]
+    },
+    {
+        "key": "flaticon-open-package",
+        "keywords": [
+            "pacote aberto",
+            "embalagem desfeita",
+            "caixa aberta"
+        ]
+    },
+    {
+        "key": "flaticon-stop",
+        "keywords": [
+            "parar",
+            "interromper",
+            "cessar"
+        ]
+    },
+    {
+        "key": "flaticon-webhook-sync",
+        "keywords": [
+            "sincronização de webhook",
+            "atualização de chamada de retorno",
+            "integração web"
+        ]
+    },
+    {
+        "key": "flaticon-receiver",
+        "keywords": [
+            "receptor",
+            "dispositivo receptor",
+            "aparelho de recepção"
+        ]
+    },
+    {
+        "key": "flaticon-panel",
+        "keywords": [
+            "painel",
+            "quadro de controle",
+            "interface de usuário"
+        ]
+    },
+    {
+        "key": "flaticon-transfer",
+        "keywords": [
+            "transferir",
+            "movimentar",
+            "transferência"
+        ]
+    },
+    {
+        "key": "flaticon-transform",
+        "keywords": [
+            "transformar",
+            "converter",
+            "modificar"
+        ]
+    },
+    {
+        "key": "flaticon-archive-xslt",
+        "keywords": [
+            "arquivo XSLT",
+            "documento de transformação",
+            "armazenamento XSLT"
+        ]
+    },
+    {
+        "key": "flaticon-jolt",
+        "keywords": [
+            "impacto",
+            "estalo",
+            "choque"
+        ]
+    },
+    {
+        "key": "flaticon-flag-active",
+        "keywords": [
+            "bandeira ativa",
+            "sinal ativo",
+            "indicador de atividade"
+        ]
+    },
+    {
+        "key": "flaticon-cloud-check",
+        "keywords": [
+            "verificação em nuvem",
+            "checagem na nuvem",
+            "status de nuvem"
+        ]
+    },
+    {
+        "key": "flaticon-arrow-sort",
+        "keywords": [
+            "seta de ordenação",
+            "classificação",
+            "organizar"
+        ]
+    },
+    {
+        "key": "flaticon-tasksnull",
+        "keywords": [
+            "tarefas nulas",
+            "sem tarefas",
+            "sem atividades"
+        ]
+    },
+    {
+        "key": "flaticon-pin2",
+        "keywords": [
+            "pin 2",
+            "marcador 2",
+            "localizador 2"
+        ]
+    },
+    {
+        "key": "flaticon-pin2-active",
+        "keywords": [
+            "pin 2 ativo",
+            "marcador 2 ativo",
+            "localizador 2 em uso"
+        ]
+    },
+    {
+        "key": "flaticon-filter-remove",
+        "keywords": [
+            "remover filtro",
+            "excluir filtro",
+            "limpar filtro"
+        ]
+    },
+    {
+        "key": "flaticon-conditional",
+        "keywords": [
+            "condicional",
+            "se-então",
+            "opção condicional"
+        ]
+    },
+    {
+        "key": "flaticon-condition",
+        "keywords": [
+            "condição",
+            "requisito",
+            "critério"
+        ]
+    },
+    {
+        "key": "flaticon-otherwise",
+        "keywords": [
+            "caso contrário",
+            "de outra forma",
+            "alternativa"
+        ]
+    },
+    {
+        "key": "flaticon-bigger",
+        "keywords": [
+            "maior",
+            "ampliar",
+            "aumentar"
+        ]
+    },
+    {
+        "key": "flaticon-smaller",
+        "keywords": [
+            "menor",
+            "reduzir",
+            "diminuir"
+        ]
+    },
+    {
+        "key": "flaticon-loading",
+        "keywords": [
+            "carregando",
+            "processando",
+            "aguardando"
+        ]
+    },
+    {
+        "key": "flaticon-border-top-left",
+        "keywords": [
+            "borda superior esquerda",
+            "canto superior esquerdo",
+            "margem superior esquerda"
+        ]
+    },
+    {
+        "key": "flaticon-border-top-right",
+        "keywords": [
+            "borda superior direita",
+            "canto superior direito",
+            "margem superior direita"
+        ]
+    },
+    {
+        "key": "flaticon-border-bottom-left",
+        "keywords": [
+            "borda inferior esquerda",
+            "canto inferior esquerdo",
+            "margem inferior esquerda"
+        ]
+    },
+    {
+        "key": "flaticon-border-bottom-right",
+        "keywords": [
+            "borda inferior direita",
+            "canto inferior direito",
+            "margem inferior direita"
+        ]
+    },
+    {
+        "key": "flaticon-function",
+        "keywords": [
+            "função",
+            "procedimento",
+            "método"
+        ]
+    },
+    {
+        "key": "flaticon-message-broker",
+        "keywords": [
+            "intermediário de mensagens",
+            "fila de dados",
+            "middleware"
+        ]
+    },
+    {
+        "key": "flaticon-javascript",
+        "keywords": [
+            "javascript",
+            "linguagem de programação",
+            "código"
+        ]
+    },
+    {
+        "key": "flaticon-xls",
+        "keywords": [
+            "excel",
+            "planilha",
+            "arquivo xls"
+        ]
+    },
+    {
+        "key": "flaticon-wmv",
+        "keywords": [
+            "wmv",
+            "arquivo de vídeo",
+            "mídia"
+        ]
+    },
+    {
+        "key": "flaticon-ppt",
+        "keywords": [
+            "powerpoint",
+            "apresentação",
+            "arquivo ppt"
+        ]
+    },
+    {
+        "key": "flaticon-jpeg",
+        "keywords": [
+            "jpeg",
+            "arquivo de imagem",
+            "foto"
+        ]
+    },
+    {
+        "key": "flaticon-png",
+        "keywords": [
+            "png",
+            "imagem transparente",
+            "arquivo de imagem"
+        ]
+    },
+    {
+        "key": "flaticon-pdf",
+        "keywords": [
+            "pdf",
+            "documento",
+            "arquivo portátil"
+        ]
+    },
+    {
+        "key": "flaticon-mp4",
+        "keywords": [
+            "mp4",
+            "arquivo de vídeo",
+            "mídia"
+        ]
+    },
+    {
+        "key": "flaticon-mp3",
+        "keywords": [
+            "mp3",
+            "arquivo de áudio",
+            "música"
+        ]
+    },
+    {
+        "key": "flaticon-mov",
+        "keywords": [
+            "mov",
+            "arquivo quicktime",
+            "vídeo"
+        ]
+    },
+    {
+        "key": "flaticon-gif",
+        "keywords": [
+            "gif",
+            "imagem animada",
+            "loop"
+        ]
+    },
+    {
+        "key": "flaticon-doc",
+        "keywords": [
+            "doc",
+            "arquivo word",
+            "documento"
+        ]
+    },
+    {
+        "key": "flaticon-fluig-intelligence",
+        "keywords": [
+            "inteligência artificial",
+            "ia",
+            "funcionalidade"
+        ]
+    },
+    {
+        "key": "flaticon-edit-intelligence",
+        "keywords": [
+            "inteligência artificial",
+            "ia",
+            "funcionalidade"
+        ]
+    },
+    {
+        "key": "flaticon-file-api",
+        "keywords": [
+            "api",
+            "arquivo",
+            "código"
+        ]
+    },
+    {
+        "key": "flaticon-form-list-off",
+        "keywords": [
+            "lista de formulários desativada",
+            "formulário",
+            "funcionalidade"
+        ]
+    },
+    {
+        "key": "flaticon-dotted-diagram",
+        "keywords": [
+            "diagrama",
+            "esquema",
+            "linha pontilhada"
+        ]
+    },
+    {
+        "key": "flaticon-flow-intelligence",
+        "keywords": [
+            "inteligência artificial",
+            "ia",
+            "funcionalidade"
+        ]
+    }
+]

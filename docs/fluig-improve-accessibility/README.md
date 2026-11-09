@@ -8,7 +8,7 @@ Prompts prontos para acionar a skill `fluig-improve-accessibility` com um agente
 
 ## Intermediário
 
-> Vou colar o markup de um componente com botões só de ícone e campos sem rótulo. Torne-o acessível adicionando nomes acessíveis e `label` associados, com os textos vindos de `${i18n.getTranslation('chave')}`.
+> Vou colar o markup de um componente com botões só de ícone e campos sem rótulo. Torne-o acessível adicionando nomes acessíveis e `label` associados, com os textos vindos de i18n (`${i18n.getTranslation('chave')}` no markup `.ftl`; `[=i18n.getTranslation('chave')]` se o texto for montado no `.js`).
 
 ## Completo
 

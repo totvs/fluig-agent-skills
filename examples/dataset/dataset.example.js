@@ -3,8 +3,9 @@
 // construção do resultado via DatasetBuilder, consulta a outra fonte via
 // DatasetFactory e aplicação de filtros/constraints (ConstraintType).
 // O código roda no motor Rhino (base ES5): usa var/function tradicionais, sem
-// arrow functions nem template literals. Ver context/technologies.md (seção
-// "Runtime Rhino: sintaxe rígida") e context/architecture.md.
+// arrow functions nem template literals. Ver
+// context/technologies.md#runtime-rhino-sintaxe-rígida-não-é-es6
+// (Runtime Rhino: sintaxe rígida) e context/architecture.md#dataset (Dataset).
 // Não é um projeto completo.
 
 // Função pública nomeada que a plataforma invoca para resolver o dataset.
@@ -22,7 +23,7 @@ function createDataset(fields, constraints, sortFields) {
   dataset.addRow(['002', 'Filial Sul', 'RS']);
 
   // Opção B — consulta a outro dataset via API pública, aplicando filtros.
-  // Assinatura exata (ver context/architecture.md):
+  // Assinatura exata (ver context/architecture.md#datasetfactorycreateconstraintfield-initialvalue-finalvalue-type-likesearch):
   //   DatasetFactory.createConstraint(field, initialValue, finalValue, type[, likeSearch])
   // Igualdade exata: repita o valor em initialValue/finalValue, sem likeSearch.
   // Filtra apenas registros ativos (campo 'active' = 'true').
@@ -47,14 +48,19 @@ function createDataset(fields, constraints, sortFields) {
 
   // Assinatura exata: getDataset(name, fields, constraints, order[, callback]).
   // No servidor (Rhino) a chamada é SEMPRE síncrona: não passe callback.
-  // O retorno expõe os registros em .values e as colunas em .columns.
+  // LEITURA no servidor: getValue(linha, "coluna") + rowsCount — NÃO .values[i].col
+  // (no Rhino .values é array de arrays Java, sem propriedades nomeadas).
   var branches = DatasetFactory.getDataset('branches', fields, queryConstraints, sortFields);
 
   // Copia os registros consultados para o dataset de saída (laço clássico).
-  var rows = (branches && branches.values) || [];
-  for (var i = 0; i < rows.length; i++) {
-    var row = rows[i];
-    dataset.addRow([row.code, row.name, row.state]);
+  if (branches != null) {
+    for (var i = 0; i < branches.rowsCount; i++) {
+      dataset.addRow([
+        branches.getValue(i, 'code'),
+        branches.getValue(i, 'name'),
+        branches.getValue(i, 'state')
+      ]);
+    }
   }
 
   // Interop com Java (recurso do Rhino) — ex.: registrar a data de geração.
