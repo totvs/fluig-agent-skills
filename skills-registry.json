@@ -12,6 +12,10 @@
     "revisao": {
       "name": "Revisão",
       "description": "Skills para revisar código frontend Fluig produzindo achados classificados por severidade, sem reescrever o código"
+    },
+    "parceiros": {
+      "name": "Parceiros",
+      "description": "Skills exclusivas da persona Parceiro, para soluções publicadas na Store do TOTVS Fluig — pré-review por artefato antes do App Review, com relatório persistido"
     }
   },
   "skills": [
@@ -173,6 +177,16 @@
       "argument-hint": "o código/arquivo Fluig alvo da revisão de boas práticas (trecho ou arquivo selecionado), idealmente com o tipo de artefato",
       "category": "revisao",
       "path": "skills/fluig-best-practices",
+      "files": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "name": "fluig-code-review-partner-widgets",
+      "description": "Revisa (somente leitura) todos os widgets (application.type=widget) de uma solução de Parceiro destinada à Store do TOTVS Fluig, no modelo Maven multi-módulo, e grava um único relatório pre-review-widget-AAAA-MM-DD.md de achados por severidade — campos de Store do application.info, SuperWidget/JS, escopo DOM, FTL, performance e segurança frontend, APIs públicas, visual/i18n, frameworks SPA, ícones, incremento de versão e reuso de Componentes de Negócio nativos. Delega as validações genéricas de frontend às skills base e aplica por cima o delta exclusivo de parceiro. NÃO revisa a estrutura Maven/EAR nem os descritores do componente. Exclusiva da persona Parceiro. Use antes do App Review/submissão à Store.",
+      "argument-hint": "caminho raiz do componente Maven (pasta com o POM raiz <packaging>pom</packaging>)",
+      "category": "parceiros",
+      "path": "skills/fluig-code-review-partner-widgets",
       "files": [
         "SKILL.md"
       ]

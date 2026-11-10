@@ -183,7 +183,7 @@ Com essa disposição os links relativos das skills resolvem corretamente:
 
 ## Skills disponíveis
 
-16 skills agrupadas por intenção (4 geração, 7 modernização, 5 revisão). Cada uma vive em `skills/<nome>/SKILL.md` e é selecionada pela sua `description`.
+17 skills agrupadas por intenção (4 geração, 7 modernização, 6 revisão). Cada uma vive em `skills/<nome>/SKILL.md` e é selecionada pela sua `description`.
 
 ### Geração (scaffolding) — "criar do zero"
 
@@ -215,6 +215,7 @@ Com essa disposição os links relativos das skills resolvem corretamente:
 | `fluig-review-security` | Revisão de segurança conforme OWASP Top 10. |
 | `fluig-review-accessibility` | Revisão de acessibilidade alinhada às WCAG. |
 | `fluig-best-practices` | Revisão de **manutenibilidade/arquitetura** (modularização, responsabilidade única, nomenclatura, organização, reuso) — não cobre segurança/performance/acessibilidade. |
+| `fluig-code-review-partner-widgets` | Pré-review dos **widgets** de uma solução de Parceiro para a Store (`application.info` da Store, JS/FTL/CSS, segurança e performance frontend, ícones, Componentes de Negócio). Exclusiva da persona Parceiro. |
 
 As skills de revisão classificam os achados por severidade e referenciam a regra correspondente nos arquivos de `context/`.
 
