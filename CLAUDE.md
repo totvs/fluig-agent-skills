@@ -75,8 +75,9 @@ recebe um argumento, ele é descrito em `argument-hint`.
 - **Modernização (7):** `fluig-migrate-jquery-es6`, `fluig-optimize-performance`,
   `fluig-improve-accessibility`, `fluig-validate-security`, `fluig-dark-mode`,
   `fluig-internationalization`, `fluig-style-guide-helpers`.
-- **Revisão (5):** `fluig-code-review`, `fluig-review-performance`, `fluig-review-security`,
-  `fluig-review-accessibility`, `fluig-best-practices`.
+- **Revisão (6):** `fluig-code-review`, `fluig-review-performance`, `fluig-review-security`,
+  `fluig-review-accessibility`, `fluig-best-practices`, `fluig-code-review-partner-widgets`
+  (exclusiva da persona Parceiro).
 
 ### Exemplos (`examples/`)
 

@@ -55,15 +55,16 @@ Consultor.
 - O corpo do `SKILL.md` traz as seções de execução: objetivo, quando usar,
   entradas esperadas, regras aplicáveis, saída esperada e exemplo de uso.
 
-Skills disponíveis (16), agrupadas por intenção:
+Skills disponíveis (17), agrupadas por intenção:
 
 - **Geração (4):** `fluig-scaffolding-widget`, `fluig-scaffolding-layout`, `fluig-scaffolding-form`,
   `fluig-scaffolding-dataset`.
 - **Modernização (7):** `fluig-migrate-jquery-es6`, `fluig-optimize-performance`,
   `fluig-improve-accessibility`, `fluig-validate-security`, `fluig-dark-mode`,
   `fluig-internationalization`, `fluig-style-guide-helpers`.
-- **Revisão (5):** `fluig-code-review`, `fluig-review-performance`, `fluig-review-security`,
-  `fluig-review-accessibility`, `fluig-best-practices`.
+- **Revisão (6):** `fluig-code-review`, `fluig-review-performance`, `fluig-review-security`,
+  `fluig-review-accessibility`, `fluig-best-practices`, `fluig-code-review-partner-widgets`
+  (exclusiva da persona Parceiro).
 
 ## Como as skills usam o contexto
 
