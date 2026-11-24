@@ -38,8 +38,8 @@ a persona) e podem aparecer num projeto Maven de Consultor.
 
 - `context/architecture.md` — modelo conceitual dos artefatos (widget, layout,
   form, dataset), pontos de extensão públicos, ciclo de vida
-  visível ao código e estrutura oficial de pastas/arquivos (inclui o projeto
-  Fluig Studio).
+  visível ao código, estrutura oficial de pastas/arquivos e política de
+  `application.info` dos layouts (inclui o projeto Fluig Studio).
 - `context/technologies.md` — tecnologias públicas: ES6+, bibliotecas
   client-side (jQuery, Kendo UI, Bootstrap), Fluig Style Guide e runtime de
   scripting server-side.
@@ -63,7 +63,8 @@ a persona) e podem aparecer num projeto Maven de Consultor.
 - `context/persona-routing.md` — cascata de classificação Parceiro × Consultor.
 - `context/partner-store-architecture.md`, `context/partner-store-conventions.md`,
   `context/partner-store-review-rules.md` — camada exclusiva da persona Parceiro
-  (Store).
+  (Store); para layouts, complementa a política canônica de `application.info` em
+  `context/architecture.md`.
 
 ### Skills — procedimentos (`skills/<nome>/SKILL.md`)
 
@@ -75,9 +76,10 @@ recebe um argumento, ele é descrito em `argument-hint`.
 - **Modernização (7):** `fluig-migrate-jquery-es6`, `fluig-optimize-performance`,
   `fluig-improve-accessibility`, `fluig-validate-security`, `fluig-dark-mode`,
   `fluig-internationalization`, `fluig-style-guide-helpers`.
-- **Revisão (6):** `fluig-code-review`, `fluig-review-performance`, `fluig-review-security`,
-  `fluig-review-accessibility`, `fluig-best-practices`, `fluig-code-review-partner-widgets`
-  (exclusiva da persona Parceiro).
+- **Revisão (8):** `fluig-code-review`, `fluig-review-performance`, `fluig-review-security`,
+  `fluig-review-accessibility`, `fluig-best-practices`, `fluig-code-review-partner-component`,
+  `fluig-code-review-partner-widgets`, `fluig-code-review-partner-layout`
+  (as três últimas exclusivas da persona Parceiro).
 
 ### Exemplos (`examples/`)
 

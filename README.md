@@ -26,7 +26,7 @@ A filosofia central que organiza o pacote:
 - **Skills** respondem **"como fazer"** — procedimentos passo a passo para uma tarefa específica. Vivem em `skills/<nome>/SKILL.md` e são selecionadas pela `description` do seu frontmatter.
 - **Exemplos** mostram **"como se parece"** — trechos de código mínimos de referência em `examples/`.
 
-As skills **não duplicam** o conteúdo do contexto: elas o **referenciam** como fonte de verdade e mantêm apenas um resumo executivo do necessário para a tarefa.
+As skills **não duplicam** o conteúdo do contexto: elas o **referenciam** como fonte de verdade e mantêm apenas um resumo executivo do necessário para a tarefa. Para layouts, a política de `application.info`, incluindo `application.uilayout` e propriedades `slot.*`, está em [context/architecture.md](context/architecture.md); o delta da Store está em [context/partner-store-conventions.md](context/partner-store-conventions.md) e [context/partner-store-review-rules.md](context/partner-store-review-rules.md).
 
 ## Personas
 
@@ -183,7 +183,7 @@ Com essa disposição os links relativos das skills resolvem corretamente:
 
 ## Skills disponíveis
 
-17 skills agrupadas por intenção (4 geração, 7 modernização, 6 revisão). Cada uma vive em `skills/<nome>/SKILL.md` e é selecionada pela sua `description`.
+19 skills agrupadas por intenção (4 geração, 7 modernização, 8 revisão). Cada uma vive em `skills/<nome>/SKILL.md` e é selecionada pela sua `description`.
 
 ### Geração (scaffolding) — "criar do zero"
 
@@ -215,7 +215,9 @@ Com essa disposição os links relativos das skills resolvem corretamente:
 | `fluig-review-security` | Revisão de segurança conforme OWASP Top 10. |
 | `fluig-review-accessibility` | Revisão de acessibilidade alinhada às WCAG. |
 | `fluig-best-practices` | Revisão de **manutenibilidade/arquitetura** (modularização, responsabilidade única, nomenclatura, organização, reuso) — não cobre segurança/performance/acessibilidade. |
+| `fluig-code-review-partner-component` | Pré-review da **estrutura** do projeto Maven de uma solução de Parceiro para a Store (POMs, EAR, `component.xml`, `pages.xml`, versionamento, prefixo). Exclusiva da persona Parceiro. |
 | `fluig-code-review-partner-widgets` | Pré-review dos **widgets** de uma solução de Parceiro para a Store (`application.info` da Store, JS/FTL/CSS, segurança e performance frontend, ícones, Componentes de Negócio). Exclusiva da persona Parceiro. |
+| `fluig-code-review-partner-layout` | Pré-review dos **layouts WCM** de uma solução de Parceiro para a Store (`application.info`, `layout.ftl`, slots, CSS, i18n e descritores web), com inventário de escopo e Tracker de Cobertura. Exclusiva da persona Parceiro. |
 
 As skills de revisão classificam os achados por severidade e referenciam a regra correspondente nos arquivos de `context/`.
 

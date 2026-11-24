@@ -55,16 +55,17 @@ Consultor.
 - O corpo do `SKILL.md` traz as seções de execução: objetivo, quando usar,
   entradas esperadas, regras aplicáveis, saída esperada e exemplo de uso.
 
-Skills disponíveis (17), agrupadas por intenção:
+Skills disponíveis (19), agrupadas por intenção:
 
 - **Geração (4):** `fluig-scaffolding-widget`, `fluig-scaffolding-layout`, `fluig-scaffolding-form`,
   `fluig-scaffolding-dataset`.
 - **Modernização (7):** `fluig-migrate-jquery-es6`, `fluig-optimize-performance`,
   `fluig-improve-accessibility`, `fluig-validate-security`, `fluig-dark-mode`,
   `fluig-internationalization`, `fluig-style-guide-helpers`.
-- **Revisão (6):** `fluig-code-review`, `fluig-review-performance`, `fluig-review-security`,
-  `fluig-review-accessibility`, `fluig-best-practices`, `fluig-code-review-partner-widgets`
-  (exclusiva da persona Parceiro).
+- **Revisão (8):** `fluig-code-review`, `fluig-review-performance`, `fluig-review-security`,
+  `fluig-review-accessibility`, `fluig-best-practices`, `fluig-code-review-partner-component`,
+  `fluig-code-review-partner-widgets`, `fluig-code-review-partner-layout`
+  (as três últimas exclusivas da persona Parceiro).
 
 ## Como as skills usam o contexto
 
@@ -74,7 +75,7 @@ Skills disponíveis (17), agrupadas por intenção:
   permanece no arquivo de contexto correspondente. Para obter a regra completa,
   abra o arquivo de `context/` indicado pela skill.
 - Os arquivos de contexto são:
-  - `context/architecture.md` — artefatos, pontos de extensão e estrutura de pastas.
+  - `context/architecture.md` — artefatos, pontos de extensão, estrutura de pastas e política de `application.info` dos layouts.
   - `context/technologies.md` — tecnologias públicas de customização.
   - `context/conventions.md` — padrões de código, i18n, segurança e REST público.
   - `context/conventions-form.md` — convenções de Form: estrutura, campos, Pai x Filho e i18n de formulários (`i18n.translate`).
@@ -89,7 +90,8 @@ Skills disponíveis (17), agrupadas por intenção:
   - `context/persona-routing.md` — cascata de classificação Parceiro × Consultor.
   - `context/partner-store-architecture.md`, `context/partner-store-conventions.md`,
     `context/partner-store-review-rules.md` — camada exclusiva da persona Parceiro
-    (Store); carregados somente quando a persona é Parceiro.
+    (Store); para layout, complementa a política canônica de `application.info` em
+    `context/architecture.md`.
 
 ## Fluxo de uso para um agente
 
