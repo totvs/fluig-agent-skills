@@ -530,7 +530,7 @@ trecho e confirmar a origem/uso.
 |-------------|--------------------------|
 | XSS via `.html()`/`.append()`/`innerHTML` | Ler ±10 linhas e rastrear a ORIGEM da variável: literal/i18n/`.text()` → não é XSS; API/dataset/input/URL → XSS. Toda anotação de achado deve indicar arquivo + linha + variável + origem |
 | `.html('<literal fixo>')` / `.html('')` | Nunca é XSS — não reportar |
-| Propriedade "ausente" (`simple.deploy`, `application.uiwidget`, versão) | Ler o arquivo real por inteiro e buscar a string exata ANTES de acusar ausência. Nunca reportar ausência por memória/cache |
+| Propriedade "ausente" (`application.uiwidget`, versão ou `simple.deploy` quando aplicável) | Ler o arquivo real por inteiro e buscar a string exata ANTES de acusar ausência. Em layout WCM, confirmar se `simple.deploy` está **presente** antes de registrá-lo como achado; a ausência é conforme. Nunca reportar ausência por memória/cache. |
 | Discrepância de versão (`component.xml` vs POM) | Ler ambos os arquivos reais e comparar os valores lidos. Se iguais → não reportar |
 | Dependência desatualizada | Ler a versão real no `pom.xml`. Se já ≥ versão recomendada → não reportar |
 | `.html()` de origem ambígua | Reportar como Médio com nota "VERIFICAR MANUALMENTE" e o trecho exato |
@@ -1029,6 +1029,71 @@ O cabeçalho contém, no mínimo:
 Depois do cabeçalho, o corpo segue integralmente as seções de
 [§ 32.3](#323-ordem-fixa-das-seções-do-relatório) (Resumo, Tracker de Cobertura,
 Achados por Severidade, Pontos Positivos, Plano de Ação Priorizado, Parecer Final).
+
+---
+
+## 33. Revisão de Layouts de Parceiro
+
+Esta seção define o escopo operacional exclusivo da revisão de layouts de uma
+solução destinada à Store. As regras técnicas permanecem nas fontes de verdade
+referenciadas abaixo; a skill de revisão não as reproduz.
+
+### 33.1 Escopo e sequência de análise
+
+A revisão seleciona somente módulos WAR cujo `application.info` tenha
+`application.type=layout`. Ela lê integralmente `application.info`, `layout.ftl`,
+recursos `.css`/`.scss`, arquivos `.properties`, `jboss-web.xml` e `web.xml` de
+cada layout, registrando-os no Tracker de Cobertura de [§ 32.2](#322-cobertura-100-e-tracker-de-cobertura).
+
+Antes do Tracker, o Resumo do relatório deve incluir um **Inventário de Escopo**
+com a localização de cada layout, os arquivos lidos agrupados por tipo e o total
+consolidado de linhas. O inventário torna a cobertura auditável; não substitui a
+linha individual por arquivo exigida no Tracker.
+
+A camada base reúne os achados das revisões genéricas de qualidade, segurança,
+desempenho, acessibilidade e manutenibilidade. Propriedades `slot.*` são
+**depreciadas** e devem ser completamente ignoradas: não validar, verificar,
+exigir, gerar ou reportar sua ausência, presença ou falta de renderização. Em
+layout de Parceiro, `application.uilayout` é obrigatório. Sua ausência é achado
+**Crítico/Bloqueante**. O valor explícito `false` é válido e não gera alerta. O
+valor `true` produz exclusivamente o apontamento Informativo/Baixa Severidade com
+a recomendação literal definida em
+[architecture.md](architecture.md#integridade-dos-recursos-e-chaves-review). O
+delta de layout é analisado na seguinte ordem, sem reclassificar um achado já
+coberto pela base:
+
+1. `application.info` (exceto propriedades `slot.*`), slots renderizados e recursos declarados.
+2. `layout.ftl`, estrutura de portal e renderização dos slots.
+3. CSS, responsividade e modo escuro.
+4. i18n e arquivos de locale.
+5. `jboss-web.xml` e `web.xml`.
+6. Recursos externos, bibliotecas e acoplamento a jQuery.
+7. Reuso de Componentes de Negócio, coerência de slots com `pages.xml` e Versionamento Semântico.
+
+Para as regras de cada etapa, consulte [architecture.md](architecture.md),
+[conventions.md](conventions.md), [style-guide.md](style-guide.md),
+[backend-java-maven.md](backend-java-maven.md),
+[partner-store-conventions.md](partner-store-conventions.md),
+[business-components.md](business-components.md) e
+[layouts-nativos-slots.md](references/layouts/layouts-nativos-slots.md).
+
+### 33.2 Fallback e limites da revisão
+
+| Condição | Resposta obrigatória |
+|----------|----------------------|
+| Persona diferente de Parceiro | Informar que a revisão exclusiva da Store não se aplica e encerrar sem relatório. |
+| Caminho inválido ou POM raiz Maven ausente | Informar que o alvo não é um componente Maven Fluig válido e encerrar sem inventar estrutura. |
+| Nenhum módulo `application.type=layout` | Informar exatamente **"Nenhum artefato encontrado"** e encerrar sem relatório vazio. |
+| Arquivo não lido integralmente | Registrar `❌` no Tracker, listar o arquivo e marcar o relatório como **"NÃO CONCLUÍDO — Cobertura Incompleta"**. |
+| Dado crítico ausente ou ambíguo | Interromper e perguntar; não inventar valores, slots, recursos ou versão. |
+| Origem de slot, recurso ou vínculo com `pages.xml` ambígua | Registrar **Médio** com **"VERIFICAR MANUALMENTE"** e a evidência real, conforme [§ 22](#22-análise-contextual-e-heurísticas-anti-falso-positivo). |
+| Pedido de revisão de outro artefato, estrutura Maven ou projeto inteiro | Delimitar o escopo e encaminhar para a revisão específica; operações em massa devem ser fatiadas por artefato. |
+| Padrão exigido sem documentação em `context/` | Parar e solicitar o registro do padrão oficial antes de concluir a revisão. |
+| Recomendação que introduziria risco | Propor somente a alternativa segura, conforme [§ 14](#14-recomendações-de-correção-seguras). |
+
+O relatório de layout segue [§ 32](#32-metodologia-do-relatório-de-pré-review-contrato-transversal), é gravado como
+`pre-review-layout-<AAAA-MM-DD>.md` na raiz do alvo e é a única escrita permitida
+no repositório revisado.
 
 ---
 

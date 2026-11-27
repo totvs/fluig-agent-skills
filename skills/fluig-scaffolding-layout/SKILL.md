@@ -56,8 +56,7 @@ Atenção a estes pontos para não confundir os dois:
 | `application.type` | `widget` | `layout` |
 | Template principal | `view.file=view.ftl` | `layout.file=layout.ftl` |
 | Slot padrão | — | `layout.defaultSlot=<Slot>` (obrigatório) |
-| Slots pré-configurados | — | `slot.<Nome>=<código-widget>` (opcional) |
-| Flag no construtor | `application.uiwidget` | `application.uilayout` |
+| Flag no construtor | `application.uiwidget` | `application.uilayout` obrigatória para Parceiro, com `true` ou `false` explícito |
 | Responsivo | — | `application.responsiveLayout=true` |
 | Renderização da área | conteúdo próprio | `<@wcm.renderSlot id="..." />` por slot |
 
@@ -129,8 +128,8 @@ a `layout.ftl` declara os **slots/regiões**. Use `<code>` como o código do lay
 > layout é um **módulo Maven** `{artifactId}-layout[-{nome}]` `war`, não uma pasta
 > `wcm/layout/`. São **estruturais** (valem para Consultor e Parceiro): `parent`
 > no `pom.xml` com o `groupId` próprio do projeto (ver A-D5-17 acima — **nunca
-> `com.fluig`**); `simple.deploy` no `application.info` (ver
-> [simple.deploy e código Java no módulo](../../context/architecture.md#o-campo-simpledeploy)); e
+> `com.fluig`**); a ausência de `simple.deploy` no `application.info` de layout
+> (ver [simple.deploy e código Java no módulo](../../context/architecture.md#o-campo-simpledeploy)); e
 > integração ao módulo `-pack` (EAR) — detalhe em
 > [backend-java-maven.md](../../context/backend-java-maven.md).
 >
@@ -188,7 +187,7 @@ Somente o mínimo para orientar a geração; o detalhe está no contexto:
 - Reproduza os **blocos condicionais fixos**: pré-visualização (`pageRender.isPreviewMode()` → `@wcm.previewPageAlert`/`@wcm.deviceTogglePreview`), cabeçalho/menu fora da edição (`pageRender.isEditMode() != true` → `@wcm.header`/`@wcm.menu`), controles do construtor na edição (`@wcm.editHeader`/`@wcm.widgetsList`) e footer fora do tema responsivo (`fluigThemeCode != "responsive_theme"` → `@wcm.footer`) → ver `architecture.md`.
 - **A liberdade está nos slots**, dentro de `${divMasterId!""}`: cada região é um `<div class="editable-slot slotfull <grid>" id="slotFullN">` com `<@wcm.renderSlot id="SlotX" editableSlot="true" isResponsiveSlot="true" />`. O identificador do slot padrão deve casar com `layout.defaultSlot` do `application.info` → ver `architecture.md`.
 - Para o **grid das regiões**, **reutilize o padrão dos layouts NATIVOS reais** (`references/layouts/layouts-nativos-slots.md` + nativo `defaultdashboard`) — não monte classes à mão. Coluna única = `editable-slot slotfull layout-1-1`. Em 2 colunas: esquerda = `editable-slot slotfull layout-2-3left`; a coluna direita é envolvida por um **`<div id="all-slots-right">` agrupador** (id, não classe de slot; o `responsive_layout.css` o referencia por `#all-slots-right`), com os slots internos em `layout-1-1`. Nunca posicionamento fixo → ver `architecture.md` › "Grid das regiões" e o catálogo nativo.
-- **Slots não-editáveis exigem `slot.<Nome>=<tipo>` no `application.info`:** quando a `layout.ftl` usa um slot especial da plataforma (menu, login, busca, alerta global, uso), o descritor **deve** mapeá-lo ao widget correspondente; slots editáveis comuns (SlotA, SlotB…) não. Lista dos slots e seus valores → ver `architecture.md`.
+- Propriedades `slot.*` são depreciadas: não as gere, valide, verifique nem reporte. Para Parceiro, gere `application.uilayout` com valor explícito `true` ou `false`; a classificação de revisão de ausência e dos valores está em `architecture.md`. A estrutura dos slots da `layout.ftl` segue as regras de `architecture.md`.
 - **Descritores `WEB-INF/web.xml` e `jboss-web.xml`:** copie os blocos canônicos de `architecture.md` › "Empacotamento web (WEB-INF)" — **sem `<!DOCTYPE>`** (o parser XXE-safe do Fluig recusa e o deploy falha). Não escrever de memória → ver `architecture.md`.
 - Todo texto visível via i18n: `${i18n.getTranslation('chave')}` no `layout.ftl`; se o layout tiver `.js` próprio, `[=i18n.getTranslation('chave')]` (entre aspas ao atribuir a variável, sem misturar as duas sintaxes no mesmo `.js`); nunca strings fixas → ver `conventions.md`.
 - Inclua o **`responsive_layout.css` padrão** em `webapp/resources/css/` (responsividade das regiões/slots) e declare os dois CSS no descritor na ordem: `application.resource.css.1` = folha global do Fluig (`/portal/resources/css/wcm_responsive_layout.css`) e `application.resource.css.2` = `/resources/css/responsive_layout.css`. Distintos do `<code>.css` próprio → ver `architecture.md`.
@@ -200,7 +199,7 @@ Somente o mínimo para orientar a geração; o detalhe está no contexto:
 ## Procedimento
 
 1. Definir o nome do layout (em Inglês) e o `<code>` (minúsculo) a partir da entrada, e identificar as regiões/slots necessários e o arranjo do grid (ex.: largura total, duas colunas, lateral + conteúdo).
-2. Criar a estrutura de pastas oficial (ver "Estrutura de Saída") e o descritor **`application.info`** com `application.type=layout`, `application.renderer=freemarker`, `layout.file=layout.ftl`, `layout.defaultSlot` e os **campos completos** do layout (incl. `application.fluig.version`, `application.category`, `application.newBuilder`, `application.responsiveLayout`, `application.icon`, recursos `css.N` e `developer.url`) — ver a tabela completa em `architecture.md`.
+2. Criar a estrutura de pastas oficial (ver "Estrutura de Saída") e o descritor **`application.info`** com `application.type=layout`, `application.renderer=freemarker`, `layout.file=layout.ftl`, `layout.defaultSlot` e os **campos completos** do layout (incl. `application.fluig.version`, `application.category`, `application.newBuilder`, `application.responsiveLayout`, `application.icon`, recursos `css.N` e `developer.url`). Para Parceiro, declarar também `application.uilayout` com valor explícito `true` ou `false` — ver a tabela completa em `architecture.md`.
 3. Montar a **view `layout.ftl`** (em `src/main/resources/`) **reproduzindo o esqueleto rígido** da seção "Estrutura HTML da `layout.ftl`" em `architecture.md`: os dois imports (`/wcm.ftl` e `/layout-globals.ftl`), o bloco de preview, o wrapper `wcm-wrapper-content` → `wcm-all-content` → `wcm-content` → `${divMasterId!""}` e os blocos condicionais de edição. **Não** adicione `fluig-style-guide` ao wrapper raiz de portal.
 4. **Posicionar os slots** dentro de `${divMasterId!""}`: para cada região, um `<div class="editable-slot slotfull <grid>" id="slotFullN">` com `<@wcm.renderSlot id="SlotX" editableSlot="true" isResponsiveSlot="true" />`; garantir que o slot padrão case com `layout.defaultSlot`. Ajustar a classe de grid (`layout-1-1`, `layout-1-2left`/`right`, etc.) conforme o arranjo desejado.
 5. Acrescentar o **footer** dentro do bloco `fluigThemeCode != "responsive_theme"` via `@wcm.footer` com o `layoutuserlabel` apropriado (chave de i18n).
@@ -243,7 +242,6 @@ Use `examples/layout/` como referência mínima da view `.ftl` de um layout que 
 - [ ] Blocos condicionais presentes: preview (`isPreviewMode`), header/menu fora da edição, `@wcm.editHeader`/`@wcm.widgetsList` na edição e footer fora do tema responsivo.
 - [ ] `layout.defaultSlot` está presente entre os slots declarados na `layout.ftl`.
 - [ ] Cada slot é um `<div class="editable-slot slotfull <grid>" id="slotFullN">` com `<@wcm.renderSlot id="..." />` correspondente.
-- [ ] Slots **não-editáveis** usados na `layout.ftl` têm o `slot.<Nome>=<tipo>` correspondente no descritor, referenciando um código de widget válido → ver `architecture.md`.
 - [ ] Arquivos **`.properties` de i18n** (base + `pt_BR`/`en_US`/`es`).
 - [ ] **Codificação dos `.properties` de locale:** caracteres acentuados/não-ASCII escapados em `\uXXXX` (só o arquivo base admite acento direto) → ver `conventions.md`.
 - [ ] **`responsive_layout.css` padrão** presente em `webapp/resources/css/`; descritor declara `application.resource.css.1` = folha global do Fluig (`/portal/resources/css/wcm_responsive_layout.css`) e `application.resource.css.2` = `/resources/css/responsive_layout.css`.
@@ -255,7 +253,7 @@ Use `examples/layout/` como referência mínima da view `.ftl` de um layout que 
 - [ ] CSS próprio mínimo (Style Guide como padrão); CSS próprio sem pedido explícito = **pendência a revisar**.
 - [ ] Descritor de layout com **campos completos** (incl. `application.newBuilder`, `application.responsiveLayout`) — ver `architecture.md`.
 - [ ] `pom.xml` presente **quando o projeto usa Maven ou sob pedido**.
-- [ ] **Se Parceiro:** módulo Maven `{artifactId}-layout[-{nome}]` com `parent` (groupId próprio, **nunca `com.fluig`**), prefixo de namespacing no `application.code`/`artifactId`, `simple.deploy` no descritor e integração ao `-pack` (EAR) — ver `partner-store-conventions.md` [simple.deploy e código Java no módulo](../../context/architecture.md#o-campo-simpledeploy)/ [§ 6](../../context/partner-store-conventions.md#6-namespacing-e-isolamento-de-artefatos-prefixo-de-parceiro) e `backend-java-maven.md`.
+- [ ] **Se Parceiro:** `application.uilayout` está presente com valor explícito `true` ou `false`; módulo Maven `{artifactId}-layout[-{nome}]` com `parent` (groupId próprio, **nunca `com.fluig`**), prefixo de namespacing no `application.code`/`artifactId`, ausência de `simple.deploy` no descritor e integração ao `-pack` (EAR) — ver `partner-store-conventions.md`, [simple.deploy e código Java no módulo](../../context/architecture.md#o-campo-simpledeploy), [§ 6](../../context/partner-store-conventions.md#6-namespacing-e-isolamento-de-artefatos-prefixo-de-parceiro) e `backend-java-maven.md`.
 
 ## Resumo da Geração
 
@@ -263,7 +261,7 @@ Ao concluir, apresente um resumo curto:
 
 - **Layout / `application.code`:** nome e código.
 - **Diretório:** onde o layout foi criado.
-- **Slots:** lista de slots (com destaque para o slot padrão) e slots pré-configurados, se houver.
+- **Slots:** lista de slots, com destaque para o slot padrão.
 - **Arquivos gerados:** lista.
 - **Pendências manuais:** ex.: `icon.png` real, coordenadas do `pom.xml` pai, traduções `en_US`/`es` marcadas com TODO, **CSS próprio criado sem pedido explícito (revisar)**.
 - **CSS próprio sem pedido explícito**: registrar como **pendência a revisar** (Style Guide é o padrão; CSS próprio é exceção sob pedido).

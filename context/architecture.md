@@ -368,10 +368,10 @@ Campos do `application.info` de um layout (tabela completa):
 | `application.renderer` | `freemarker` |
 | `layout.file` | `layout.ftl` (view do layout) |
 | `layout.defaultSlot` | Slot padrão que recebe conteúdo (deve existir entre os slots da `layout.ftl`) |
-| `slot.<NomeDoSlot>` | (Opcional) widget pré-configurado para um slot (ex.: `slot.SlotMenu=menu`) |
 | `application.icon` | `icon.png` |
 | `application.responsiveLayout` | `true` para layout responsivo |
 | `application.newBuilder` | Flag do novo construtor de páginas |
+| `application.uilayout` | Para layout de Parceiro (Store), flag booleana obrigatória (`true`/`false`); consulte a política de revisão abaixo |
 | `application.resource.css.N` | Caminhos do CSS — `css.1` aponta para a folha global do Fluig (`/portal/resources/css/wcm_responsive_layout.css`) e `css.2` para o `responsive_layout.css` padrão do layout (e o `<code>.css` próprio como recurso adicional, se houver) |
 | `locale.file.base.name` | Nome base dos arquivos `.properties` de i18n — **igual a** `application.code` |
 | `developer.code` / `developer.name` / `developer.url` | Identificação do desenvolvedor |
@@ -381,10 +381,12 @@ Campos do `application.info` de um layout (tabela completa):
 > coincidir com um dos slots declarados na `layout.ftl`.
 
 > **Diferenças em relação ao widget:** o layout usa `layout.file` (não
-> `view.file`), exige `layout.defaultSlot`, usa a flag `application.uilayout` (em
-> vez de `application.uiwidget`) para aparecer no construtor de páginas e admite
-> `application.responsiveLayout`, `application.newBuilder` e `slot.<Nome>` para
-> pré-configurar widgets em slots.
+> `view.file`), exige `layout.defaultSlot` e admite
+> `application.responsiveLayout` e `application.newBuilder`. Para layouts de
+> Parceiro (Store), `application.uilayout` é obrigatória com valor explícito
+> `true` ou `false`: ausência é achado Crítico/Bloqueante, `false` não gera alerta
+> e `true` gera exclusivamente o apontamento Informativo/Baixa Severidade definido
+> em [Regras de Validação do `application.info`](#regras-de-validação-do-applicationinfo).
 
 ### Estrutura HTML da `layout.ftl` (rígida)
 
@@ -502,14 +504,10 @@ O que o desenvolvedor **pode** variar:
   > esquerda em conjunto com o agrupador `#all-slots-right` na direita — reutilize
   > essa combinação nativa como referência.
 
-> **Slots não-editáveis exigem `slot.<Nome>=<tipo>` no `application.info`** (TDN
-> *Layouts*). A plataforma tem 5 slots especiais que, quando
-> usados na `layout.ftl`, **precisam** ser mapeados ao widget correspondente no
-> descritor: `slot.SlotMenu=menu`, `slot.SlotLogin=sociallogin`,
-> `slot.SlotInstantSearch` (busca), `slot.SlotGlobalAlert=alertpopover` e
-> `slot.SlotUsePolicy=usepolicy`. É a forma de inserir conteúdo num slot
-> não-editável. Os slots editáveis comuns (SlotA, SlotB…) **não** usam essa
-> propriedade. Atributos do slot: `editableSlot` (editável no construtor),
+> **Propriedades `slot.*` depreciadas:** não valide, verifique, exija, gere nem
+> reporte a ausência, presença ou falta de renderização dessas propriedades no
+> `application.info`. Esta regra vale para revisão, geração e modernização.
+> Atributos do slot em `@wcm.renderSlot`: `editableSlot` (editável no construtor),
 > `decorator` (exibe o título das widgets; default `false`) e `isResponsiveSlot`
 > (visual responsivo novo).
 
@@ -535,10 +533,9 @@ uma `layout.ftl` está em `examples/layout/`.
 As regras abaixo aplicam-se a **todos** os arquivos `application.info` (widget e
 layout).
 
-> **Parceiro (Store):** campos e regras adicionais do `application.info`
-> exigidos pela Store (incluindo `simple.deploy`) estão em
-> [partner-store-architecture.md](partner-store-architecture.md), seção "Regras de
-> `application.info` exigidas pela Store".
+> **Parceiro (Store):** os campos adicionais de `application.info`, incluindo
+> `simple.deploy` quando aplicável e sua ausência obrigatória em layout WCM,
+> estão em [partner-store-conventions.md](partner-store-conventions.md).
 
 | Campo | Regra de validação |
 |-------|-------------------|
@@ -546,7 +543,8 @@ layout).
 | `application.type` | Obrigatório. Valores: `widget`, `layout`. |
 | `application.category` | Obrigatório. Exemplos: `SYSTEM`, `APPLICATION`, `AGILITY`, `Social`. |
 | `application.uiwidget` | Flag booleana (`true`/`false`) do **widget**: se `true`, o widget fica disponível no **construtor de páginas**. DEVE existir com valor explícito (a Store exige a flag; ver `partner-store-review-rules.md`). |
-| `application.uilayout` | Flag booleana (`true`/`false`) do **widget**: se `true`, o widget fica disponível para uso **dentro de layouts**. DEVE existir com valor explícito. **Não confundir** com o descritor de um artefato `application.type=layout` (que não usa estas flags). |
+| `application.uilayout` | Para layouts de Parceiro (Store), flag booleana obrigatória (`true`/`false`). Ausente: achado Crítico/Bloqueante. `false`: válido, sem alerta. `true`: emitir exclusivamente um apontamento Informativo/Baixa Severidade com a recomendação literal abaixo. |
+| `slot.*` | Propriedades depreciadas. Não validar, verificar, exigir, gerar nem reportar sua ausência, presença ou falta de renderização. |
 | `developer.code` | Obrigatório. Código identificador do desenvolvedor/parceiro. |
 | `developer.name` | Obrigatório. Nome do desenvolvedor/parceiro. |
 | `developer.url` | Obrigatório. URL do desenvolvedor/parceiro. |
@@ -571,16 +569,25 @@ e buscar a string exata.
 | `developer.code` sem nome de máquina | O valor NÃO pode conter nome de máquina local (padrões `DESKTOP-*`, `LAPTOP-*`) — indica exportação de ambiente de desenvolvimento | Média |
 | `application.code` × `locale.file.base.name` | Os dois valores DEVEM coincidir (quebra i18n quando divergem) | Alta |
 | `application.uiwidget` explícito | DEVE existir com valor explícito (`true`/`false`) e coerente com a documentação | Alta |
+| `application.uilayout` ausente (Parceiro) | DEVE existir com valor explícito `true` ou `false` | Crítico/Bloqueante |
+| `application.uilayout=true` (Parceiro) | Emitir exclusivamente apontamento Informativo/Baixa Severidade com a recomendação literal abaixo | Informativo/Baixa Severidade |
 
+> **`application.uilayout` em layout de Parceiro (Store):** a chave deve existir
+> com valor explícito `true` ou `false`. A ausência gera achado
+> **Crítico/Bloqueante**. O valor `false` é válido e não gera alerta. Quando o
+> valor for `true`, gere exclusivamente o apontamento Informativo/Baixa Severidade:
+> **O layout está configurado com application.uilayout=true. Certifique-se de que essa característica esteja claramente descrita na documentação do projeto.**
+>
+> **Propriedades `slot.*` depreciadas:** não validar, verificar, exigir, gerar nem
+> reportar sua ausência, presença ou falta de renderização.
+>
 > **Parceiro (Store):** no modelo parceiro (projetos multi-módulo Maven/EAR),
-> campos e regras extras se aplicam ao `application.info` — `simple.deploy`,
-> `context-root` por tipo de módulo, declaração de URLs externas, `slot.*` para
-> layouts, e verificações adicionais de review (`application.icon`
-> recomendado/ícone personalizado, `simple.deploy` coerente, `application.uiwidget`
-> documentado). Consulte [partner-store-architecture.md](partner-store-architecture.md),
-> seção "Regras de `application.info` exigidas pela Store", e
-> [Context-root por tipo de módulo](backend-java-maven.md#context-root-por-tipo-de-módulo) para as regras
-> completas específicas do modelo parceiro.
+> campos e regras extras se aplicam ao `application.info` — `simple.deploy`
+> quando aplicável (ausente em layout WCM), `context-root` por tipo de módulo,
+> declaração de URLs externas e verificações adicionais de
+> review. Consulte [partner-store-conventions.md](partner-store-conventions.md)
+> e [Context-root por tipo de módulo](backend-java-maven.md#context-root-por-tipo-de-módulo)
+> para as regras completas específicas do modelo parceiro.
 
 ## Remapeamento de slots
 
@@ -596,7 +603,7 @@ correspondência **antes** de aplicar:
 Procedimento:
 
 1. Listar slots do layout antigo (usados nas páginas do `pages.xml`).
-2. Listar slots do novo layout (declarados na `layout.ftl` e no `application.info`).
+2. Listar slots do novo layout (declarados na `layout.ftl`).
 3. Validar que os nomes coincidem.
 4. Se houver divergência, **alertar o desenvolvedor** e propor mapeamento (ex.:
    `SlotB` → `SlotContent`).
@@ -607,17 +614,24 @@ Procedimento:
 
 ## O campo `simple.deploy`
 
-O campo `simple.deploy` do `application.info` indica se o módulo tem código Java a
-deployar. O valor depende da presença de Java no módulo:
+Quando presente, o campo `simple.deploy` do `application.info` indica se o módulo
+tem código Java a deployar. Seu uso e valor dependem do tipo de módulo:
 
 | Valor | Quando | Exemplos de módulo |
 |-------|--------|--------------------|
-| `simple.deploy=true` | O módulo **não** possui Java — só recursos web | widget, layout e form estáticos |
+| `simple.deploy=true` | O módulo **não** possui Java e não é um layout WCM | widget e form estáticos |
 | `simple.deploy=false` | O módulo **possui** Java | módulos com classes/serviços Java |
+| Ausente | O módulo declara `application.type=layout` | layout WCM |
 
-> O `simple.deploy` **descreve o módulo, não a persona** — aparece tanto em
-> entregas para uma única empresa quanto em produtos de Store (ver
-> [Detecção de estrutura do projeto](#detecção-de-estrutura-do-projeto)).
+> **Exceção de layout WCM:** `application.type=layout` não declara
+> `simple.deploy`. Para layout de Parceiro, `application.uilayout` é obrigatória
+> com valor explícito `true` ou `false`; a política de revisão está detalhada em
+> [Regras de Validação do `application.info`](#regras-de-validação-do-applicationinfo)
+> e em [partner-store-conventions.md](partner-store-conventions.md).
+
+> O `simple.deploy` **descreve o módulo, não a persona** — quando aplicável,
+aparece tanto em entregas para uma única empresa quanto em produtos de Store (ver
+>[Detecção de estrutura do projeto](#detecção-de-estrutura-do-projeto)).
 
 ## Chaves de identidade do artefato publicado
 

@@ -67,7 +67,16 @@ código Java são fonte de verdade em
 [Context-root por tipo de módulo](backend-java-maven.md#context-root-por-tipo-de-módulo)
 e em [O campo `simple.deploy`](architecture.md#o-campo-simpledeploy). Esta seção
 documenta exclusivamente os **campos exigidos pela Store** sobre esse mesmo descritor.
-Violações nestas regras são a **causa nº 1 de reprovação no App Review**.
+A propriedade `application.uilayout` é obrigatória no layout de Parceiro e deve
+ter valor explícito `true` ou `false`. Sua ausência é achado
+**Crítico/Bloqueante**. O valor `false` é válido e não gera alerta. Quando estiver
+como `true`, a revisão registra exclusivamente o apontamento Informativo/Baixa
+Severidade com a recomendação literal definida em
+[architecture.md](architecture.md#integridade-dos-recursos-e-chaves-review).
+Propriedades `slot.*` são depreciadas e devem ser completamente ignoradas: não
+as valide, verifique, exija, gere nem reporte. Violações dos demais campos
+obrigatórios desta seção continuam entre as causas mais frequentes de reprovação
+no App Review.
 
 ### Campos obrigatórios
 
@@ -81,15 +90,14 @@ Violações nestas regras são a **causa nº 1 de reprovação no App Review**.
 | `developer.code` | ✅ | Código do parceiro desenvolvedor |
 | `developer.name` | ✅ | Nome do parceiro |
 | `developer.url` | ✅ | URL do parceiro (sempre `https://`) |
-| `simple.deploy` | ✅ | **Obrigatório** no modelo Store. Valor conforme a presença de código Java no módulo: **`true`** sem Java (só recursos web); **`false`** com Java. Na integridade do `application.info` (review): ausência **Alta**; valor incoerente com o tipo do módulo **Alta** |
+| `simple.deploy` | Condicional | Obrigatório nos módulos Store que o utilizam. Valor conforme a presença de código Java: **`true`** sem Java (só recursos web); **`false`** com Java. **Exceção obrigatória:** layout WCM (`application.type=layout`) não declara `simple.deploy`; sua presença é achado de conformidade. |
 
 ### Campos condicionais
 
 | Campo | Quando |
 |-------|--------|
 | `application.uiwidget` | Widgets — flag booleana (`true`/`false`): se o widget aparece na seleção ao editar páginas (ver [§ 9](partner-store-review-rules.md#9-applicationuiwidget-e-documentação)). DEVE existir com valor explícito |
-| `application.uilayout` | Layouts — flag booleana (`true`/`false`): se o layout aparece na seleção de layouts. DEVE existir com valor explícito |
-| `slot.{NomeSlot}={NomeSlot}` | Layouts — uma entrada por slot declarado na `layout.ftl` |
+| `application.uilayout` | Layouts de Parceiro — flag booleana obrigatória (`true`/`false`). Ausente: achado Crítico/Bloqueante. `false`: válido, sem alerta. Quando `true`, a revisão emite exclusivamente o apontamento Informativo/Baixa Severidade com a recomendação literal definida em [architecture.md](architecture.md#integridade-dos-recursos-e-chaves-review). |
 | `resources` | Declaração de recursos estáticos |
 
 ### Exemplo completo (widget)
@@ -107,7 +115,7 @@ simple.deploy=true
 application.uiwidget=false
 ```
 
-### Exemplo completo (layout com slots)
+### Exemplo completo (layout)
 
 ```properties
 application.type=layout
@@ -115,15 +123,16 @@ application.code=samplelayout
 application.title=Sample Layout
 application.description=Layout customizado do componente
 application.category=AGILITY
+application.uilayout=false
 developer.code=PARCEIRO01
 developer.name=Parceiro Exemplo LTDA
 developer.url=https://www.parceiro.com.br
-simple.deploy=true
-application.uilayout=false
-slot.SlotHeader=SlotHeader
-slot.SlotContent=SlotContent
-slot.SlotSidebar=SlotSidebar
 ```
+
+> O exemplo declara `application.uilayout=false`, valor válido sem alerta. Em
+> layout de Parceiro, a propriedade é obrigatória: sua ausência é achado
+> Crítico/Bloqueante. Não gere propriedades `slot.*`: elas são depreciadas e não
+> entram na geração, modernização ou revisão.
 
 ---
 

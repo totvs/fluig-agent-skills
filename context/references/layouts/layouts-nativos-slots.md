@@ -204,8 +204,7 @@ nomes:
 ### Procedimento de Remapeamento
 
 1. Identificar os slots do layout antigo usados nas páginas do `pages.xml`
-2. Identificar os slots do novo layout (declarados na `layout.ftl` e no
-   `application.info` com `slot.{Nome}={Nome}`)
+2. Identificar os slots do novo layout declarados na `layout.ftl`.
 3. Validar correspondência entre slots antigos e novos
 4. Se houver divergência, propor mapeamento ao parceiro antes de aplicar
 5. Atualizar `pages.xml` somente após confirmação
