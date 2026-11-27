@@ -1,6 +1,6 @@
 ---
 name: fluig-code-review-partner-layout
-description: Revise, em modo somente leitura, os layouts WCM de uma solução de Parceiro destinada à Store do TOTVS Fluig e grave um pré-review Markdown por severidade antes do App Review.
+description: Revisa, somente em leitura, os layouts WCM (application.type=layout) de uma solução de Parceiro destinada à Store do TOTVS Fluig e grava um único relatório pre-review-layout-AAAA-MM-DD.md com inventário de escopo, Tracker de Cobertura e achados por severidade. Confere application.info, a estrutura de layout.ftl, CSS, i18n, descritores web, recursos externos e regras exclusivas de Parceiro; consolida as validações genéricas sem duplicar achados. Não revisa widgets, datasets, REST, formulários ou a estrutura Maven completa. Use antes do App Review/submissão à Store.
 argument-hint: caminho raiz do componente Maven e persona Parceiro já classificada pelo orquestrador
 ---
 
